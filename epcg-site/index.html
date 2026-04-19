@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPCG Tanger - Ecole Professionnelle de Commerce & de Gestion</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ef3c20; /* Rouge IKI / EPCG */
+            --secondary-color: #3d4a90; /* Bleu foncé */
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            background-color: #ffffff;
+            overflow-x: hidden;
+            padding-top: 80px; /* Espace pour la barre fixe */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        /* --- HEADER / NAVBAR --- */
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 10px 0;
+        }
+        
+        .navbar-brand img {
+            max-height: 60px;
+        }
+
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: #111111;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            padding: 10px 15px !important;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover, 
+        .navbar-nav .nav-link:focus {
+            color: var(--primary-color);
+        }
+
+        .navbar-nav .nav-link.active-link {
+            color: var(--primary-color) !important;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 0;
+            margin-top: 0;
+        }
+        .dropdown-item {
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            text-transform: uppercase;
+        }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+
+        /* --- HERO CAROUSEL --- */
+        .hero-carousel-section {
+            height: 80vh;
+            background-color: #000;
+        }
+        .carousel-item { height: 80vh; }
+        .carousel-item img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+        .carousel-caption {
+            top: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .slider-title {
+            font-family: 'Roboto Slab', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 20px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+            margin-right: -20px;
+        }
+        .slider-subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .slider-btn {
+            border: 1px solid white;
+            color: white;
+            padding: 12px 35px;
+            font-weight: 600;
+            background: transparent;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .slider-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        .carousel-control-prev, .carousel-control-next { width: 5%; }
+
+        /* --- ABOUT & FORMATIONS SECTION --- */
+        .about-section { padding: 80px 0; background-color: #fcfcfc; }
+        .about-title { color: var(--secondary-color); font-weight: 700; margin-bottom: 25px; }
+        .about-text { font-size: 16px; line-height: 1.8; color: #666; text-align: justify; }
+        .accreditation-badge {
+            background-color: var(--secondary-color); color: white;
+            padding: 15px 20px; border-radius: 8px; display: inline-block;
+            margin-top: 20px; border-left: 5px solid var(--primary-color);
+        }
+        
+        .formations-section { padding: 80px 0; text-align: center; }
+        .section-title { color: var(--secondary-color); font-weight: 700; font-size: 36px; margin-bottom: 50px; text-transform: uppercase; }
+        .formation-card {
+            background: white; padding: 40px 20px; border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; height: 100%; border-bottom: 4px solid transparent;
+        }
+        .formation-card:hover { transform: translateY(-10px); border-bottom: 4px solid var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .formation-icon { font-size: 50px; color: var(--primary-color); margin-bottom: 20px; }
+
+        /* --- INSCRIPTIONS (SITES) --- */
+        .inscriptions-section { padding: 60px 0; background-color: #fcfcfc; text-align: center; }
+        .site-card { text-decoration: none; color: #333; display: block; transition: all 0.3s; padding: 15px; }
+        .site-card:hover { transform: translateY(-5px); color: var(--primary-color); }
+        .site-icon { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* --- ACTIVITÉS ET ÉVÉNEMENTS --- */
+        .activites-section { padding: 80px 0; background-color: #ffffff; text-align: center; }
+        .activites-title { color: var(--secondary-color); font-weight: 700; font-family: 'Roboto Slab', serif; margin-bottom: 40px; }
+        .activite-img {
+            width: 100%; height: 220px; object-fit: cover; border-radius: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s;
+        }
+        .activite-img:hover { transform: scale(1.03); }
+        .btn-voir-plus {
+            background-color: var(--secondary-color); color: white; font-weight: 600; padding: 12px 35px;
+            border-radius: 4px; text-decoration: none; text-transform: uppercase; transition: 0.3s; display: inline-block; margin-top: 30px;
+        }
+        .btn-voir-plus:hover { background-color: #2b356b; color: white; }
+
+        /* --- PARTENAIRES (SCROLLING) --- */
+        .partenaires-section { padding: 60px 0 0 0; background-color: #ffffff; } 
+        .partenaires-title { color: var(--primary-color); font-weight: 700; font-family: 'Roboto Slab', serif; margin-bottom: 40px; }
+        .marquee-wrapper { overflow: hidden; width: 100%; position: relative; white-space: nowrap; padding-bottom: 40px; }
+        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
+        .marquee-content img { height: 60px; margin: 0 30px; object-fit: contain; vertical-align: middle; }
+        .marquee-wrapper:hover .marquee-content { animation-play-state: paused; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- VIDEO ANIMATION SECTION (التدبير المعلوماتي) --- */
+        .video-animation-section {
+            position: relative;
+            width: 100%;
+            height: 65vh; 
+            min-height: 400px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+        }
+        .video-animation-section .background-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 0;
+            object-fit: cover;
+        }
+        .video-animation-section .video-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4); 
+            z-index: 1;
+        }
+
+        /* --- FOOTER --- */
+        .footer { background-color: #111111; color: #999999; padding: 60px 0 20px; }
+        .footer h4 { color: white; font-size: 20px; margin-bottom: 20px; }
+        .footer-info li { margin-bottom: 15px; display: flex; align-items: flex-start; }
+        .footer-info i { color: var(--primary-color); font-size: 18px; margin-right: 15px; margin-top: 3px; }
+        .copyright { border-top: 1px solid #333; padding-top: 20px; margin-top: 40px; text-align: center; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .slider-title { font-size: 1.8rem; letter-spacing: 10px; margin-right: -10px; }
+            .activite-img { margin-bottom: 15px; }
+            .video-animation-section { height: 40vh; min-height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
+        <div class="container-fluid px-lg-5"> 
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/200x60?text=LOGO+EPCG" alt="EPCG Tanger">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">NOUVEAUTÉS</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Photos</a></li>
+                            <li><a class="dropdown-item" href="#">Vidéos</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">INSCRIPTION</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="inscription.html">Inscription EPCG</a></li>
+                            <li><a class="dropdown-item" href="#">Campus Principal</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="#formations">NOS FORMATIONS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">CENTRE DE LANGUES ET COMMUNICATION</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">À PROPOS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#footer">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-carousel-section">
+        <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
+            <div class="carousel-inner h-100">
+                <div class="carousel-item active" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070" class="d-block w-100" alt="Remise de diplôme EPCG">
+                    <div class="carousel-caption">
+                        <h1 class="slider-title" data-aos="fade-up" data-aos-duration="1000">L E S   I N S C R I P T I O N S</h1>
+                        <p class="slider-subtitle" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">2026-2027</p>
+                        <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                            <a href="inscription.html" class="slider-btn">INSCRIVEZ-VOUS</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100" alt="Campus EPCG">
+                    <div class="carousel-caption">
+                        <h1 class="slider-title">L E S   I N S C R I P T I O N S</h1>
+                        <p class="slider-subtitle">2026-2027</p>
+                        <a href="inscription.html" class="slider-btn">INSCRIVEZ-VOUS</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070" class="d-block w-100" alt="Cours de management">
+                    <div class="carousel-caption">
+                        <h1 class="slider-title">L E S   I N S C R I P T I O N S</h1>
+                        <p class="slider-subtitle">2026-2027</p>
+                        <a href="inscription.html" class="slider-btn">INSCRIVEZ-VOUS</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h2 class="about-title">L'École Professionnelle de Commerce & de Gestion</h2>
+                    <p class="about-text">
+                        L'<strong>EPCG Tanger</strong> est un établissement privé d'excellence, accrédité par l'État, dédié à la formation des futurs leaders dans les domaines de l'administration, de la gestion et du commerce.
+                    </p>
+                    <div class="accreditation-badge shadow-sm">
+                        <i class="bi bi-award-fill me-2"></i> <strong>Accréditation N° :</strong> 24/DFP/T0157/122 <br>
+                        <i class="bi bi-file-earmark-check-fill me-2"></i> <strong>Autorisation N° :</strong> 4/01/2019
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0 text-center" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000" alt="Campus EPCG" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="formations" class="formations-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Nos Formations</h2>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="formation-card">
+                        <i class="bi bi-mortarboard formation-icon"></i>
+                        <h4 class="mb-3">Cycle Normal</h4>
+                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important;">Bac +2</h3>
+                        <p class="text-muted fw-bold">Technicien Spécialisé</p>
+                        <hr>
+                        <p class="text-muted small">Formation initiale pour acquérir les bases fondamentales et techniques du management et du commerce.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="formation-card">
+                        <i class="bi bi-briefcase formation-icon"></i>
+                        <h4 class="mb-3">Cycle Supérieur</h4>
+                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important;">Bac +3</h3>
+                        <p class="text-muted fw-bold">Licence Professionnelle</p>
+                        <hr>
+                        <p class="text-muted small">Programme en partenariat visant à approfondir vos compétences et garantir votre employabilité.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="formation-card">
+                        <i class="bi bi-globe formation-icon"></i>
+                        <h4 class="mb-3">Cycle Supérieur</h4>
+                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important;">Bac +5</h3>
+                        <p class="text-muted fw-bold">Master Professionnel</p>
+                        <hr>
+                        <p class="text-muted small">Une expertise pointue en partenariat pour devenir un cadre de haut niveau capable de diriger.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="inscriptions-section">
+        <div class="container">
+            <h2 class="section-title mb-5" data-aos="fade-up" style="text-transform: none;">Inscription / التسجيلات مفتوحة</h2>
+            <div class="row justify-content-center g-4">
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
+                    <a href="#" class="site-card">
+                        <img src="https://via.placeholder.com/150?text=EPCG" alt="Site 1" class="site-icon">
+                        <h5 class="fw-bold fs-6">Site 1 - Tanger Centre</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
+                    <a href="#" class="site-card">
+                        <img src="https://via.placeholder.com/150?text=EPCG" alt="Site 2" class="site-icon">
+                        <h5 class="fw-bold fs-6">Site 2 - Plaza Toros</h5>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="activites-section">
+        <div class="container">
+            <h2 class="activites-title h1" data-aos="fade-up">Des activités et événements de l'école</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://www.groupeiki.com/wp-content/uploads/2024/01/419850084_747380660755730_469988460529190445_n-768x512.jpg" alt="Activité 1" class="activite-img">
+                </div>
+                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://www.groupeiki.com/wp-content/uploads/2024/01/421038185_751632380330558_8034340480350393118_n-768x512.jpg" alt="Activité 2" class="activite-img">
+                </div>
+                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://www.groupeiki.com/wp-content/uploads/2024/01/421921617_751632820330514_6278312677062211911_n-768x512.jpg" alt="Activité 3" class="activite-img">
+                </div>
+                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://www.groupeiki.com/wp-content/uploads/2024/01/421865597_751632793663850_1330830201320473653_n-768x512.jpg" alt="Activité 4" class="activite-img">
+                </div>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="500">
+                <a href="#" class="btn-voir-plus">
+                    <i class="bi bi-eye-fill me-2"></i> VOIR PLUS
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="partenaires-section">
+        <div class="container">
+            <h2 class="partenaires-title h2" data-aos="fade-right">Partenaires</h2>
+        </div>
+        <div class="marquee-wrapper mt-4">
+            <div class="marquee-content">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/aptiv_logo-e1524412034511-355x80.png" alt="Aptiv">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Timar_logo-fond-transparent-322x80.png" alt="Timar">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
+                
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/aptiv_logo-e1524412034511-355x80.png" alt="Aptiv">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Timar_logo-fond-transparent-322x80.png" alt="Timar">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
+            </div>
+        </div>
+    </section>
+
+    <section class="video-animation-section" data-aos="fade-in" data-aos-duration="1500">
+        <div class="video-overlay"></div>
+        
+        <video class="background-video" autoplay muted loop playsinline>
+            <source src="https://www.groupeiki.com/wp-content/uploads/2023/08/368257834_312588341316494_709853430592981351_n.mp4" type="video/mp4">
+            Votre navigateur ne prend pas en charge la vidéo HTML5.
+        </video>
+    </section>
+
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 mb-4">
+                    <h4 style="font-family: 'Roboto', sans-serif; font-weight: 700;">EPCG <span style="color: var(--primary-color);">TANGER</span></h4>
+                    <p class="mb-4">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité par l'État.</p>
+                    <div>
+                        <a href="#" class="text-white me-3 fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <h4>Contact & Localisation</h4>
+                    <ul class="list-unstyled footer-info">
+                        <li>
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger<br><small>(A côté du Crédit Agricole et du Café Ismailiya)</small></span>
+                        </li>
+                        <li>
+                            <i class="bi bi-telephone-fill"></i>
+                            <span>
+                                Tél Fixe : 05 31 10 99 70 <br>
+                                Mobile : 06 06 43 04 91 / 07 13 68 60 16
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+    </script>
+</body>
+</html>
