@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            --primary-color: #ef3c20; /* Rouge IKI / EPCG */
+            --primary-color: #921921; /* Rouge bordeaux ajusté selon votre logo */
             --secondary-color: #3d4a90; /* Bleu foncé */
             --text-color: #333333;
         }
@@ -22,7 +22,7 @@
             color: var(--text-color);
             background-color: #ffffff;
             overflow-x: hidden;
-            padding-top: 80px; /* Espace pour la barre fixe */
+            padding-top: 80px;
         }
 
         h1, h2, h3, h4 {
@@ -33,11 +33,13 @@
         .navbar-custom {
             background-color: #ffffff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            padding: 10px 0;
+            padding: 5px 0;
         }
         
+        /* LOGO AJUSTÉ */
         .navbar-brand img {
-            max-height: 60px;
+            max-height: 70px; /* Augmenté pour mieux voir votre logo carré */
+            width: auto;
         }
 
         .navbar-nav .nav-link {
@@ -175,7 +177,7 @@
         .marquee-wrapper:hover .marquee-content { animation-play-state: paused; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- VIDEO ANIMATION SECTION (التدبير المعلوماتي) --- */
+        /* --- VIDEO ANIMATION SECTION --- */
         .video-animation-section {
             position: relative;
             width: 100%;
@@ -224,9 +226,11 @@
 
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
+            
             <a class="navbar-brand" href="index.html">
-                <img src="https://via.placeholder.com/200x60?text=LOGO+EPCG" alt="EPCG Tanger">
+                <img src="./assets/logo-epcg.jpg" alt="Logo EPCG Tanger">
             </a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -375,7 +379,24 @@
                         <h5 class="fw-bold fs-6">Site 2 - Plaza Toros</h5>
                     </a>
                 </div>
-                
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="300">
+                    <a href="#" class="site-card">
+                        <img src="https://via.placeholder.com/150?text=EPCG" alt="Site 3" class="site-icon">
+                        <h5 class="fw-bold fs-6">Site 3 - Mesnana</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="400">
+                    <a href="#" class="site-card">
+                        <img src="https://via.placeholder.com/150?text=EPCG" alt="Site 4" class="site-icon">
+                        <h5 class="fw-bold fs-6">Site 4 - Ahlan</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="500">
+                    <a href="#" class="site-card">
+                        <img src="https://via.placeholder.com/150?text=EPCG" alt="Site 5" class="site-icon">
+                        <h5 class="fw-bold fs-6">Site 5 - Tétouan</h5>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -436,7 +457,7 @@
         <div class="video-overlay"></div>
         
         <video class="background-video" autoplay muted loop playsinline>
-            <source src="https://www.groupeiki.com/wp-content/uploads/2023/08/368257834_312588341316494_709853430592981351_n.mp4" type="video/mp4">
+            <source src="./assets/video-epcg.mp4" type="video/mp4">
             Votre navigateur ne prend pas en charge la vidéo HTML5.
         </video>
     </section>
