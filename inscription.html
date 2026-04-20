@@ -6,21 +6,22 @@
     <title>Inscription - EPCG Tanger</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #ef3c20;
-            --secondary-color: #3d4a90;
-            --text-color: #333333;
+            var(--primary-color): #9B1C22; 
+            --primary-color: #9B1C22;
+            --secondary-color: #2b2b2b;
+            --text-color: #4a4a4a;
         }
 
         body {
             font-family: 'Roboto', sans-serif;
             color: var(--text-color);
-            background-color: #f8f9fa; /* Fond gris très clair pour faire ressortir le formulaire */
+            background-color: #f4f6f8; 
             padding-top: 80px; 
         }
 
@@ -28,106 +29,84 @@
 
         /* NAVBAR */
         .navbar-custom {
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 8px 0;
+            transition: all 0.3s ease;
         }
-        .navbar-brand img { max-height: 60px; }
+        .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease;}
+        .navbar-brand:hover img { transform: scale(1.02); }
+        
         .navbar-nav .nav-link {
-            font-weight: 600; color: #111111; text-transform: uppercase;
-            font-size: 14px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s;
+            font-weight: 600; color: var(--secondary-color); text-transform: uppercase;
+            font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s;
         }
-        .navbar-nav .nav-link:hover { color: var(--primary-color); }
-        .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
 
         /* HEADER PAGE INSCRIPTION */
         .page-header {
-            background: linear-gradient(rgba(46, 56, 110, 0.9), rgba(46, 56, 110, 0.9)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2000') center/cover;
-            padding: 100px 0 60px 0;
+            background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2000') center/cover;
+            padding: 120px 0 80px 0;
             text-align: center;
             color: white;
         }
-        .page-title {
-            font-size: 3rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
+        .page-title { font-size: 3rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px;}
 
         /* FORMULAIRE PREMIUM */
         .form-container {
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.05);
             padding: 50px;
-            margin-top: -40px; /* Fait remonter le formulaire sur l'en-tête */
+            margin-top: -60px; 
             margin-bottom: 80px;
             position: relative;
             z-index: 10;
         }
         
-        .form-control-custom, .form-select-custom {
-            background-color: #fcfcfc;
+        .form-control-custom {
+            background-color: #f9fafb;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
-            padding: 15px;
+            padding: 15px 20px;
             font-size: 1rem;
             color: #111827;
             transition: all 0.3s ease;
             margin-bottom: 25px;
         }
-        .form-control-custom:focus, .form-select-custom:focus {
+        .form-control-custom:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(239, 60, 32, 0.1);
+            box-shadow: 0 0 0 4px rgba(155, 28, 34, 0.1);
             background-color: #fff;
+            outline: none;
         }
-        .form-label-custom {
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-            display: block;
-        }
+        .form-label-custom { font-weight: 600; color: var(--secondary-color); margin-bottom: 10px; display: block; }
         .required-star { color: var(--primary-color); }
 
         .btn-submit {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            border: none;
-            width: 100%;
-            text-transform: uppercase;
-            transition: all 0.3s;
+            background-color: var(--primary-color); color: white; padding: 16px 40px;
+            font-size: 1.1rem; font-weight: 600; border-radius: 8px; border: none;
+            width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .btn-submit:hover {
-            background-color: #d12e15;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239, 60, 32, 0.3);
+            background-color: #7a151a; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(155, 28, 34, 0.25);
         }
 
         /* RADIO BUTTONS CUSTOM */
         .radio-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            background: #fcfcfc;
+            border: 2px solid #f0f0f0; border-radius: 10px; padding: 18px 20px; cursor: pointer;
+            transition: all 0.3s ease; display: flex; align-items: center; margin-bottom: 15px; background: white;
         }
-        .radio-card:hover { border-color: var(--secondary-color); background: #f0f4f8; }
-        .radio-card input[type="radio"] { margin-right: 15px; transform: scale(1.3); accent-color: var(--primary-color); }
+        .radio-card:hover { border-color: rgba(155, 28, 34, 0.3); background: #fffcfc; transform: translateX(5px); }
+        .radio-card input[type="radio"] { margin-right: 20px; transform: scale(1.4); accent-color: var(--primary-color); }
 
-        /* FOOTER */
-        .footer { background-color: #111111; color: #999999; padding: 60px 0 20px; }
-        .footer h4 { color: white; font-size: 20px; margin-bottom: 20px; }
-        .footer-info li { margin-bottom: 15px; display: flex; align-items: flex-start; }
-        .footer-info i { color: var(--primary-color); font-size: 18px; margin-right: 15px; margin-top: 3px; }
-        .copyright { border-top: 1px solid #333; padding-top: 20px; margin-top: 40px; text-align: center; font-size: 14px; }
+        /* FOOTER (Identique à l'accueil) */
+        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
+        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
+        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
+        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; margin-top: 2px; }
+        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -140,11 +119,9 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
-                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">NOUVEAUTÉS</a>
                         <ul class="dropdown-menu">
@@ -152,15 +129,13 @@
                             <li><a class="dropdown-item" href="#">Vidéos</a></li>
                         </ul>
                     </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active-link" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="inscription.html">Inscription EPCG</a></li>
-                            <li><a class="dropdown-item" href="#">Campus Principal</a></li>
+                            <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
+                            <li><a class="dropdown-item" href="#">Nos Campus</a></li>
                         </ul>
                     </li>
-
                     <li class="nav-item"><a class="nav-link" href="index.html#formations">NOS FORMATIONS</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">CENTRE DE LANGUES</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html#about">À PROPOS</a></li>
@@ -170,21 +145,21 @@
         </div>
     </nav>
 
-    <header class="page-header" data-aos="fade-in">
-        <div class="container">
-            <h1 class="page-title">Pré-inscription en ligne</h1>
-            <p class="lead">Rejoignez la 1ère École Pratique de Management à Tanger</p>
+    <header class="page-header">
+        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+            <h1 class="page-title">Candidature en ligne</h1>
+            <p class="lead">Passez à la vitesse supérieure avec l'EPCG Tanger</p>
         </div>
     </header>
 
     <section class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="form-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="form-container" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                     
                     <div class="text-center mb-5">
-                        <h2 style="color: var(--secondary-color);">Formulaire de Candidature</h2>
-                        <p class="text-muted">Veuillez remplir ce formulaire. Notre équipe d'admission vous contactera très prochainement.</p>
+                        <h2 style="color: var(--secondary-color);">Dossier d'Admission</h2>
+                        <p class="text-muted">Remplissez ce formulaire d'inscription. Notre département des admissions vous contactera sous 24h.</p>
                     </div>
 
                     <form action="#" method="POST">
@@ -193,7 +168,7 @@
                         <input type="text" class="form-control-custom w-100" placeholder="Saisissez votre nom complet" required>
 
                         <label class="form-label-custom">Email <span class="required-star">*</span></label>
-                        <input type="text" class="form-control-custom w-100" placeholder="Saisissez votre email" required>
+                        <input type="email" class="form-control-custom w-100" placeholder="adresse@email.com" required>
 
                         <div class="row">
                             <div class="col-md-6">
@@ -206,30 +181,34 @@
                             </div>
                         </div>
 
-                        <label class="form-label-custom mt-2">إختيار التكوين / Choix de la formation <span class="required-star">*</span></label>
-                        <div class="mb-4">
-                           
+                        <label class="form-label-custom mt-3 mb-3">إختيار التكوين / Choix de la formation souhaitée <span class="required-star">*</span></label>
+                        <div class="mb-5">
                             
                             <label class="radio-card">
+                                <input type="radio" name="formation" value="Technicien" required>
+                                <div><strong>Diplôme de Technicien</strong> <span class="badge bg-light text-dark ms-2 border">Niveau Bac</span></div>
+                            </label>
+
+                            <label class="radio-card">
                                 <input type="radio" name="formation" value="Technicien_Specialise">
-                                <div><strong>Diplôme de Technicien Spécialisé</strong> <span class="badge bg-secondary ms-2">Bac+2</span></div>
+                                <div><strong>Diplôme de Technicien Spécialisé</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+2</span></div>
                             </label>
                             
                             <label class="radio-card">
                                 <input type="radio" name="formation" value="Bachelor">
-                                <div><strong>Diplôme de Bachelor</strong> <span class="badge bg-secondary ms-2">Bac+3</span></div>
+                                <div><strong>Licence Professionnelle / Bachelor</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+3</span></div>
                             </label>
                             
                             <label class="radio-card">
                                 <input type="radio" name="formation" value="Master">
-                                <div><strong>Diplôme de Master</strong> <span class="badge bg-secondary ms-2">Bac+5</span></div>
+                                <div><strong>Master Professionnel</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+5</span></div>
                             </label>
                         </div>
 
-                        <button type="submit" class="btn-submit mt-3">
-                            Soumettre ma candidature <i class="bi bi-send ms-2"></i>
+                        <button type="submit" class="btn-submit">
+                            Envoyer ma candidature <i class="bi bi-arrow-right ms-2"></i>
                         </button>
-                        <p class="text-center text-muted small mt-3">Vos données sont sécurisées et ne seront utilisées que dans le cadre de votre admission à l'EPCG.</p>
+                        <p class="text-center text-muted small mt-4"><i class="bi bi-shield-check me-1"></i> Vos données sont sécurisées et strictement confidentielles.</p>
                     </form>
 
                 </div>
@@ -240,32 +219,38 @@
     <footer id="footer" class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-5 mb-4">
-                    <h4 style="font-family: 'Roboto', sans-serif; font-weight: 700;">EPCG <span style="color: var(--primary-color);">TANGER</span></h4>
-                    <p class="mb-4">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité par l'État.</p>
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+                    <p class="mb-4 pe-lg-5">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
                 </div>
                 <div class="col-lg-7">
                     <h4>Contact & Localisation</h4>
-                    <ul class="list-unstyled footer-info">
+                    <ul class="list-unstyled footer-info mt-4">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
+                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
                         </li>
                         <li>
                             <i class="bi bi-telephone-fill"></i>
-                            <span>Tél : 05 31 10 99 70 / 06 06 43 04 91 / 07 13 68 60 16</span>
+                            <span>
+                                <strong>Admissions :</strong> <br>
+                                Fixe : 05 31 10 99 70 <br>
+                                Mobile : 06 06 43 04 91 / 07 13 68 60 16
+                            </span>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
+                <p class="mb-0">&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script> AOS.init({ once: true }); </script>
+    <script> 
+        AOS.init({ once: true, duration: 800, offset: 50, easing: 'ease-in-out-cubic' }); 
+    </script>
 </body>
 </html>
