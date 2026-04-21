@@ -13,8 +13,8 @@
     <style>
         :root {
             --primary-color: #9B1C22; /* Rouge Bordeaux EPCG */
-            --secondary-color: #2b2b2b; /* Gris très foncé */
-            --text-color: #4a4a4a; /* Gris lisible */
+            --secondary-color: #2b2b2b;
+            --text-color: #4a4a4a;
         }
 
         body {
@@ -26,7 +26,7 @@
 
         h1, h2, h3, h4 { font-family: 'Roboto Slab', serif; }
 
-        /* NAVBAR (Identique aux autres pages) */
+        /* NAVBAR */
         .navbar-custom {
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -47,17 +47,46 @@
         .dropdown-item { font-size: 14px; font-weight: 500; padding: 10px 25px; color: var(--secondary-color); transition: all 0.2s ease; }
         .dropdown-item:hover { background-color: rgba(155, 28, 34, 0.05); color: var(--primary-color); padding-left: 30px; }
 
-        /* HEADER PAGE CONTACT */
-        .page-header {
-            background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000') center/cover;
-            padding: 120px 0 100px 0;
+        /* --- HEADER PAGE CONTACT AVEC VIDÉO --- */
+        .page-header-video {
+            position: relative;
+            height: 45vh; /* Hauteur de l'en-tête */
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             color: white;
+            overflow: hidden;
+            margin-top: -80px; /* Compense le padding-top du body pour passer sous la navbar */
+            padding-top: 80px; /* Centre le texte en prenant en compte la navbar */
         }
-        .page-title { font-size: 3rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px;}
+        
+        .page-header-video .background-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+        }
+        
+        .page-header-video .video-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.85)); /* Voile bordeaux/noir */
+            z-index: -1;
+        }
+
+        .page-title { font-size: 3.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}
+        .page-subtitle { font-size: 1.2rem; font-weight: 300; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);}
 
         /* SECTION CONTACT & FORMULAIRE */
-        .contact-section { margin-top: -60px; margin-bottom: 80px; position: relative; z-index: 10; }
+        .contact-section { margin-top: -50px; margin-bottom: 80px; position: relative; z-index: 10; }
         
         .contact-info-box {
             background-color: var(--secondary-color);
@@ -65,13 +94,13 @@
             border-radius: 16px;
             padding: 40px;
             height: 100%;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
-        .contact-info-box h3 { color: white; margin-bottom: 30px; }
+        .contact-info-box h3 { color: white; margin-bottom: 30px; font-weight: 700;}
         .contact-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
-        .contact-item i { font-size: 24px; color: var(--primary-color); margin-right: 15px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 50%; }
-        .contact-item h5 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #fff; }
-        .contact-item p { color: #ccc; font-size: 14px; margin: 0; }
+        .contact-item i { font-size: 24px; color: var(--primary-color); margin-right: 15px; background: rgba(255,255,255,0.08); padding: 12px; border-radius: 50%; }
+        .contact-item h5 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #fff; text-transform: uppercase; letter-spacing: 1px;}
+        .contact-item p { color: #ccc; font-size: 15px; margin: 0; line-height: 1.6;}
 
         .form-container {
             background-color: #ffffff;
@@ -88,7 +117,7 @@
         .form-control-custom:focus, .form-select-custom:focus {
             border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(155, 28, 34, 0.1); background-color: #fff; outline: none;
         }
-        .form-label-custom { font-weight: 600; color: var(--secondary-color); margin-bottom: 8px; display: block; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;}
+        .form-label-custom { font-weight: 600; color: var(--secondary-color); margin-bottom: 8px; display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;}
 
         .btn-submit {
             background-color: var(--primary-color); color: white; padding: 16px 40px;
@@ -98,9 +127,9 @@
         .btn-submit:hover { background-color: #7a151a; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(155, 28, 34, 0.25); }
 
         /* CARTE MAPS */
-        .map-container { border-radius: 12px; overflow: hidden; margin-top: 30px; height: 250px; }
+        .map-container { border-radius: 12px; overflow: hidden; margin-top: 40px; height: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
 
-        /* FOOTER (Identique aux autres) */
+        /* FOOTER */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
         .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
         .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
@@ -108,6 +137,12 @@
         .social-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; color: white; transition: all 0.3s; margin-right: 10px; }
         .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
+
+        @media (max-width: 768px) {
+            .page-title { font-size: 2.5rem; }
+            .form-container { padding: 30px; }
+            .contact-info-box { padding: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -134,7 +169,7 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
-                            <li><a class="dropdown-item" href="#">Nos Campus</a></li>
+                            <li><a class="dropdown-item" href="index.html#sites">Nos Campus</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="index.html#formations">NOS FORMATIONS</a></li>
@@ -146,17 +181,22 @@
         </div>
     </nav>
 
-    <header class="page-header">
-        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+    <header class="page-header-video">
+        <div class="video-overlay"></div>
+        <video class="background-video" autoplay muted loop playsinline>
+            <source src="./assets/video-epcg.mp4" type="video/mp4">
+        </video>
+        
+        <div class="container position-relative" data-aos="zoom-in" data-aos-duration="1000" style="z-index: 2;">
             <h1 class="page-title">Contactez-Nous</h1>
-            <p class="lead">Notre équipe est à votre écoute pour répondre à toutes vos questions.</p>
+            <p class="page-subtitle">Notre équipe est à votre écoute pour vous accompagner vers la réussite.</p>
         </div>
     </header>
 
     <section class="container contact-section">
         <div class="row g-4">
             
-            <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200" data-aos-duration="800">
+            <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
                 <div class="contact-info-box">
                     <h3>Nos Coordonnées</h3>
                     
@@ -164,7 +204,7 @@
                         <i class="bi bi-geo-alt"></i>
                         <div>
                             <h5>Campus Principal</h5>
-                            <p>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger<br>(À côté du Crédit Agricole)</p>
+                            <p>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</p>
                         </div>
                     </div>
 
@@ -185,13 +225,13 @@
                     </div>
 
                     <div class="map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3237.525624898126!2d-5.7950!3d35.7592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b870000000001%3A0x868b446a81a7b055!2sPlaza%20Toro%2C%20Tanger!5e0!3m2!1sfr!2sma!4v1700000000000!5m2!1sfr!2sma" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3237.525287019683!2d-5.8037386!3d35.7624634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b80ba1b5c4795%3A0xc346fc6baf4fbd0c!2sPlaza%20Toro%2C%20Tanger!5e0!3m2!1sfr!2sma!4v1700000000000!5m2!1sfr!2sma" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
 
                 </div>
             </div>
 
-            <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300" data-aos-duration="800">
+            <div class="col-lg-7" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                 <div class="form-container">
                     <h3 class="mb-2" style="color: var(--secondary-color); font-family: 'Roboto Slab', serif; font-weight: 700;">Envoyez-nous un message</h3>
                     <p class="text-muted mb-4">Besoin d'informations sur nos formations ou les modalités d'inscription ? Remplissez ce formulaire.</p>
@@ -276,7 +316,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p class="mb-0">&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
+                <p class="mb-0">© 2026 EPCG Tanger. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
