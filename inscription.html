@@ -12,7 +12,6 @@
 
     <style>
         :root {
-            var(--primary-color): #9B1C22; 
             --primary-color: #9B1C22;
             --secondary-color: #2b2b2b;
             --text-color: #4a4a4a;
@@ -63,6 +62,7 @@
             margin-bottom: 80px;
             position: relative;
             z-index: 10;
+            transition: all 0.5s ease;
         }
         
         .form-control-custom {
@@ -89,8 +89,11 @@
             font-size: 1.1rem; font-weight: 600; border-radius: 8px; border: none;
             width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .btn-submit:hover {
+        .btn-submit:hover:not(:disabled) {
             background-color: #7a151a; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(155, 28, 34, 0.25);
+        }
+        .btn-submit:disabled {
+            opacity: 0.7; cursor: not-allowed;
         }
 
         /* RADIO BUTTONS CUSTOM */
@@ -101,12 +104,15 @@
         .radio-card:hover { border-color: rgba(155, 28, 34, 0.3); background: #fffcfc; transform: translateX(5px); }
         .radio-card input[type="radio"] { margin-right: 20px; transform: scale(1.4); accent-color: var(--primary-color); }
 
-        /* FOOTER (Identique à l'accueil) */
+        /* FOOTER */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
         .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
         .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
         .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; margin-top: 2px; }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
+        
+        /* Message de succès invisible par défaut */
+        #successMessage { display: none; }
     </style>
 </head>
 <body>
@@ -122,6 +128,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">NOUVEAUTÉS</a>
                         <ul class="dropdown-menu">
@@ -129,6 +136,7 @@
                             <li><a class="dropdown-item" href="#">Vidéos</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active-link" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
@@ -136,6 +144,7 @@
                             <li><a class="dropdown-item" href="#">Nos Campus</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item"><a class="nav-link" href="index.html#formations">NOS FORMATIONS</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">CENTRE DE LANGUES</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html#about">À PROPOS</a></li>
@@ -157,56 +166,61 @@
             <div class="col-lg-8">
                 <div class="form-container" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                     
-                    <div class="text-center mb-5">
+                    <div id="formHeader" class="text-center mb-5">
                         <h2 style="color: var(--secondary-color);">Dossier d'Admission</h2>
                         <p class="text-muted">Remplissez ce formulaire d'inscription. Notre département des admissions vous contactera sous 24h.</p>
                     </div>
 
-                    <form action="#" method="POST">
+                    <form id="epcgForm" action="https://script.google.com/macros/s/AKfycbw_cH6bTmFCooSCm2BtF71LJL5RaqNfR6Js-7i7kY1SIAaNeBpMn-89amB3Na441NMNug/exec" method="POST">
                         
                         <label class="form-label-custom">Nom et Prénom <span class="required-star">*</span></label>
-                        <input type="text" class="form-control-custom w-100" placeholder="Saisissez votre nom complet" required>
+                        <input type="text" name="Nom_Prenom" class="form-control-custom w-100" placeholder="Saisissez votre nom complet" required>
 
                         <label class="form-label-custom">Email <span class="required-star">*</span></label>
-                        <input type="email" class="form-control-custom w-100" placeholder="adresse@email.com" required>
+                        <input type="email" name="Email" class="form-control-custom w-100" placeholder="adresse@email.com" required>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label-custom">Numéro de Téléphone 1 <span class="required-star">*</span></label>
-                                <input type="tel" class="form-control-custom w-100" placeholder="Ex: 06 00 00 00 00" required>
+                                <input type="tel" name="Telephone_1" class="form-control-custom w-100" placeholder="Ex: 06 00 00 00 00" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label-custom">Numéro de Téléphone 2</label>
-                                <input type="tel" class="form-control-custom w-100" placeholder="(Optionnel)">
+                                <input type="tel" name="Telephone_2" class="form-control-custom w-100" placeholder="(Optionnel)">
                             </div>
                         </div>
 
                         <label class="form-label-custom mt-3 mb-3">إختيار التكوين / Choix de la formation souhaitée <span class="required-star">*</span></label>
                         <div class="mb-5">
                             
-                            
-
                             <label class="radio-card">
-                                <input type="radio" name="formation" value="Technicien_Specialise">
+                                <input type="radio" name="Formation" value="Technicien_Specialise" required>
                                 <div><strong>Diplôme de Technicien Spécialisé</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+2</span></div>
                             </label>
                             
                             <label class="radio-card">
-                                <input type="radio" name="formation" value="Bachelor">
+                                <input type="radio" name="Formation" value="Bachelor">
                                 <div><strong>Licence Professionnelle / Bachelor</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+3</span></div>
                             </label>
                             
                             <label class="radio-card">
-                                <input type="radio" name="formation" value="Master">
+                                <input type="radio" name="Formation" value="Master">
                                 <div><strong>Master Professionnel</strong> <span class="badge ms-2" style="background-color: var(--primary-color);">Bac+5</span></div>
                             </label>
                         </div>
 
-                        <button type="submit" class="btn-submit">
+                        <button type="submit" id="submitBtn" class="btn-submit">
                             Envoyer ma candidature <i class="bi bi-arrow-right ms-2"></i>
                         </button>
                         <p class="text-center text-muted small mt-4"><i class="bi bi-shield-check me-1"></i> Vos données sont sécurisées et strictement confidentielles.</p>
                     </form>
+
+                    <div id="successMessage" class="text-center py-5">
+                        <i class="bi bi-check-circle-fill" style="font-size: 60px; color: #198754;"></i>
+                        <h2 class="mt-4 mb-3" style="color: var(--secondary-color);">Félicitations !</h2>
+                        <p class="text-muted fs-5">Votre candidature a été envoyée avec succès.<br>L'équipe des admissions de l'EPCG vous contactera très prochainement.</p>
+                        <a href="index.html" class="btn btn-outline-dark mt-4 px-4 py-2" style="font-weight: 600; text-transform: uppercase;">Retour à l'accueil</a>
+                    </div>
 
                 </div>
             </div>
@@ -248,6 +262,38 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script> 
         AOS.init({ once: true, duration: 800, offset: 50, easing: 'ease-in-out-cubic' }); 
+
+        // --- SCRIPT POUR L'ENVOI INVISIBLE VERS GOOGLE SHEETS ---
+        const form = document.getElementById('epcgForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const formHeader = document.getElementById('formHeader');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); // Empêche la page de rediriger vers le lien brut
+            
+            // Changer le texte du bouton pendant le chargement
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Envoi en cours...';
+            submitBtn.disabled = true;
+
+            // Envoi des données
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => {
+                // Si l'envoi réussit, on cache le formulaire et on affiche le beau message
+                form.style.display = 'none';
+                formHeader.style.display = 'none';
+                successMessage.style.display = 'block';
+            })
+            .catch(error => {
+                // En cas d'erreur
+                alert('Une erreur est survenue lors de l\'envoi. Veuillez vérifier votre connexion et réessayer.');
+                submitBtn.innerHTML = 'Envoyer ma candidature <i class="bi bi-arrow-right ms-2"></i>';
+                submitBtn.disabled = false;
+            });
+        });
     </script>
 </body>
 </html>
