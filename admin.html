@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - EPCG Tanger</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <style>
+        :root {
+            --primary-color: #9B1C22; /* Rouge Bordeaux EPCG */
+            --secondary-color: #2b2b2b;
+            --bg-light: #f4f7f6;
+        }
+
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); }
+        
+        /* Ecran de Login */
+        #login-container { height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-card { width: 100%; max-width: 400px; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        /* Dashboard */
+        #admin-dashboard { display: none; }
+        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; }
+        .main-content { padding: 40px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary-color); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s; }
+        .btn-epcg:hover { background-color: #7a151a; color: white; }
+        
+        .table-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <div id="login-container">
+        <div class="login-card text-center">
+            <img src="./assets/logo-epcg.jpeg" alt="EPCG" class="mb-4" style="max-height: 80px;">
+            <h4 class="mb-4 fw-bold">Administration</h4>
+            <form id="login-form">
+                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email Directeur" required>
+                <input type="password" id="admin-password" class="form-control mb-4" placeholder="Mot de passe" required>
+                <button type="submit" class="btn-epcg w-100">Se connecter</button>
+            </form>
+            <div id="login-error" class="text-danger mt-3 small" style="display: none;">Identifiants incorrects.</div>
+        </div>
+    </div>
+
+    <div id="admin-dashboard">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 sidebar d-none d-md-block">
+                    <h5 class="mb-5 fw-bold"><i class="bi bi-shield-lock me-2"></i> EPCG ADMIN</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-3"><a href="#" class="nav-link text-white bg-danger rounded"><i class="bi bi-people me-2"></i> Inscriptions</a></li>
+                        <li class="nav-item mb-3"><a href="#" class="nav-link text-white-50"><i class="bi bi-grid me-2"></i> Contenu Site</a></li>
+                        <li class="nav-item mt-5"><button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100">Déconnexion</button></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-10 main-content">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h2 class="fw-bold" style="font-family: 'Roboto Slab';">Liste des Candidats</h2>
+                        <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Actualiser</button>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Nom Complet</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Formation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inscriptions-list">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION SUPABASE
+        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // Remplacez par votre clé Anon Public
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const loginContainer = document.getElementById('login-container');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const loginForm = document.getElementById('login-form');
+
+        // 1. GESTION DE LA CONNEXION (SUPABASE AUTH)
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                document.getElementById('login-error').style.display = 'block';
+            } else {
+                showDashboard();
+            }
+        });
+
+        async function showDashboard() {
+            loginContainer.style.display = 'none';
+            adminDashboard.style.display = 'block';
+            fetchInscriptions();
+        }
+
+        // 2. RÉCUPÉRATION DES INSCRIPTIONS DEPUIS LA TABLE
+        async function fetchInscriptions() {
+            const listBody = document.getElementById('inscriptions-list');
+            listBody.innerHTML = '<tr><td colspan="5" class="text-center py-5"><div class="spinner-border text-danger"></div></td></tr>';
+
+            const { data, error } = await _supabase
+                .from('inscriptions')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                listBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erreur : ${error.message}</td></tr>`;
+            } else {
+                listBody.innerHTML = '';
+                data.forEach(item => {
+                    const dateObj = new Date(item.created_at);
+                    const formattedDate = dateObj.toLocaleDateString('fr-FR');
+                    
+                    listBody.innerHTML += `
+                        <tr>
+                            <td><small class="text-muted">${formattedDate}</small></td>
+                            <td class="fw-bold">${item.nom_prenom}</td>
+                            <td>${item.email}</td>
+                            <td>${item.telephone_1}</td>
+                            <td><span class="badge" style="background-color: var(--primary-color)">${item.formation}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // 3. DÉCONNEXION
+        async function handleLogout() {
+            await _supabase.auth.signOut();
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
