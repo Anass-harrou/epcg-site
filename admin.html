@@ -12,27 +12,21 @@
 
     <style>
         :root {
-            --primary-color: #9B1C22; /* Rouge Bordeaux EPCG */
+            --primary-color: #9B1C22;
             --secondary-color: #2b2b2b;
             --bg-light: #f4f7f6;
         }
-
         body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); }
-        
-        /* Ecran de Login */
         #login-container { height: 100vh; display: flex; align-items: center; justify-content: center; }
         .login-card { width: 100%; max-width: 400px; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        /* Dashboard */
         #admin-dashboard { display: none; }
-        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; }
-        .main-content { padding: 40px; }
-        .stat-card { background: white; padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary-color); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        
-        .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s; }
+        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: inherit; }
+        .main-content { padding: 40px; margin-left: 16.66667%; }
+        .table-container, .upload-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .nav-link { cursor: pointer; transition: 0.3s; color: rgba(255,255,255,0.6) !important; }
+        .nav-link.active { color: white !important; background-color: var(--primary-color) !important; border-radius: 8px; }
+        .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; }
         .btn-epcg:hover { background-color: #7a151a; color: white; }
-        
-        .table-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -40,122 +34,179 @@
     <div id="login-container">
         <div class="login-card text-center">
             <img src="./assets/logo-epcg.jpeg" alt="EPCG" class="mb-4" style="max-height: 80px;">
-            <h4 class="mb-4 fw-bold">Administration</h4>
+            <h4 class="mb-4 fw-bold">Espace Direction</h4>
             <form id="login-form">
-                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email Directeur" required>
+                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email" required>
                 <input type="password" id="admin-password" class="form-control mb-4" placeholder="Mot de passe" required>
-                <button type="submit" class="btn-epcg w-100">Se connecter</button>
+                <button type="submit" class="btn-epcg w-100">Connexion</button>
             </form>
-            <div id="login-error" class="text-danger mt-3 small" style="display: none;">Identifiants incorrects.</div>
+            <div id="login-error" class="text-danger mt-3 small" style="display: none;">Accès refusé.</div>
         </div>
     </div>
 
     <div id="admin-dashboard">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-2 sidebar d-none d-md-block">
+                <div class="col-md-2 sidebar">
                     <h5 class="mb-5 fw-bold"><i class="bi bi-shield-lock me-2"></i> EPCG ADMIN</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-3"><a href="#" class="nav-link text-white bg-danger rounded"><i class="bi bi-people me-2"></i> Inscriptions</a></li>
-                        <li class="nav-item mb-3"><a href="#" class="nav-link text-white-50"><i class="bi bi-grid me-2"></i> Contenu Site</a></li>
+                        <li class="nav-item mb-3">
+                            <a id="nav-inscriptions" onclick="switchTab('inscriptions')" class="nav-link active"><i class="bi bi-people me-2"></i> Inscriptions</a>
+                        </li>
+                        <li class="nav-item mb-3">
+                            <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Multimédia</a>
+                        </li>
                         <li class="nav-item mt-5"><button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100">Déconnexion</button></li>
                     </ul>
                 </div>
 
                 <div class="col-md-10 main-content">
-                    <div class="d-flex justify-content-between align-items-center mb-5">
-                        <h2 class="fw-bold" style="font-family: 'Roboto Slab';">Liste des Candidats</h2>
-                        <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Actualiser</button>
-                    </div>
-
-                    <div class="table-container">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Nom Complet</th>
-                                        <th>Email</th>
-                                        <th>Téléphone</th>
-                                        <th>Formation</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inscriptions-list">
-                                    </tbody>
-                            </table>
+                    
+                    <div id="tab-inscriptions">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold">Candidatures reçues</h2>
+                            <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm">Actualiser</button>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Formation</th><th>Date</th></tr>
+                                    </thead>
+                                    <tbody id="inscriptions-list"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
+                    <div id="tab-media" style="display: none;">
+                        <h2 class="fw-bold mb-4">Gestion du Contenu</h2>
+                        
+                        <div class="upload-container mb-4">
+                            <h5>Ajouter une Photo ou Vidéo</h5>
+                            <p class="text-muted small">Les fichiers ajoutés apparaîtront dans la galerie du site.</p>
+                            <div class="row align-items-end">
+                                <div class="col-md-6">
+                                    <input type="file" id="media-file" class="form-control" accept="image/*,video/*">
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="media-type" class="form-select">
+                                        <option value="image">Image</option>
+                                        <option value="video">Vidéo</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button onclick="uploadMedia()" id="upload-btn" class="btn-epcg w-100">Publier</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <h5>Fichiers en ligne</h5>
+                            <div id="media-gallery" class="row g-3 mt-2">
+                                </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // Remplacez par votre clé Anon Public
+        const SUPABASE_KEY = 'VOTRE_ANON_KEY'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const loginContainer = document.getElementById('login-container');
-        const adminDashboard = document.getElementById('admin-dashboard');
-        const loginForm = document.getElementById('login-form');
+        // --- NAVIGATION ---
+        function switchTab(tab) {
+            document.getElementById('tab-inscriptions').style.display = tab === 'inscriptions' ? 'block' : 'none';
+            document.getElementById('tab-media').style.display = tab === 'media' ? 'block' : 'none';
+            document.getElementById('nav-inscriptions').classList.toggle('active', tab === 'inscriptions');
+            document.getElementById('nav-media').classList.toggle('active', tab === 'media');
+            if(tab === 'media') fetchGallery();
+        }
 
-        // 1. GESTION DE LA CONNEXION (SUPABASE AUTH)
-        loginForm.addEventListener('submit', async (e) => {
+        // --- AUTHENTIFICATION ---
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('admin-email').value;
-            const password = document.getElementById('admin-password').value;
-
             const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
+                email: document.getElementById('admin-email').value,
+                password: document.getElementById('admin-password').value
             });
-
-            if (error) {
-                document.getElementById('login-error').style.display = 'block';
-            } else {
-                showDashboard();
+            if (error) document.getElementById('login-error').style.display = 'block';
+            else {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                fetchInscriptions();
             }
         });
 
-        async function showDashboard() {
-            loginContainer.style.display = 'none';
-            adminDashboard.style.display = 'block';
-            fetchInscriptions();
+        // --- GESTION DES INSCRIPTIONS ---
+        async function fetchInscriptions() {
+            const { data } = await _supabase.from('inscriptions').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('inscriptions-list');
+            list.innerHTML = data.map(item => `
+                <tr>
+                    <td class="fw-bold">${item.nom_prenom}</td>
+                    <td>${item.email}</td>
+                    <td>${item.telephone_1}</td>
+                    <td><span class="badge bg-danger">${item.formation}</span></td>
+                    <td><small>${new Date(item.created_at).toLocaleDateString()}</small></td>
+                </tr>
+            `).join('');
         }
 
-        // 2. RÉCUPÉRATION DES INSCRIPTIONS DEPUIS LA TABLE
-        async function fetchInscriptions() {
-            const listBody = document.getElementById('inscriptions-list');
-            listBody.innerHTML = '<tr><td colspan="5" class="text-center py-5"><div class="spinner-border text-danger"></div></td></tr>';
+        // --- GESTION DU STORAGE (UPLOAD) ---
+        async function uploadMedia() {
+            const fileInput = document.getElementById('media-file');
+            const file = fileInput.files[0];
+            const type = document.getElementById('media-type').value;
+            const btn = document.getElementById('upload-btn');
 
-            const { data, error } = await _supabase
-                .from('inscriptions')
-                .select('*')
-                .order('created_at', { ascending: false });
+            if (!file) return alert("Sélectionnez un fichier");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+            btn.disabled = true;
+
+            const fileName = `${Date.now()}_${file.name}`;
+            
+            // 1. Upload vers le Bucket 'media'
+            const { data, error } = await _supabase.storage.from('media').upload(fileName, file);
 
             if (error) {
-                listBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erreur : ${error.message}</td></tr>`;
+                alert("Erreur upload: " + error.message);
             } else {
-                listBody.innerHTML = '';
-                data.forEach(item => {
-                    const dateObj = new Date(item.created_at);
-                    const formattedDate = dateObj.toLocaleDateString('fr-FR');
-                    
-                    listBody.innerHTML += `
-                        <tr>
-                            <td><small class="text-muted">${formattedDate}</small></td>
-                            <td class="fw-bold">${item.nom_prenom}</td>
-                            <td>${item.email}</td>
-                            <td>${item.telephone_1}</td>
-                            <td><span class="badge" style="background-color: var(--primary-color)">${item.formation}</span></td>
-                        </tr>
-                    `;
-                });
+                // 2. Récupérer l'URL publique
+                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+                
+                // 3. Enregistrer l'URL dans la table 'gallery'
+                await _supabase.from('gallery').insert([{ url: publicUrl, type: type }]);
+                
+                alert("Fichier publié avec succès !");
+                fileInput.value = "";
+                fetchGallery();
             }
+            btn.innerHTML = 'Publier';
+            btn.disabled = false;
         }
 
-        // 3. DÉCONNEXION
+        // --- AFFICHER LA GALERIE ---
+        async function fetchGallery() {
+            const { data } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
+            const gallery = document.getElementById('media-gallery');
+            gallery.innerHTML = data.map(item => `
+                <div class="col-md-3">
+                    <div class="card h-100">
+                        ${item.type === 'image' ? `<img src="${item.url}" class="card-img-top">` : `<video src="${item.url}" class="card-img-top"></video>`}
+                        <div class="card-body p-2 text-center">
+                            <button onclick="deleteMedia(${item.id}, '${item.url}')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         async function handleLogout() {
             await _supabase.auth.signOut();
             window.location.reload();
