@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            /* Thème de couleur extrait de votre logo */
+            /* Thème de couleur EPCG */
             --primary-color: #9B1C22;
             --secondary-color: #2b2b2b;
             --text-color: #4a4a4a;
@@ -192,7 +192,7 @@
                         <p class="text-muted">Complétez les informations suivantes. Notre département des admissions vous contactera sous 24h.</p>
                     </div>
 
-                    <form id="epcgForm" action="https://script.google.com/macros/s/AKfycbw_cH6bTmFCooSCm2BtF71LJL5RaqNfR6Js-7i7kY1SIAaNeBpMn-89amB3Na441NMNug/exec" method="POST">
+                    <form id="epcgForm" action="#" method="POST">
                         
                         <label class="form-label-custom">Nom et Prénom <span class="required-star">*</span></label>
                         <input type="text" name="Nom_Prenom" class="form-control-custom w-100" placeholder="Votre nom complet" required>
@@ -265,30 +265,28 @@
         const formHeader = document.getElementById('formHeader');
 
         form.addEventListener('submit', e => {
-            e.preventDefault(); 
+            e.preventDefault(); // Empêche le rechargement de la page
             
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Traitement...';
             submitBtn.disabled = true;
 
-            // Conversion des données pour compatibilité Google Sheets
-            const data = new URLSearchParams(new FormData(form));
-
-            fetch(form.action, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: data
-            })
-            .then(response => {
+            // Simulation d'un envoi vers un futur serveur (Backend)
+            // Cela affichera le succès après 1.5 secondes
+            setTimeout(() => {
                 form.style.display = 'none';
                 formHeader.style.display = 'none';
                 successMessage.style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            })
-            .catch(error => {
-                alert('Désolé, une erreur est survenue. Veuillez vérifier votre connexion ou nous contacter directement par téléphone.');
-                submitBtn.innerHTML = 'Envoyer mon dossier <i class="bi bi-arrow-right ms-2"></i>';
-                submitBtn.disabled = false;
-            });
+            }, 1500);
+            
+            /* LORSQUE VOUS AUREZ VOTRE VRAIE BASE DE DONNÉES (Ex: Node.js/Supabase), 
+               VOUS POURREZ UTILISER CE CODE À LA PLACE DU SETTIMEOUT :
+               
+               fetch('VOTRE_URL_API_ICI', {
+                   method: 'POST',
+                   body: new FormData(form)
+               }).then(...)
+            */
         });
     </script>
 </body>
