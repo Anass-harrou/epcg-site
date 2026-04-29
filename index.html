@@ -9,266 +9,81 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
-            /* Couleurs extraites de votre logo officiel */
-            --primary-color: #9B1C22; /* Rouge Bordeaux EPCG */
-            --secondary-color: #2b2b2b; /* Gris très foncé pour les contrastes/textes forts */
-            --accent-grey: #8E9091; /* Gris de la courbe du logo */
-            --text-color: #4a4a4a; /* Gris lisible pour les paragraphes */
+            --primary-color: #9B1C22; 
+            --secondary-color: #2b2b2b; 
+            --accent-grey: #8E9091; 
+            --text-color: #4a4a4a; 
             --bg-light: #fcfcfc;
         }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-color);
-            background-color: #ffffff;
-            overflow-x: hidden;
-            padding-top: 80px;
-        }
+        body { font-family: 'Roboto', sans-serif; color: var(--text-color); background-color: #ffffff; overflow-x: hidden; padding-top: 80px; }
+        h1, h2, h3, h4, .font-slab { font-family: 'Roboto Slab', serif; }
 
-        h1, h2, h3, h4, .font-slab {
-            font-family: 'Roboto Slab', serif;
-        }
+        /* NAVBAR */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
+        .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease; }
+        .navbar-brand:hover img { transform: scale(1.02); }
+        .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
 
-        /* --- HEADER / NAVBAR --- */
-        .navbar-custom {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px); /* Effet verre dépoli premium */
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            padding: 8px 0;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-brand img {
-            max-height: 65px;
-            width: auto;
-            transition: transform 0.3s ease;
-        }
-        .navbar-brand:hover img {
-            transform: scale(1.02);
-        }
-
-        .navbar-nav .nav-link {
-            font-weight: 600;
-            color: var(--secondary-color);
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            padding: 10px 15px !important;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover, 
-        .navbar-nav .nav-link:focus,
-        .navbar-nav .nav-link.active-link {
-            color: var(--primary-color) !important;
-        }
-
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-radius: 8px;
-            margin-top: 10px;
-            padding: 10px 0;
-        }
-        .dropdown-item {
-            font-size: 14px;
-            font-weight: 500;
-            padding: 10px 25px;
-            color: var(--secondary-color);
-            transition: all 0.2s ease;
-        }
-        .dropdown-item:hover {
-            background-color: rgba(155, 28, 34, 0.05);
-            color: var(--primary-color);
-            padding-left: 30px; /* Petit effet de décalage au survol */
-        }
-
-        /* --- HERO CAROUSEL --- */
-        .hero-carousel-section {
-            height: 85vh;
-            background-color: #000;
-            position: relative;
-        }
+        /* HERO CAROUSEL */
+        .hero-carousel-section { height: 85vh; background-color: #000; position: relative; }
         .carousel-item { height: 85vh; }
-        
-        .carousel-item img, 
-        .carousel-item video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            opacity: 0.65; 
-            transition: transform 10s ease; /* Effet Ken Burns lent */
-        }
-        .carousel-item.active img {
-            transform: scale(1.05);
-        }
-        
-        .carousel-caption {
-            top: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        .slider-title {
-            font-family: 'Roboto Slab', serif;
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: 18px;
-            text-transform: uppercase;
-            text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
-            margin-bottom: 15px;
-            margin-right: -18px;
-        }
-        .slider-subtitle {
-            font-size: 1.5rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            text-shadow: 1px 2px 5px rgba(0,0,0,0.5);
-        }
-        .slider-btn {
-            border: 2px solid white;
-            color: white;
-            padding: 14px 40px;
-            font-weight: 600;
-            background: transparent;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-radius: 4px;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .slider-btn:hover { 
-            background: var(--primary-color); 
-            border-color: var(--primary-color);
-            color: white; 
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
+        .carousel-item img, .carousel-item video { height: 100%; width: 100%; object-fit: cover; opacity: 0.65; transition: transform 10s ease; }
+        .carousel-item.active img { transform: scale(1.05); }
+        .carousel-caption { top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
+        .slider-title { font-family: 'Roboto Slab', serif; font-size: 4rem; font-weight: 700; letter-spacing: 18px; text-transform: uppercase; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); margin-bottom: 15px; margin-right: -18px; }
+        .slider-subtitle { font-size: 1.5rem; font-weight: 400; letter-spacing: 2px; margin-bottom: 40px; text-shadow: 1px 2px 5px rgba(0,0,0,0.5); }
+        .slider-btn { border: 2px solid white; color: white; padding: 14px 40px; font-weight: 600; background: transparent; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 4px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .slider-btn:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        /* --- SECTIONS GLOBALES --- */
+        /* SECTIONS GLOBALES */
         .section-padding { padding: 90px 0; }
-        .section-title { 
-            color: var(--secondary-color); 
-            font-weight: 700; 
-            font-size: 36px; 
-            margin-bottom: 50px; 
-            text-transform: uppercase;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        /* Petite ligne rouge sous les titres */
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: var(--primary-color);
-        }
+        .section-title { color: var(--secondary-color); font-weight: 700; font-size: 36px; margin-bottom: 50px; text-transform: uppercase; position: relative; padding-bottom: 15px; }
+        .section-title::after { content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 60px; height: 3px; background-color: var(--primary-color); }
         .section-title.text-start::after { left: 0; transform: none; }
 
-        /* --- ABOUT SECTION --- */
+        /* ABOUT */
         .about-section { background-color: var(--bg-light); }
         .about-text { font-size: 16px; line-height: 1.8; color: var(--text-color); text-align: justify; }
-        .accreditation-badge {
-            background-color: #ffffff; 
-            color: var(--secondary-color);
-            padding: 20px 25px; 
-            border-radius: 8px; 
-            display: inline-block;
-            margin-top: 20px; 
-            border-left: 5px solid var(--primary-color);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-        .accreditation-badge strong { color: var(--primary-color); }
+        .accreditation-badge { background-color: #ffffff; color: var(--secondary-color); padding: 20px 25px; border-radius: 8px; display: inline-block; margin-top: 20px; border-left: 5px solid var(--primary-color); box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
 
-        /* --- FORMATIONS SECTION --- */
-        .formation-card {
-            background: white; 
-            padding: 45px 30px; 
-            border-radius: 12px;
-            border: 1px solid #f0f0f0;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            height: 100%; 
-            position: relative;
-            overflow: hidden;
-        }
-        .formation-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-            background-color: var(--primary-color);
-            transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
-        }
-        .formation-card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
-        }
+        /* FORMATIONS */
+        .formation-card { background: white; padding: 45px 30px; border-radius: 12px; border: 1px solid #f0f0f0; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); height: 100%; position: relative; overflow: hidden; }
+        .formation-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background-color: var(--primary-color); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .formation-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
         .formation-card:hover::before { transform: scaleX(1); }
-        
         .formation-icon { font-size: 45px; color: var(--primary-color); margin-bottom: 25px; display: inline-block; }
 
-        /* --- SITES SECTION --- */
+        /* SITES */
         .inscriptions-section { background-color: var(--bg-light); }
-        .site-card { 
-            text-decoration: none; color: var(--secondary-color); 
-            display: block; transition: all 0.3s; padding: 20px 10px;
-            background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
+        .site-card { text-decoration: none; color: var(--secondary-color); display: block; transition: all 0.3s; padding: 20px 10px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .site-card:hover { transform: translateY(-5px); color: var(--primary-color); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         .site-icon { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 2px solid #eee;}
 
-        /* --- ACTIVITÉS SECTION --- */
-        .activite-img {
-            width: 100%; height: 240px; object-fit: cover; border-radius: 20px; 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08); transition: transform 0.4s ease;
-        }
-        .activite-img:hover { transform: scale(1.04); }
-        .btn-voir-plus {
-            background-color: var(--primary-color); color: white; font-weight: 600; padding: 14px 40px;
-            border-radius: 6px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.3s; display: inline-block; margin-top: 40px;
-        }
+        /* ACTIVITÉS DYNAMIQUES */
+        .activite-img, .activite-video { width: 100%; height: 240px; object-fit: cover; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); transition: transform 0.4s ease; }
+        .activite-img:hover, .activite-video:hover { transform: scale(1.04); }
+        .btn-voir-plus { background-color: var(--primary-color); color: white; font-weight: 600; padding: 14px 40px; border-radius: 6px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; display: inline-block; margin-top: 40px; }
         .btn-voir-plus:hover { background-color: #7a151a; color: white; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(155, 28, 34, 0.2); }
 
-        /* --- PARTENAIRES --- */
+        /* PARTENAIRES */
         .marquee-wrapper { overflow: hidden; width: 100%; position: relative; white-space: nowrap; padding: 20px 0; }
         .marquee-content { display: inline-block; animation: marquee 30s linear infinite; }
         .marquee-content img { height: 50px; margin: 0 40px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s; }
         .marquee-content img:hover { filter: grayscale(0%); opacity: 1; }
-        .marquee-wrapper:hover .marquee-content { animation-play-state: paused; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- VIDEO ANIMATION SECTION --- */
-        .video-animation-section {
-            position: relative; width: 100%; height: 60vh; min-height: 400px;
-            overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #000;
-        }
-        .background-video {
-            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
-            width: auto; height: auto; transform: translateX(-50%) translateY(-50%); z-index: 0; object-fit: cover;
-        }
-        .video-overlay {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)); z-index: 1;
-        }
-
-        /* --- FOOTER --- */
+        /* FOOTER */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
         .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
         .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
         .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; margin-top: 2px; }
-        .social-links a { 
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%;
-            color: white; transition: all 0.3s; margin-right: 10px;
-        }
+        .social-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; color: white; transition: all 0.3s; margin-right: 10px; }
         .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
 
@@ -292,18 +107,14 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">NOUVEAUTÉS</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Photos</a></li>
-                            <li><a class="dropdown-item" href="#">Vidéos</a></li>
-                        </ul>
-                    </li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
-                            <li><a class="dropdown-item" href="#">Nos Campus</a></li>
+                            <li><a class="dropdown-item" href="#sites">Nos Campus</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#formations">NOS FORMATIONS</a></li>
@@ -406,7 +217,7 @@
         </div>
     </section>
 
-    <section class="inscriptions-section section-padding">
+    <section id="sites" class="inscriptions-section section-padding">
         <div class="container">
             <h2 class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
             <div class="row justify-content-center g-4">
@@ -446,23 +257,16 @@
 
     <section class="activites-section section-padding">
         <div class="container text-center">
-            <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;">Vie Étudiante & Événements</h2>
-            <div class="row g-4 mt-2">
-                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800" alt="Remise de diplôme" class="activite-img">
-                </div>
-                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" alt="Cours" class="activite-img">
-                </div>
-                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?q=80&w=800" alt="Événement" class="activite-img">
-                </div>
-                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800" alt="Campus" class="activite-img">
+            <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;">Nouveautés & Événements</h2>
+            
+            <div class="row g-4 mt-2" id="dynamic-gallery">
+                <div class="col-12 text-center py-4">
+                    <div class="spinner-border text-danger" role="status"></div>
                 </div>
             </div>
-            <a href="#" class="btn-voir-plus" data-aos="zoom-in" data-aos-delay="500">
-                <i class="bi bi-camera-fill me-2"></i> Galerie Complète
+
+            <a href="galerie.html" class="btn-voir-plus" data-aos="zoom-in" data-aos-delay="200">
+                <i class="bi bi-camera-fill me-2"></i> Voir toute la médiathèque
             </a>
         </div>
     </section>
@@ -508,14 +312,14 @@
                     <ul class="list-unstyled footer-info mt-4">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger (À côté du Crédit Agricole)</span>
+                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
                         </li>
                         <li>
                             <i class="bi bi-telephone-fill"></i>
                             <span>
                                 <strong>Admissions :</strong> <br>
                                 Fixe : 05 31 10 99 70 <br>
-                                Mobile / WhatsApp : 06 06 43 04 91 / 07 13 68 60 16
+                                Mobile : 06 06 43 04 91 / 07 13 68 60 16
                             </span>
                         </li>
                         <li>
@@ -527,21 +331,62 @@
             </div>
 
             <div class="copyright">
-                <p class="mb-0">&copy; 2026 EPCG Tanger. Tous droits réservés. <span class="mx-2">|</span> <a href="#" class="text-muted text-decoration-none hover-primary">Mentions Légales</a></p>
+                <p class="mb-0">
+                    &copy; 2026 EPCG Tanger. Tous droits réservés. 
+                    <span class="mx-2">|</span> 
+                    <a href="#" class="text-muted text-decoration-none hover-primary">Mentions Légales</a>
+                    
+                    <span class="mx-2">|</span> 
+                    <a href="admin.html" class="text-muted text-decoration-none hover-primary"><i class="bi bi-lock-fill"></i> Espace Direction</a>
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script>
-        // Initialisation améliorée des animations
-        AOS.init({ 
-            once: true,
-            duration: 800,
-            offset: 100,
-            easing: 'ease-in-out-cubic'
-        });
+        AOS.init({ once: true, duration: 800, offset: 100, easing: 'ease-in-out-cubic' });
+
+        // --- FETCH DYNAMIC GALLERY FROM SUPABASE ---
+        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // <-- REMPLACEZ PAR VOTRE CLÉ SUPABASE
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadLatestMedia() {
+            const container = document.getElementById('dynamic-gallery');
+            
+            // Récupère uniquement les 4 derniers éléments publiés
+            const { data, error } = await _supabase
+                .from('gallery')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(4);
+
+            if (error || !data || data.length === 0) {
+                // S'il n'y a pas encore d'image dans la base de données, on met des images par défaut
+                container.innerHTML = `
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800" class="activite-img"></div>
+                `;
+                return;
+            }
+
+            // Génère l'affichage dynamique
+            container.innerHTML = data.map(item => `
+                <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up">
+                    ${item.type === 'image' 
+                        ? `<img src="${item.url}" class="activite-img">` 
+                        : `<video src="${item.url}" class="activite-video" autoplay muted loop playsinline></video>`}
+                </div>
+            `).join('');
+        }
+
+        // Lancer le chargement au démarrage
+        loadLatestMedia();
     </script>
 </body>
 </html>
