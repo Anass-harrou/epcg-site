@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Médiathèque - EPCG Tanger</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <style>
+        :root { --primary-color: #9B1C22; --secondary-color: #2b2b2b; }
+        body { font-family: 'Roboto', sans-serif; padding-top: 80px; background-color: #fcfcfc;}
+        h1, h2, h3 { font-family: 'Roboto Slab', serif; }
+        
+        /* Navbar */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; }
+        .navbar-brand img { max-height: 65px; width: auto; }
+        .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
+
+        /* Header */
+        .page-header { background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000') center/cover; padding: 100px 0; text-align: center; color: white; margin-top: -80px; padding-top: 140px;}
+        
+        /* Galerie */
+        .media-card { border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.3s; background: white; height: 100%;}
+        .media-card:hover { transform: translateY(-5px); }
+        .media-card img, .media-card video { width: 100%; height: 250px; object-fit: cover; }
+        
+        /* Footer */
+        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; margin-top: 80px;}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
+        <div class="container-fluid px-lg-5"> 
+            <a class="navbar-brand" href="index.html"><img src="./assets/logo-epcg.jpeg" alt="EPCG"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
+                    <li class="nav-item"><a class="nav-link active-link" href="galerie.html">MÉDIATHÈQUE</a></li>
+                    <li class="nav-item"><a class="nav-link" href="inscription.html">INSCRIPTION</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1 class="display-4 fw-bold text-uppercase">Notre Médiathèque</h1>
+            <p class="lead">Découvrez la vie étudiante et les événements de l'EPCG Tanger</p>
+        </div>
+    </header>
+
+    <section class="container mt-5">
+        <div class="d-flex justify-content-center mb-5">
+            <button class="btn btn-outline-danger mx-2 active" onclick="filterMedia('all')">Tout voir</button>
+            <button class="btn btn-outline-danger mx-2" onclick="filterMedia('image')">Photos</button>
+            <button class="btn btn-outline-danger mx-2" onclick="filterMedia('video')">Vidéos</button>
+        </div>
+
+        <div class="row g-4" id="gallery-container">
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-danger" role="status"></div>
+                <p class="mt-2 text-muted">Chargement de la galerie...</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 50px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+            <p class="mb-0 text-white-50 small">&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // CONFIGURATION SUPABASE (Mettez votre clé)
+        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // <-- REMPLACEZ PAR VOTRE CLÉ SUPABASE
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let allMedia = [];
+
+        async function loadGallery() {
+            const container = document.getElementById('gallery-container');
+            const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
+            
+            if (error) {
+                container.innerHTML = '<p class="text-danger text-center">Erreur de chargement des médias.</p>';
+                return;
+            }
+
+            allMedia = data;
+            displayMedia(allMedia);
+        }
+
+        function displayMedia(items) {
+            const container = document.getElementById('gallery-container');
+            if(items.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center w-100">Aucun média disponible pour le moment.</p>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="media-card">
+                        ${item.type === 'image' 
+                            ? `<img src="${item.url}" alt="Galerie EPCG" loading="lazy">` 
+                            : `<video src="${item.url}" controls></video>`}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMedia(type) {
+            if(type === 'all') displayMedia(allMedia);
+            else displayMedia(allMedia.filter(item => item.type === type));
+        }
+
+        // Charger au démarrage
+        loadGallery();
+    </script>
+</body>
+</html>
