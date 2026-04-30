@@ -20,17 +20,22 @@
         #login-container { height: 100vh; display: flex; align-items: center; justify-content: center; }
         .login-card { width: 100%; max-width: 400px; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         #admin-dashboard { display: none; }
-        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: inherit; }
+        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: inherit; z-index: 100; }
         .main-content { padding: 40px; margin-left: 16.66667%; }
         .table-container, .upload-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .nav-link { cursor: pointer; transition: 0.3s; color: rgba(255,255,255,0.6) !important; }
         .nav-link.active { color: white !important; background-color: var(--primary-color) !important; border-radius: 8px; }
         .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; }
         .btn-epcg:hover { background-color: #7a151a; color: white; }
+        
+        /* Style pour le bouton retour */
+        .btn-retour { color: #6c757d; text-decoration: none; font-size: 0.9rem; display: inline-block; transition: 0.3s; }
+        .btn-retour:hover { color: var(--primary-color); transform: translateX(-3px); }
     </style>
 </head>
 <body>
 
+    <!-- SECTION LOGIN -->
     <div id="login-container">
         <div class="login-card text-center">
             <img src="./assets/logo-epcg.jpeg" alt="EPCG" class="mb-4" style="max-height: 80px;">
@@ -38,15 +43,22 @@
             <form id="login-form">
                 <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email" required>
                 <input type="password" id="admin-password" class="form-control mb-4" placeholder="Mot de passe" required>
-                <button type="submit" class="btn-epcg w-100">Connexion</button>
+                <button type="submit" class="btn-epcg w-100 mb-3">Connexion</button>
             </form>
-            <div id="login-error" class="text-danger mt-3 small" style="display: none;">Accès refusé.</div>
+            <div id="login-error" class="text-danger mb-3 small" style="display: none;">Accès refusé.</div>
+            
+            <!-- LE NOUVEAU BOUTON RETOUR -->
+            <a href="index.html" class="btn-retour mt-2">
+                <i class="bi bi-arrow-left me-1"></i> Retour au site
+            </a>
         </div>
     </div>
 
+    <!-- SECTION DASHBOARD -->
     <div id="admin-dashboard">
         <div class="container-fluid">
             <div class="row">
+                <!-- Sidebar -->
                 <div class="col-md-2 sidebar">
                     <h5 class="mb-5 fw-bold"><i class="bi bi-shield-lock me-2"></i> EPCG ADMIN</h5>
                     <ul class="nav flex-column">
@@ -60,16 +72,18 @@
                     </ul>
                 </div>
 
+                <!-- Main Content -->
                 <div class="col-md-10 main-content">
                     
+                    <!-- TAB 1: INSCRIPTIONS -->
                     <div id="tab-inscriptions">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h2 class="fw-bold">Candidatures reçues</h2>
-                            <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm">Actualiser</button>
+                            <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Actualiser</button>
                         </div>
                         <div class="table-container">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover align-middle">
                                     <thead class="table-light">
                                         <tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Formation</th><th>Date</th></tr>
                                     </thead>
@@ -79,6 +93,7 @@
                         </div>
                     </div>
 
+                    <!-- TAB 2: MULTIMEDIA -->
                     <div id="tab-media" style="display: none;">
                         <h2 class="fw-bold mb-4">Gestion du Contenu</h2>
                         
@@ -86,16 +101,16 @@
                             <h5>Ajouter une Photo ou Vidéo</h5>
                             <p class="text-muted small">Les fichiers ajoutés apparaîtront dans la galerie du site.</p>
                             <div class="row align-items-end">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-2">
                                     <input type="file" id="media-file" class="form-control" accept="image/*,video/*">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 mb-2">
                                     <select id="media-type" class="form-select">
                                         <option value="image">Image</option>
                                         <option value="video">Vidéo</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 mb-2">
                                     <button onclick="uploadMedia()" id="upload-btn" class="btn-epcg w-100">Publier</button>
                                 </div>
                             </div>
@@ -103,8 +118,9 @@
 
                         <div class="table-container">
                             <h5>Fichiers en ligne</h5>
-                            <div id="media-gallery" class="row g-3 mt-2">
-                                </div>
+                            <div id="media-gallery" class="row g-3 mt-3">
+                                <!-- Les miniatures s'afficheront ici -->
+                            </div>
                         </div>
                     </div>
 
@@ -114,8 +130,9 @@
     </div>
 
     <script>
+        // N'oubliez pas de mettre votre clé anon public ici !
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
+        const SUPABASE_KEY = 'VOTRE_ANON_KEY'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // --- NAVIGATION ---
@@ -144,17 +161,23 @@
 
         // --- GESTION DES INSCRIPTIONS ---
         async function fetchInscriptions() {
-            const { data } = await _supabase.from('inscriptions').select('*').order('created_at', { ascending: false });
             const list = document.getElementById('inscriptions-list');
-            list.innerHTML = data.map(item => `
-                <tr>
-                    <td class="fw-bold">${item.nom_prenom}</td>
-                    <td>${item.email}</td>
-                    <td>${item.telephone_1}</td>
-                    <td><span class="badge bg-danger">${item.formation}</span></td>
-                    <td><small>${new Date(item.created_at).toLocaleDateString()}</small></td>
-                </tr>
-            `).join('');
+            list.innerHTML = '<tr><td colspan="5" class="text-center"><div class="spinner-border text-danger spinner-border-sm"></div> Chargement...</td></tr>';
+            const { data } = await _supabase.from('inscriptions').select('*').order('created_at', { ascending: false });
+            
+            if(data && data.length > 0) {
+                list.innerHTML = data.map(item => `
+                    <tr>
+                        <td class="fw-bold">${item.nom_prenom}</td>
+                        <td>${item.email}</td>
+                        <td>${item.telephone_1}</td>
+                        <td><span class="badge bg-danger">${item.formation}</span></td>
+                        <td><small class="text-muted">${new Date(item.created_at).toLocaleDateString()}</small></td>
+                    </tr>
+                `).join('');
+            } else {
+                list.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Aucune inscription pour le moment.</td></tr>';
+            }
         }
 
         // --- GESTION DU STORAGE (UPLOAD) ---
@@ -171,16 +194,12 @@
 
             const fileName = `${Date.now()}_${file.name}`;
             
-            // 1. Upload vers le Bucket 'media'
             const { data, error } = await _supabase.storage.from('media').upload(fileName, file);
 
             if (error) {
                 alert("Erreur upload: " + error.message);
             } else {
-                // 2. Récupérer l'URL publique
                 const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
-                
-                // 3. Enregistrer l'URL dans la table 'gallery'
                 await _supabase.from('gallery').insert([{ url: publicUrl, type: type }]);
                 
                 alert("Fichier publié avec succès !");
@@ -193,18 +212,37 @@
 
         // --- AFFICHER LA GALERIE ---
         async function fetchGallery() {
-            const { data } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
             const gallery = document.getElementById('media-gallery');
-            gallery.innerHTML = data.map(item => `
-                <div class="col-md-3">
-                    <div class="card h-100">
-                        ${item.type === 'image' ? `<img src="${item.url}" class="card-img-top">` : `<video src="${item.url}" class="card-img-top"></video>`}
-                        <div class="card-body p-2 text-center">
-                            <button onclick="deleteMedia(${item.id}, '${item.url}')" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            gallery.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-danger spinner-border-sm"></div></div>';
+            
+            const { data } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
+            
+            if(data && data.length > 0) {
+                gallery.innerHTML = data.map(item => `
+                    <div class="col-md-4 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            ${item.type === 'image' ? `<img src="${item.url}" class="card-img-top" style="height:150px; object-fit:cover;">` : `<video src="${item.url}" class="card-img-top" style="height:150px; object-fit:cover;"></video>`}
+                            <div class="card-body p-2 text-center">
+                                <button onclick="deleteMedia(${item.id}, '${item.url}')" class="btn btn-sm btn-outline-danger w-100"><i class="bi bi-trash"></i> Supprimer</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } else {
+                gallery.innerHTML = '<div class="col-12 text-muted">Aucun fichier en ligne.</div>';
+            }
+        }
+
+        async function deleteMedia(id, url) {
+            if(confirm('Voulez-vous vraiment supprimer ce média du site ?')) {
+                // 1. Supprimer de la table
+                await _supabase.from('gallery').delete().eq('id', id);
+                // 2. Extraire le nom du fichier depuis l'URL et le supprimer du bucket
+                const fileName = url.split('/').pop();
+                await _supabase.storage.from('media').remove([fileName]);
+                
+                fetchGallery();
+            }
         }
 
         async function handleLogout() {
