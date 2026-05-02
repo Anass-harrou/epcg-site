@@ -20,6 +20,9 @@
             --bg-light: #fcfcfc;
         }
 
+       html {
+            scroll-behavior: smooth; /* C'est cette ligne qui fait la magie du glissement ! */
+       }
        html, body {
             max-width: 100%;
             overflow-x: hidden;
@@ -231,9 +234,10 @@
             </button>
             
             <!-- Flèche de continuation (scroll) -->
-            <div class="scroll-down-arrow">
+            <!-- Flèche de continuation (scroll) -->
+            <a href="#about" class="scroll-down-arrow" style="cursor: pointer; text-decoration: none;">
                 <i class="bi bi-chevron-down"></i>
-            </div>
+            </a>
         </div>
     </section>
 
