@@ -397,6 +397,42 @@
         </div>
     </div>
 </div>
+                    <!-- NOUVEAU BLOC : PAGE CONTACT & COORDONNÉES -->
+<div class="col-12 mt-4">
+    <div class="table-container p-4 bg-light">
+        <h6 class="fw-bold border-bottom pb-2 text-danger">Informations de la Page Contact</h6>
+        <div class="row g-3">
+            
+            <div class="col-md-12 mb-3">
+                <label class="small fw-bold">Titre principal de la page Contact</label>
+                <input type="text" id="input_contact_header_titre" class="form-control mb-2">
+                <label class="small fw-bold">Sous-titre (Slogan)</label>
+                <textarea id="input_contact_header_desc" class="form-control mb-2" rows="2"></textarea>
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_header_titre', 'input_contact_header_titre', this); sauvegarderTexte('contact_header_desc', 'input_contact_header_desc', this);">Enregistrer En-tête</button>
+            </div>
+
+            <!-- Coordonnées Boîte Contact -->
+            <div class="col-md-4">
+                <label class="small fw-bold">Adresse (Page Contact)</label>
+                <textarea id="input_contact_adresse" class="form-control mb-2" rows="3"></textarea>
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_adresse', 'input_contact_adresse', this)">Enregistrer Adresse</button>
+            </div>
+
+            <div class="col-md-4">
+                <label class="small fw-bold">Téléphones (Page Contact)</label>
+                <textarea id="input_contact_tel" class="form-control mb-2" rows="3"></textarea>
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_tel', 'input_contact_tel', this)">Enregistrer Téléphones</button>
+            </div>
+
+            <div class="col-md-4">
+                <label class="small fw-bold">Email (Page Contact)</label>
+                <input type="text" id="input_contact_email" class="form-control mb-2">
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_email', 'input_contact_email', this)">Enregistrer Email</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
                 </div>
             </div>
 
