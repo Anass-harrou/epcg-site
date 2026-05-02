@@ -109,6 +109,7 @@
             .page-title { font-size: 2.2rem; }
             .cycle-title { font-size: 2rem; }
         }
+        
         /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
             .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
@@ -124,7 +125,8 @@
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
             <a class="navbar-brand" href="index.html">
-                <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+                <!-- ID DYNAMIQUE : LOGO NAVBAR -->
+                <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -148,7 +150,6 @@
         </div>
     </nav>
 
-    <!-- La section du Slider sera remplacée par loadHeroSlider() quand nous ajouterons la gestion du slider -->
     <section class="hero-carousel-section">
         <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
@@ -164,7 +165,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="carousel-item" data-bs-interval="5000">
+                    <!-- ID DYNAMIQUE : IMAGE SLIDER 2 -->
+                    <img id="hero_image_2" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100" alt="Campus">
+                    <div class="carousel-caption">
+                        <h1 class="slider-title">L'EXCELLENCE</h1>
+                        <p class="slider-subtitle">Formez-vous aux métiers de demain</p>
+                        <a href="inscription.html" class="slider-btn">Découvrir nos cycles</a>
+                    </div>
+                </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
         </div>
     </section>
 
@@ -172,14 +188,12 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <!-- ID DYNAMIQUE -->
+                    <!-- ID DYNAMIQUE : TITRE ET TEXTE ABOUT -->
                     <h2 class="section-title text-start" id="accueil_about_titre">L'Institution EPCG</h2>
-                    <!-- ID DYNAMIQUE -->
                     <p class="about-text" id="accueil_about_texte1">
                         L'<strong>École Professionnelle de Commerce & de Gestion Tanger</strong> est un établissement privé d'excellence, dédié à la formation des futurs leaders dans les domaines de l'administration, du management et du commerce.
                     </p>
-                    <!-- ID DYNAMIQUE -->
-                    <p class="about-text" id="accueil_about_texte2">
+                    <p class="about-text">
                         Consciente des défis du marché du travail, notre institution propose des formations 100% pratiques et diplômantes, garantissant une insertion professionnelle rapide.
                     </p>
                     <div class="accreditation-badge">
@@ -188,7 +202,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000" alt="Campus EPCG" class="img-fluid rounded-4 shadow-lg">
+                    <!-- ID DYNAMIQUE : IMAGE ABOUT -->
+                    <img id="accueil_about_image" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000" alt="Campus EPCG" class="img-fluid rounded-4 shadow-lg">
                 </div>
             </div>
         </div>
@@ -196,7 +211,6 @@
 
     <section id="formations" class="formations-section section-padding">
         <div class="container">
-            <!-- ID DYNAMIQUE -->
             <h2 class="section-title text-center" data-aos="fade-up" id="accueil_formations_titre">Nos Formations</h2>
             <div class="row g-4 mt-3">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
@@ -208,14 +222,69 @@
                         <p class="text-muted small">Formation initiale 100% pratique pour acquérir les bases techniques du management et s'intégrer rapidement en entreprise.</p>
                     </div>
                 </div>
-                <!-- Reste des formations... -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="formation-card">
+                        <i class="bi bi-briefcase formation-icon"></i>
+                        <h4 class="font-slab mb-2">Cycle Supérieur</h4>
+                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +3</h3>
+                        <p class="fw-bold mb-3">Licence Professionnelle / Bachelor</p>
+                        <p class="text-muted small">Programme en partenariat visant à approfondir vos compétences spécialisées et garantir votre employabilité.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="formation-card">
+                        <i class="bi bi-globe-americas formation-icon"></i>
+                        <h4 class="font-slab mb-2">Cycle Expert</h4>
+                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +5</h3>
+                        <p class="fw-bold mb-3">Master Professionnel</p>
+                        <p class="text-muted small">Une expertise pointue pour devenir un cadre dirigeant de haut niveau, capable de relever les défis de l'économie marocaine.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sites" class="inscriptions-section section-padding">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
+            <div class="row justify-content-center g-4">
+                <!-- IDS DYNAMIQUES : IMAGES DES CAMPUS -->
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
+                    <a href="#" class="site-card text-center">
+                        <img id="site_1_image" src="./assets/logo-epcg.jpeg" alt="Site 1" class="site-icon">
+                        <h5 class="fw-bold fs-6 mb-0">Tanger Centre</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
+                    <a href="#" class="site-card text-center">
+                        <img id="site_2_image" src="./assets/logo-epcg.jpeg" alt="Site 2" class="site-icon">
+                        <h5 class="fw-bold fs-6 mb-0">Plaza Toros</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="300">
+                    <a href="#" class="site-card text-center">
+                        <img id="site_3_image" src="./assets/logo-epcg.jpeg" alt="Site 3" class="site-icon">
+                        <h5 class="fw-bold fs-6 mb-0">Mesnana</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="400">
+                    <a href="#" class="site-card text-center">
+                        <img id="site_4_image" src="./assets/logo-epcg.jpeg" alt="Site 4" class="site-icon">
+                        <h5 class="fw-bold fs-6 mb-0">Ahlan</h5>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="500">
+                    <a href="#" class="site-card text-center">
+                        <img id="site_5_image" src="./assets/logo-epcg.jpeg" alt="Site 5" class="site-icon">
+                        <h5 class="fw-bold fs-6 mb-0">Tétouan</h5>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="activites-section section-padding">
         <div class="container text-center">
-            <!-- ID DYNAMIQUE -->
             <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;" id="accueil_nouveautes_titre">Nouveautés & Événements</h2>
             
             <div class="row g-4 mt-2" id="dynamic-gallery">
@@ -230,12 +299,37 @@
         </div>
     </section>
 
+    <section class="partenaires-section py-5">
+        <div class="container text-center">
+            <h5 class="text-muted fw-bold mb-4 font-slab" style="letter-spacing: 2px;">ILS NOUS FONT CONFIANCE</h5>
+        </div>
+        <div class="marquee-wrapper">
+            <div class="marquee-content">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
+                
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
+                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
+            </div>
+        </div>
+    </section>
+
     <footer id="footer" class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 mb-4 mb-lg-0">
-                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    <!-- ID DYNAMIQUE -->
+                    <!-- ID DYNAMIQUE : LOGO FOOTER -->
+                    <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+                    
+                    <!-- IDS DYNAMIQUES : TEXTES FOOTER -->
                     <p class="mb-4 pe-lg-5" id="footer_description">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
                     <div class="social-links">
                         <a href="#"><i class="bi bi-facebook"></i></a>
@@ -249,12 +343,10 @@
                     <ul class="list-unstyled footer-info mt-4">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
-                            <!-- ID DYNAMIQUE -->
                             <span id="footer_adresse"><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
                         </li>
                         <li>
                             <i class="bi bi-telephone-fill"></i>
-                            <!-- ID DYNAMIQUE -->
                             <span id="footer_tel">
                                 <strong>Admissions :</strong> <br>
                                 Fixe : 05 31 10 99 70 <br>
@@ -263,7 +355,6 @@
                         </li>
                         <li>
                             <i class="bi bi-envelope-fill"></i>
-                            <!-- ID DYNAMIQUE -->
                             <span id="footer_email">epcg.school@gmail.com</span>
                         </li>
                     </ul>
@@ -302,16 +393,25 @@
             });
         });
 
+        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- 1. FONCTION : CHARGER LA GALERIE ---
+        // --- CHARGEMENT GALERIE DYNAMIQUE ---
         async function loadLatestMedia() {
             const container = document.getElementById('dynamic-gallery');
             const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false }).limit(4);
 
-            if (error || !data || data.length === 0) return; // Garde le loader ou affiche un vide stylisé
+            if (error || !data || data.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?q=80&w=800" class="activite-img"></div>
+                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800" class="activite-img"></div>
+                `;
+                return;
+            }
             
             container.innerHTML = data.map(item => `
                 <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up">
@@ -322,12 +422,9 @@
             `).join('');
         }
 
-        // --- 2. NOUVELLE FONCTION : CHARGER TOUT LE TEXTE DYNAMIQUE ---
+        // --- CHARGEMENT TEXTES ET IMAGES CMS ---
         async function chargerContenuGeneral() {
-            // On interroge la table que vous allez créer dans Supabase
             const { data, error } = await _supabase.from('contenu_site').select('*');
-            
-            // Si la table est vide ou n'existe pas encore, on garde le texte écrit en dur !
             if (error || !data) return; 
 
             data.forEach(item => {
@@ -336,6 +433,7 @@
                     if (item.type === 'texte' || item.type === 'html') {
                         elementHtml.innerHTML = item.valeur;
                     } else if (item.type === 'image_url') {
+                        // Remplace la source de l'image si c'est de type image_url
                         elementHtml.src = item.valeur;
                     }
                 }
