@@ -31,7 +31,7 @@
         /* HEADER MOBILE */
         .mobile-header { display: none; background-color: var(--secondary-color); color: white; padding: 15px 20px; justify-content: space-between; align-items: center; }
 
-        /* SIDEBAR (Desktop par défaut) */
+        /* SIDEBAR */
         .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: 250px; z-index: 1000; transition: transform 0.3s ease-in-out; }
         
         /* MAIN CONTENT */
@@ -44,6 +44,16 @@
         .nav-link.active { color: white !important; background-color: var(--primary-color) !important; border-radius: 8px; }
         .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s;}
         .btn-epcg:hover { background-color: #7a151a; color: white; }
+
+        /* DESIGN DES ACCORDÉONS (Pour la page Textes & Images) */
+        .accordion-item { border: none; border-radius: 10px !important; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); overflow: hidden;}
+        .accordion-button { font-weight: 600; color: var(--secondary-color); padding: 20px 25px; background-color: white; border: none; }
+        .accordion-button:not(.collapsed) { color: var(--primary-color); background-color: rgba(155, 28, 34, 0.05); box-shadow: none; border-bottom: 1px solid rgba(155, 28, 34, 0.1);}
+        .accordion-button:focus { box-shadow: none; }
+        .accordion-body { background-color: white; padding: 30px 25px; }
+        
+        .form-section-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #a0a0a0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 20px; margin-top: 30px; }
+        .form-section-title:first-child { margin-top: 0; }
 
         @media (max-width: 991px) {
             .mobile-header { display: flex; }
@@ -63,13 +73,13 @@
             <img src="./assets/logo-epcg.jpeg" alt="EPCG" class="mb-4" style="max-height: 80px;">
             <h4 class="mb-4 fw-bold">Espace Direction</h4>
             <form id="login-form">
-                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email" required>
-                <input type="password" id="admin-password" class="form-control mb-4" placeholder="Mot de passe" required>
+                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email (ex: direction@epcg.ma)" required>
+                <input type="password" id="admin-password" class="form-control mb-4" placeholder="Votre mot de passe secret" required>
                 <button type="submit" class="btn-epcg w-100 mb-3">Connexion</button>
             </form>
             <div id="login-error" class="text-danger mb-3 small" style="display: none;">Accès refusé. Vérifiez vos identifiants.</div>
             <a href="index.html" class="btn-retour mt-2">
-                <i class="bi bi-arrow-left me-1"></i> Retour au site
+                <i class="bi bi-arrow-left me-1"></i> Retour au site web
             </a>
         </div>
     </div>
@@ -98,17 +108,17 @@
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a id="nav-inscriptions" onclick="switchTab('inscriptions')" class="nav-link active"><i class="bi bi-people me-2"></i> Inscriptions</a>
+                    <a id="nav-inscriptions" onclick="switchTab('inscriptions')" class="nav-link active"><i class="bi bi-people me-2"></i> Candidatures</a>
                 </li>
                 <li class="nav-item mt-2">
-                    <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Multimédia</a>
+                    <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Médiathèque</a>
                 </li>
                 <li class="nav-item mt-2">
-                    <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Textes & Images</a>
+                    <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Édition du Site Web</a>
                 </li>
                 
                 <li class="nav-item mt-5">
-                    <button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100"><i class="bi bi-box-arrow-left me-2"></i> Déconnexion</button>
+                    <button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100"><i class="bi bi-box-arrow-left me-2"></i> Se Déconnecter</button>
                 </li>
             </ul>
         </div>
@@ -119,14 +129,14 @@
             <!-- TAB 1: INSCRIPTIONS -->
             <div id="tab-inscriptions">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                    <h2 class="fw-bold mb-2">Candidatures</h2>
-                    <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm mb-2"><i class="bi bi-arrow-clockwise me-1"></i> Actualiser</button>
+                    <h2 class="fw-bold mb-2">Candidatures reçues</h2>
+                    <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm mb-2"><i class="bi bi-arrow-clockwise me-1"></i> Rafraîchir la liste</button>
                 </div>
                 <div class="table-container p-3 p-md-4">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0" style="min-width: 600px;">
                             <thead class="table-light">
-                                <tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Formation</th><th>Date</th></tr>
+                                <tr><th>Nom & Prénom</th><th>Email</th><th>Téléphone</th><th>Formation Souhaitée</th><th>Date de dépôt</th></tr>
                             </thead>
                             <tbody id="inscriptions-list"></tbody>
                         </table>
@@ -136,305 +146,309 @@
 
             <!-- TAB 2: MULTIMEDIA -->
             <div id="tab-media" style="display: none;">
-                <h2 class="fw-bold mb-4">Gestion Multimédia</h2>
+                <h2 class="fw-bold mb-4">Gestion de la Médiathèque</h2>
                 
                 <div class="upload-container p-3 p-md-4 mb-4">
-                    <h5>Ajouter un fichier à la galerie</h5>
-                    <div class="row g-2 align-items-end mt-2">
+                    <h5 class="mb-3">Ajouter un nouveau fichier</h5>
+                    <div class="row g-2 align-items-end">
                         <div class="col-12 col-md-6">
+                            <label class="small text-muted mb-1">Choisissez une image (jpg, png) ou une vidéo (mp4)</label>
                             <input type="file" id="media-file" class="form-control" accept="image/*,video/*">
                         </div>
                         <div class="col-12 col-sm-6 col-md-3">
+                            <label class="small text-muted mb-1">Type de média</label>
                             <select id="media-type" class="form-select">
                                 <option value="image">Image</option>
                                 <option value="video">Vidéo</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-md-3">
-                            <button onclick="uploadMedia()" id="upload-btn" class="btn-epcg w-100">Publier</button>
+                            <button onclick="uploadMedia()" id="upload-btn" class="btn-epcg w-100">Publier sur le site</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="table-container p-3 p-md-4">
-                    <h5>Fichiers en ligne</h5>
-                    <div id="media-gallery" class="row g-3 mt-2"></div>
+                    <h5 class="mb-3">Fichiers actuellement en ligne</h5>
+                    <div id="media-gallery" class="row g-3"></div>
                 </div>
             </div>
 
-            <!-- TAB 3: CONTENU DU SITE -->
+            <!-- TAB 3: CONTENU DU SITE (ORGANISÉ EN ACCORDÉONS) -->
             <div id="tab-contenu" style="display: none;">
-                <h2 class="fw-bold mb-4">Modifier le contenu du site</h2>
+                <h2 class="fw-bold mb-4">Édition du contenu du site</h2>
+                <p class="text-muted mb-4">Ouvrez la section que vous souhaitez modifier. Les changements sont appliqués instantanément sur le site public après avoir cliqué sur Enregistrer.</p>
 
-                <div class="row g-4">
-                    <!-- BLOC 1 : PAGE ACCUEIL (TEXTES) -->
-                    <div class="col-12 col-xl-6">
-                        <div class="table-container p-4 h-100">
-                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-fonts me-2"></i>Textes Page Accueil</h5>
-                            
-                            <div class="mb-4">
-                                <label class="form-label small text-muted fw-bold">Titre de la section "À propos"</label>
-                                <div class="input-group">
-                                    <input type="text" id="input_accueil_about_titre" class="form-control" placeholder="Ex: L'Institution EPCG">
-                                    <button class="btn btn-outline-danger" onclick="sauvegarderTexte('accueil_about_titre', 'input_accueil_about_titre', this)">Enregistrer</button>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted fw-bold">Premier paragraphe "À propos"</label>
-                                <textarea id="input_accueil_about_texte1" class="form-control mb-2" rows="4"></textarea>
-                                <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderTexte('accueil_about_texte1', 'input_accueil_about_texte1', this)">Enregistrer le paragraphe</button>
-                            </div>
-                            <!-- NOUVEAU BLOC : RÉSUMÉ DES FORMATIONS SUR L'ACCUEIL -->
-<div class="col-12 mt-4">
-    <div class="table-container p-4 bg-light">
-        <h6 class="fw-bold border-bottom pb-2 text-danger">Aperçu des Formations (Page d'accueil)</h6>
-        <div class="row g-3">
-            
-            <!-- Accueil: Bac +2 -->
-            <div class="col-md-4">
-                <label class="small fw-bold">Badge Bac+2 (Accueil)</label>
-                <input type="text" id="input_accueil_form_1_badge" class="form-control mb-2">
-                <label class="small fw-bold">Titre Bac+2 (Accueil)</label>
-                <input type="text" id="input_accueil_form_1_titre" class="form-control mb-2">
-                <label class="small fw-bold">Description courte</label>
-                <textarea id="input_accueil_form_1_desc" class="form-control mb-2" rows="3"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_1_desc', 'input_accueil_form_1_desc', this)">Enregistrer</button>
-            </div>
-
-            <!-- Accueil: Bac +3 -->
-            <div class="col-md-4">
-                <label class="small fw-bold">Badge Bac+3 (Accueil)</label>
-                <input type="text" id="input_accueil_form_2_badge" class="form-control mb-2">
-                <label class="small fw-bold">Titre Bac+3 (Accueil)</label>
-                <input type="text" id="input_accueil_form_2_titre" class="form-control mb-2">
-                <label class="small fw-bold">Description courte</label>
-                <textarea id="input_accueil_form_2_desc" class="form-control mb-2" rows="3"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_2_desc', 'input_accueil_form_2_desc', this)">Enregistrer</button>
-            </div>
-
-            <!-- Accueil: Bac +5 -->
-            <div class="col-md-4">
-                <label class="small fw-bold">Badge Bac+5 (Accueil)</label>
-                <input type="text" id="input_accueil_form_3_badge" class="form-control mb-2">
-                <label class="small fw-bold">Titre Bac+5 (Accueil)</label>
-                <input type="text" id="input_accueil_form_3_titre" class="form-control mb-2">
-                <label class="small fw-bold">Description courte</label>
-                <textarea id="input_accueil_form_3_desc" class="form-control mb-2" rows="3"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_3_desc', 'input_accueil_form_3_desc', this)">Enregistrer</button>
-            </div>
-            
-        </div>
-    </div>
-</div>
-                        </div>
-                    </div>
-
-                    <!-- BLOC 2 : PIED DE PAGE (CONTACT) -->
-                    <div class="col-12 col-xl-6">
-                        <div class="table-container p-4 h-100">
-                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-layout-text-window-reverse me-2"></i>Pied de page (Contact)</h5>
-                            
-                            <div class="mb-4">
-                                <label class="form-label small text-muted fw-bold">Numéro de Téléphone</label>
-                                <div class="input-group">
-                                    <input type="text" id="input_footer_tel" class="form-control" placeholder="Ex: 05 31 10 99 70">
-                                    <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_tel', 'input_footer_tel', this)">Enregistrer</button>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label small text-muted fw-bold">Email de contact</label>
-                                <div class="input-group">
-                                    <input type="text" id="input_footer_email" class="form-control" placeholder="Ex: contact@epcg.ma">
-                                    <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_email', 'input_footer_email', this)">Enregistrer</button>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label small text-muted fw-bold">Adresse physique</label>
-                                <textarea id="input_footer_adresse" class="form-control mb-2" rows="3"></textarea>
-                                <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderTexte('footer_adresse', 'input_footer_adresse', this)">Enregistrer l'adresse</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-3 border-top">
-    <label class="form-label small text-muted fw-bold">Texte à côté du logo (Slogan)</label>
-    <div class="input-group">
-        <input type="text" id="input_navbar_slogan" class="form-control" placeholder="Ex: L'excellence pour tous">
-        <button class="btn btn-outline-danger" onclick="sauvegarderTexte('navbar_slogan', 'input_navbar_slogan', this)">Enregistrer</button>
-    </div>
-    <small class="text-muted" style="font-size: 11px;">Ce texte s'affichera à droite du logo sur ordinateur.</small>
-</div>
-
-                    <!-- BLOC 3 : LOGOS (IDENTITE VISUELLE) -->
-                    <div class="col-12 col-xl-6">
-                        <div class="table-container p-4 h-100">
-                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-stars me-2"></i>Logos de l'école</h5>
-                            
-                            <div class="mb-4">
-                                <label class="form-label small text-muted fw-bold">Logo principal (Barre de navigation)</label>
-                                <div class="input-group">
-                                    <input type="file" id="input_logo_navbar" class="form-control" accept="image/*">
-                                    <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_navbar', 'input_logo_navbar', this)">Remplacer</button>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted fw-bold">Logo Pied de page (Footer)</label>
-                                <div class="input-group">
-                                    <input type="file" id="input_logo_footer" class="form-control" accept="image/*">
-                                    <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_footer', 'input_logo_footer', this)">Remplacer</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BLOC 4 : MULTIMÉDIA DES SECTIONS (SLIDER & ABOUT) -->
-                    <div class="col-12 col-xl-6">
-                        <div class="table-container p-4 h-100">
-                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-images me-2"></i>Multimédia des sections</h5>
-                            
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <label class="form-label small text-muted fw-bold">Média "Slider Accueil" (Slide 1)</label>
-                                    <div class="input-group">
-                                        <!-- Accepte désormais les images ET les vidéos -->
-                                        <input type="file" id="input_hero_media_1" class="form-control" accept="image/*,video/*">
-                                        <button class="btn btn-outline-danger" onclick="sauvegarderSliderMedia('hero_media_1', 'input_hero_media_1', this)">Remplacer</button>
+                <div class="accordion" id="accordionEditeur">
+                    
+                    <!-- ACCORDÉON 1 : IDENTITÉ & COORDONNÉES GÉNÉRALES -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIdentity">
+                                <i class="bi bi-buildings me-3 fs-5"></i> 1. Identité, Logos et Coordonnées (Affichés sur toutes les pages)
+                            </button>
+                        </h2>
+                        <div id="collapseIdentity" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
+                            <div class="accordion-body row">
+                                
+                                <div class="col-md-6">
+                                    <h6 class="form-section-title">Logos de l'école</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Logo de la barre de navigation (En haut)</label>
+                                        <div class="input-group">
+                                            <input type="file" id="input_logo_navbar" class="form-control" accept="image/*">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_navbar', 'input_logo_navbar', this)">Remplacer</button>
+                                        </div>
                                     </div>
-                                    <small class="text-muted" style="font-size: 11px;">Vous pouvez uploader une image (jpg, png) ou une vidéo (mp4).</small>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label small text-muted fw-bold">Image "Slider Accueil" (Slide 2)</label>
-                                    <div class="input-group">
-                                        <input type="file" id="input_hero_image_2" class="form-control" accept="image/*">
-                                        <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('hero_image_2', 'input_hero_image_2', this)">Remplacer Image</button>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Logo du Pied de page (En bas)</label>
+                                        <div class="input-group">
+                                            <input type="file" id="input_logo_footer" class="form-control" accept="image/*">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_footer', 'input_logo_footer', this)">Remplacer</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label small fw-bold">Slogan (À droite du logo en haut)</label>
+                                        <div class="input-group">
+                                            <input type="text" id="input_navbar_slogan" class="form-control" placeholder="Ex: École Professionnelle de Commerce et de Gestion">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('navbar_slogan', 'input_navbar_slogan', this)">Enregistrer</button>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-12">
-                                    <label class="form-label small text-muted fw-bold">Image de la section "À propos"</label>
-                                    <div class="input-group">
-                                        <input type="file" id="input_accueil_about_image" class="form-control" accept="image/*">
-                                        <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">Remplacer Image</button>
+                                <div class="col-md-6">
+                                    <h6 class="form-section-title">Coordonnées du Pied de Page</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Numéros de Téléphone</label>
+                                        <div class="input-group">
+                                            <input type="text" id="input_footer_tel" class="form-control" placeholder="Ex: 05 31 10 99 70 / 06 06 43 04 91">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_tel', 'input_footer_tel', this)">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Email de contact</label>
+                                        <div class="input-group">
+                                            <input type="text" id="input_footer_email" class="form-control" placeholder="Ex: epcg.school@gmail.com">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_email', 'input_footer_email', this)">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Adresse physique</label>
+                                        <textarea id="input_footer_adresse" class="form-control mb-2" rows="2" placeholder="Ex: 6 Abou Moussa EL Achaari, Rond Point Plaza Toros – Tanger"></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('footer_adresse', 'input_footer_adresse', this)">Enregistrer l'adresse</button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-<!-- SECTION COMPLÈTE PAGE FORMATIONS (Mise à jour) -->
-<div class="col-12 mt-4">
-    <div class="table-container p-4">
-        <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-journal-check me-2"></i>Édition : Page Formations</h5>
-        
-        <div class="row">
-            <!-- HEADER PAGE -->
-            <div class="col-md-6 mb-4">
-                <h6 class="fw-bold border-bottom pb-2">En-tête de la page</h6>
-                <label class="small fw-bold">Titre principal</label>
-                <input type="text" id="input_form_header_titre" class="form-control mb-2">
-                <label class="small fw-bold">Slogan (Sous-titre)</label>
-                <textarea id="input_form_header_desc" class="form-control mb-2" rows="2"></textarea>
-                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_header_desc', 'input_form_header_desc', this); sauvegarderTexte('form_header_titre', 'input_form_header_titre', this);">Sauvegarder En-tête</button>
-            </div>
 
-            <!-- BLOC BAC +2 -->
-            <div class="col-md-6 mb-4">
-                <h6 class="fw-bold border-bottom pb-2">Cycle Initial (Bac +2)</h6>
-                <label class="small fw-bold">Badge (ex: Cycle de formation initiale)</label>
-                <input type="text" id="input_form_initial_badge" class="form-control mb-2">
-                <label class="small fw-bold">Titre</label>
-                <input type="text" id="input_form_initial_titre" class="form-control mb-2">
-                <label class="small fw-bold">Contenu (Accréditation, conditions, débouchés)</label>
-                <textarea id="input_form_initial_corps" class="form-control mb-2" rows="4"></textarea>
-                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_initial_corps', 'input_form_initial_corps', this)">Sauvegarder Bac+2</button>
-            </div>
+                    <!-- ACCORDÉON 2 : PAGE ACCUEIL -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome">
+                                <i class="bi bi-house-door me-3 fs-5"></i> 2. Page "Accueil" (Bannières, Textes et Aperçus)
+                            </button>
+                        </h2>
+                        <div id="collapseHome" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
+                            <div class="accordion-body row">
+                                
+                                <div class="col-md-6">
+                                    <h6 class="form-section-title">Grand Slider d'Accueil</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Média Principal (Affiche ou Vidéo)</label>
+                                        <div class="input-group">
+                                            <input type="file" id="input_hero_media_1" class="form-control" accept="image/*,video/*">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderSliderMedia('hero_media_1', 'input_hero_media_1', this)">Remplacer</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label small fw-bold">Image d'Ambiance (2ème diapositive)</label>
+                                        <div class="input-group">
+                                            <input type="file" id="input_hero_image_2" class="form-control" accept="image/*">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('hero_image_2', 'input_hero_image_2', this)">Remplacer Image</button>
+                                        </div>
+                                    </div>
 
-            <!-- BLOC CYCLES SUPÉRIEURS (Bac+3 et Bac+5) -->
-            <div class="col-md-12 mb-4">
-                <h6 class="fw-bold border-bottom pb-2">Cycles Supérieurs & Partenariats</h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="small fw-bold text-primary">Badge global</label>
-                        <input type="text" id="input_form_sup_badge" class="form-control mb-2">
-                        <label class="small fw-bold">Titre Bachelor (Bac+3)</label>
-                        <input type="text" id="input_form_bachelor_titre" class="form-control mb-2">
-                        <label class="small fw-bold">Contenu Bachelor (Conditions, VAE, etc.)</label>
-                        <textarea id="input_form_bachelor_corps" class="form-control mb-2" rows="4"></textarea>
-                        <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_bachelor_corps', 'input_form_bachelor_corps', this)">Sauvegarder Bachelor</button>
+                                    <h6 class="form-section-title">Section "L'Institution EPCG"</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Titre de la section</label>
+                                        <div class="input-group">
+                                            <input type="text" id="input_accueil_about_titre" class="form-control" placeholder="Ex: L'Institution EPCG">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('accueil_about_titre', 'input_accueil_about_titre', this)">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Texte de présentation</label>
+                                        <textarea id="input_accueil_about_texte1" class="form-control mb-2" rows="3" placeholder="Écrivez le paragraphe principal de présentation de l'école..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_about_texte1', 'input_accueil_about_texte1', this)">Enregistrer le texte</button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold">Image de présentation (À côté du texte)</label>
+                                        <div class="input-group">
+                                            <input type="file" id="input_accueil_about_image" class="form-control" accept="image/*">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">Remplacer</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 border-start ps-md-4">
+                                    <h6 class="form-section-title">Aperçu des Formations (Les 3 Cartes)</h6>
+                                    
+                                    <div class="bg-light p-3 rounded mb-3">
+                                        <label class="small fw-bold text-primary">1. Carte Bac+2</label>
+                                        <input type="text" id="input_accueil_form_1_badge" class="form-control form-control-sm mb-2" placeholder="Badge (ex: Cycle Initial)">
+                                        <input type="text" id="input_accueil_form_1_titre" class="form-control form-control-sm mb-2" placeholder="Titre (ex: Technicien Spécialisé)">
+                                        <textarea id="input_accueil_form_1_desc" class="form-control form-control-sm mb-2" rows="2" placeholder="Courte description HTML..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_1_desc', 'input_accueil_form_1_desc', this)">Sauvegarder Carte 1</button>
+                                    </div>
+
+                                    <div class="bg-light p-3 rounded mb-3">
+                                        <label class="small fw-bold text-primary">2. Carte Bac+3</label>
+                                        <input type="text" id="input_accueil_form_2_badge" class="form-control form-control-sm mb-2" placeholder="Badge (ex: Cycle Supérieur)">
+                                        <input type="text" id="input_accueil_form_2_titre" class="form-control form-control-sm mb-2" placeholder="Titre (ex: Bachelor)">
+                                        <textarea id="input_accueil_form_2_desc" class="form-control form-control-sm mb-2" rows="2" placeholder="Courte description HTML..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_2_desc', 'input_accueil_form_2_desc', this)">Sauvegarder Carte 2</button>
+                                    </div>
+
+                                    <div class="bg-light p-3 rounded">
+                                        <label class="small fw-bold text-primary">3. Carte Bac+5</label>
+                                        <input type="text" id="input_accueil_form_3_badge" class="form-control form-control-sm mb-2" placeholder="Badge">
+                                        <input type="text" id="input_accueil_form_3_titre" class="form-control form-control-sm mb-2" placeholder="Titre">
+                                        <textarea id="input_accueil_form_3_desc" class="form-control form-control-sm mb-2" rows="2" placeholder="Courte description HTML..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('accueil_form_3_desc', 'input_accueil_form_3_desc', this)">Sauvegarder Carte 3</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label class="small fw-bold">Titre Mastère (Bac+5)</label>
-                        <input type="text" id="input_form_master_titre" class="form-control mb-2">
-                        <label class="small fw-bold">Contenu Mastère (Conditions, VAE, etc.)</label>
-                        <textarea id="input_form_master_corps" class="form-control mb-2" rows="4"></textarea>
-                        <button class="btn btn-sm btn-danger w-100 mt-md-5" onclick="sauvegarderTexte('form_master_corps', 'input_form_master_corps', this)">Sauvegarder Mastère</button>
+
+                    <!-- ACCORDÉON 3 : PAGE NOS FORMATIONS -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFormations">
+                                <i class="bi bi-journal-check me-3 fs-5"></i> 3. Page "Nos Formations" (Détail des diplômes et filières)
+                            </button>
+                        </h2>
+                        <div id="collapseFormations" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
+                            <div class="accordion-body row">
+                                
+                                <div class="col-md-6 border-end pe-md-4">
+                                    <h6 class="form-section-title">En-tête de la page Formations</h6>
+                                    <div class="mb-3">
+                                        <label class="small fw-bold">Titre de la page</label>
+                                        <input type="text" id="input_form_header_titre" class="form-control mb-2" placeholder="Ex: Nos Formations">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="small fw-bold">Slogan d'introduction</label>
+                                        <textarea id="input_form_header_desc" class="form-control mb-2" rows="2" placeholder="Ex: Tous pour une formation de qualité..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_header_desc', 'input_form_header_desc', this); sauvegarderTexte('form_header_titre', 'input_form_header_titre', this);">Enregistrer En-tête</button>
+                                    </div>
+
+                                    <h6 class="form-section-title">Section Cycle Initial (Bac+2)</h6>
+                                    <div class="bg-light p-3 rounded mb-4">
+                                        <input type="text" id="input_form_initial_badge" class="form-control mb-2" placeholder="Badge (ex: 2 ans)">
+                                        <input type="text" id="input_form_initial_titre" class="form-control mb-2" placeholder="Titre Principal">
+                                        <label class="small fw-bold mt-2">Détails (Utilisez le format HTML pour les puces &lt;li&gt;)</label>
+                                        <textarea id="input_form_initial_corps" class="form-control mb-2" rows="4"></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_initial_corps', 'input_form_initial_corps', this)">Enregistrer Section Bac+2</button>
+                                    </div>
+
+                                    <h6 class="form-section-title">Formation Continue & Entreprise</h6>
+                                    <div class="bg-light p-3 rounded mb-4">
+                                        <input type="text" id="input_form_certifiant_titre" class="form-control mb-2" placeholder="Titre de la section">
+                                        <textarea id="input_form_certifiant_desc" class="form-control mb-2" rows="4" placeholder="Texte de description..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_certifiant_desc', 'input_form_certifiant_desc', this)">Enregistrer Section Entreprise</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 ps-md-4">
+                                    <h6 class="form-section-title">Section Cycles Supérieurs (Bac+3 & Bac+5)</h6>
+                                    <div class="mb-3">
+                                        <label class="small fw-bold text-primary">Titre Global de la section</label>
+                                        <input type="text" id="input_form_sup_badge" class="form-control mb-3" placeholder="Ex: Cycles délocalisés...">
+                                    </div>
+                                    
+                                    <div class="bg-light p-3 rounded mb-3 border-start border-4 border-danger">
+                                        <label class="small fw-bold">Bloc Bachelor</label>
+                                        <input type="text" id="input_form_bachelor_titre" class="form-control mb-2" placeholder="Titre (ex: Bachelor)">
+                                        <textarea id="input_form_bachelor_corps" class="form-control mb-2" rows="3" placeholder="Détails HTML..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_bachelor_corps', 'input_form_bachelor_corps', this)">Enregistrer Bachelor</button>
+                                    </div>
+
+                                    <div class="bg-light p-3 rounded mb-4 border-start border-4 border-danger">
+                                        <label class="small fw-bold">Bloc Mastère</label>
+                                        <input type="text" id="input_form_master_titre" class="form-control mb-2" placeholder="Titre (ex: Mastère Professionnel)">
+                                        <textarea id="input_form_master_corps" class="form-control mb-2" rows="3" placeholder="Détails HTML..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_master_corps', 'input_form_master_corps', this)">Enregistrer Mastère</button>
+                                    </div>
+
+                                    <h6 class="form-section-title">Cartes des Domaines d'études (Filières)</h6>
+                                    <div class="mb-3">
+                                        <input type="text" id="input_form_domaines_titre" class="form-control mb-2" placeholder="Titre (Ex: Domaines couverts...)">
+                                        <label class="small fw-bold text-muted mt-2">Code HTML de la grille des domaines</label>
+                                        <textarea id="input_form_domaines_corps" class="form-control mb-2" rows="5" placeholder="Ne modifiez que le texte à l'intérieur des balises <h5>...</h5>"></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('form_domaines_corps', 'input_form_domaines_corps', this)">Enregistrer la Grille</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- DOMAINES D'ÉTUDES -->
-            <div class="col-md-6 mb-4">
-                <h6 class="fw-bold border-bottom pb-2">Domaines d'études</h6>
-                <label class="small fw-bold">Titre de la section</label>
-                <input type="text" id="input_form_domaines_titre" class="form-control mb-2">
-                <label class="small fw-bold text-muted">Contenu HTML des cartes de domaines</label>
-                <textarea id="input_form_domaines_corps" class="form-control mb-2" rows="6" placeholder="Copier-coller le HTML des <div class='col-md-4...'> ici"></textarea>
-                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_domaines_corps', 'input_form_domaines_corps', this)">Sauvegarder Domaines</button>
-            </div>
+                    <!-- ACCORDÉON 4 : PAGE CONTACT -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact">
+                                <i class="bi bi-telephone-inbound me-3 fs-5"></i> 4. Page "Contact" (En-tête et carte de visite)
+                            </button>
+                        </h2>
+                        <div id="collapseContact" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
+                            <div class="accordion-body row">
+                                
+                                <div class="col-md-6">
+                                    <h6 class="form-section-title">En-tête de la page Contact</h6>
+                                    <div class="mb-3">
+                                        <label class="small fw-bold">Titre principal</label>
+                                        <input type="text" id="input_contact_header_titre" class="form-control mb-2" placeholder="Ex: Contactez-Nous">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="small fw-bold">Slogan sous le titre</label>
+                                        <textarea id="input_contact_header_desc" class="form-control mb-2" rows="2" placeholder="Ex: Notre équipe est à votre écoute..."></textarea>
+                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_header_titre', 'input_contact_header_titre', this); sauvegarderTexte('contact_header_desc', 'input_contact_header_desc', this);">Enregistrer En-tête</button>
+                                    </div>
+                                </div>
 
-            <!-- FORMATIONS INTRA-ENTREPRISE -->
-            <div class="col-md-6 mb-4">
-                <h6 class="fw-bold border-bottom pb-2">Formation Continue & Intra-entreprise</h6>
-                <label class="small fw-bold">Titre de la section</label>
-                <input type="text" id="input_form_certifiant_titre" class="form-control mb-2">
-                <label class="small fw-bold">Texte de présentation</label>
-                <textarea id="input_form_certifiant_desc" class="form-control mb-2" rows="6"></textarea>
-                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_certifiant_desc', 'input_form_certifiant_desc', this)">Sauvegarder Section Entreprise</button>
-            </div>
-        </div>
-    </div>
-</div>
-                    <!-- NOUVEAU BLOC : PAGE CONTACT & COORDONNÉES -->
-<div class="col-12 mt-4">
-    <div class="table-container p-4 bg-light">
-        <h6 class="fw-bold border-bottom pb-2 text-danger">Informations de la Page Contact</h6>
-        <div class="row g-3">
-            
-            <div class="col-md-12 mb-3">
-                <label class="small fw-bold">Titre principal de la page Contact</label>
-                <input type="text" id="input_contact_header_titre" class="form-control mb-2">
-                <label class="small fw-bold">Sous-titre (Slogan)</label>
-                <textarea id="input_contact_header_desc" class="form-control mb-2" rows="2"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_header_titre', 'input_contact_header_titre', this); sauvegarderTexte('contact_header_desc', 'input_contact_header_desc', this);">Enregistrer En-tête</button>
-            </div>
+                                <div class="col-md-6">
+                                    <h6 class="form-section-title">Coordonnées affichées (Boîte rouge)</h6>
+                                    <p class="small text-muted mb-3">Ces informations s'affichent spécifiquement dans le grand bloc rouge sur la page Contact.</p>
+                                    
+                                    <div class="mb-3">
+                                        <label class="small fw-bold">Adresse</label>
+                                        <textarea id="input_contact_adresse" class="form-control mb-2" rows="2"></textarea>
+                                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="sauvegarderTexte('contact_adresse', 'input_contact_adresse', this)">Enregistrer</button>
+                                    </div>
 
-            <!-- Coordonnées Boîte Contact -->
-            <div class="col-md-4">
-                <label class="small fw-bold">Adresse (Page Contact)</label>
-                <textarea id="input_contact_adresse" class="form-control mb-2" rows="3"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_adresse', 'input_contact_adresse', this)">Enregistrer Adresse</button>
-            </div>
+                                    <div class="mb-3">
+                                        <label class="small fw-bold">Téléphones</label>
+                                        <textarea id="input_contact_tel" class="form-control mb-2" rows="2"></textarea>
+                                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="sauvegarderTexte('contact_tel', 'input_contact_tel', this)">Enregistrer</button>
+                                    </div>
 
-            <div class="col-md-4">
-                <label class="small fw-bold">Téléphones (Page Contact)</label>
-                <textarea id="input_contact_tel" class="form-control mb-2" rows="3"></textarea>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_tel', 'input_contact_tel', this)">Enregistrer Téléphones</button>
-            </div>
+                                    <div class="mb-3">
+                                        <label class="small fw-bold">Email</label>
+                                        <input type="text" id="input_contact_email" class="form-control mb-2">
+                                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="sauvegarderTexte('contact_email', 'input_contact_email', this)">Enregistrer</button>
+                                    </div>
+                                </div>
 
-            <div class="col-md-4">
-                <label class="small fw-bold">Email (Page Contact)</label>
-                <input type="text" id="input_contact_email" class="form-control mb-2">
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('contact_email', 'input_contact_email', this)">Enregistrer Email</button>
-            </div>
-            
-        </div>
-    </div>
-</div>
-                </div>
-            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- Fin Accordion -->
+            </div> <!-- Fin Tab Contenu -->
 
         </div>
     </div>
@@ -465,7 +479,7 @@
             if(window.innerWidth < 992) { toggleSidebar(); }
             
             if(tab === 'media') fetchGallery();
-            if(tab === 'contenu') fetchContenu();
+            if(tab === 'contenu') fetchContenu(); // Charge les textes existants quand on ouvre l'onglet
         }
 
         // --- AUTHENTIFICATION ---
@@ -539,7 +553,7 @@
                 fileInput.value = "";
                 fetchGallery();
             }
-            btn.innerHTML = 'Publier';
+            btn.innerHTML = 'Publier sur le site';
             btn.disabled = false;
         }
 
@@ -569,7 +583,7 @@
         }
 
         async function deleteMedia(id, url) {
-            if(confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
+            if(confirm('Êtes-vous sûr de vouloir supprimer ce fichier du site ?')) {
                 try {
                     await _supabase.from('gallery').delete().eq('id', id);
                     const fileName = url.split('/').pop();
@@ -586,7 +600,7 @@
             if (data) {
                 data.forEach(item => {
                     const inputElement = document.getElementById('input_' + item.cle_position);
-                    if (inputElement && item.type === 'texte') {
+                    if (inputElement && (item.type === 'texte' || item.type === 'html')) {
                         inputElement.value = item.valeur;
                     }
                 });
@@ -605,14 +619,18 @@
             );
 
             if (error) {
-                alert("Erreur : Vérifiez que 'cle_position' est bien défini comme clé primaire (Primary Key) dans Supabase. \n" + error.message);
+                alert("Erreur de sauvegarde. \n" + error.message);
                 btn.innerHTML = texteInitial;
             } else {
                 btn.innerHTML = '<i class="bi bi-check-lg"></i> Enregistré';
                 btn.classList.replace('btn-outline-danger', 'btn-success');
+                btn.classList.replace('btn-outline-secondary', 'btn-success'); // Pour les boutons gris
                 setTimeout(() => {
                     btn.innerHTML = texteInitial;
-                    btn.classList.replace('btn-success', 'btn-outline-danger');
+                    btn.classList.remove('btn-success');
+                    if (texteInitial.includes("Enregistrer")) {
+                        btn.classList.add(btn.className.includes('w-100') && !btn.className.includes('btn-outline-danger') ? 'btn-outline-secondary' : 'btn-outline-danger');
+                    }
                 }, 2000);
             }
             btn.disabled = false;
@@ -624,7 +642,7 @@
             const file = fileInput.files[0];
             const texteInitial = btn.innerHTML;
 
-            if (!file) return alert("Veuillez d'abord sélectionner une image sur votre appareil.");
+            if (!file) return alert("Veuillez d'abord sélectionner une image sur votre ordinateur.");
 
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Upload...';
             btn.disabled = true;
@@ -646,7 +664,7 @@
             );
 
             if (upsertError) {
-                alert("Erreur de sauvegarde : " + upsertError.message);
+                alert("Erreur de mise à jour du site : " + upsertError.message);
                 btn.innerHTML = texteInitial;
             } else {
                 btn.innerHTML = '<i class="bi bi-check-lg"></i> Modifié !';
@@ -660,13 +678,13 @@
             btn.disabled = false;
         }
 
-        // --- NOUVELLE FONCTION : GESTION MIXTE (IMAGE OU VIDÉO) POUR LE SLIDER ---
+        // --- GESTION MIXTE (IMAGE OU VIDÉO) POUR LE SLIDER ---
         async function sauvegarderSliderMedia(cle, inputId, btn) {
             const fileInput = document.getElementById(inputId);
             const file = fileInput.files[0];
             const texteInitial = btn.innerHTML;
 
-            if (!file) return alert("Veuillez d'abord sélectionner un fichier (image ou vidéo) sur votre appareil.");
+            if (!file) return alert("Veuillez d'abord sélectionner un fichier (image ou vidéo).");
 
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Upload...';
             btn.disabled = true;
@@ -675,7 +693,7 @@
             const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
 
             if (uploadError) {
-                alert("Erreur lors de l'envoi du fichier : " + uploadError.message);
+                alert("Erreur : " + uploadError.message);
                 btn.innerHTML = texteInitial;
                 btn.disabled = false;
                 return;
@@ -685,9 +703,9 @@
 
             let htmlContent = "";
             if (file.type.startsWith('video/')) {
-                htmlContent = `<video class="d-block w-100" autoplay muted loop playsinline><source src="${publicUrl}" type="${file.type}"></video>`;
+                htmlContent = `<video class="d-block w-100 h-100" autoplay muted loop playsinline><source src="${publicUrl}" type="${file.type}"></video>`;
             } else {
-                htmlContent = `<img src="${publicUrl}" class="d-block w-100" alt="Slide 1">`;
+                htmlContent = `<img src="${publicUrl}" class="d-block w-100 h-100" style="object-fit: contain; background-color: #ffffff;" alt="Slide 1">`;
             }
 
             const { error: upsertError } = await _supabase.from('contenu_site').upsert(
