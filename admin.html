@@ -302,6 +302,46 @@
         </div>
     </div>
 </div>
+                    <!-- SECTION ÉDITION COMPLÈTE PAGE FORMATIONS -->
+<div class="col-12">
+    <div class="table-container p-4">
+        <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-journal-check me-2"></i>Contenu détaillé - Page Formations</h5>
+        
+        <div class="row">
+            <!-- BLOC BAC +2 -->
+            <div class="col-md-6 mb-4">
+                <h6 class="fw-bold border-bottom pb-2">Section Bac +2</h6>
+                <label class="small fw-bold">Badge</label>
+                <input type="text" id="input_form_initial_badge" class="form-control mb-2">
+                <label class="small fw-bold">Titre</label>
+                <input type="text" id="input_form_initial_titre" class="form-control mb-2">
+                <label class="small fw-bold">Texte & Liste (HTML)</label>
+                <textarea id="input_form_initial_desc" class="form-control mb-2" rows="4"></textarea>
+                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_initial_desc', 'input_form_initial_desc', this)">Sauvegarder Bac+2</button>
+            </div>
+
+            <!-- BLOC BAC +3 -->
+            <div class="col-md-6 mb-4">
+                <h6 class="fw-bold border-bottom pb-2">Section Bac +3</h6>
+                <label class="small fw-bold">Titre Bachelor</label>
+                <input type="text" id="input_form_bachelor_titre" class="form-control mb-2">
+                <label class="small fw-bold">Description Bachelor</label>
+                <textarea id="input_form_bachelor_corps" class="form-control mb-2" rows="4"></textarea>
+                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_bachelor_corps', 'input_form_bachelor_corps', this)">Sauvegarder Bac+3</button>
+            </div>
+
+            <!-- BLOC FORMATION ENTREPRISE -->
+            <div class="col-12">
+                <h6 class="fw-bold border-bottom pb-2">Section Entreprise & Certifications</h6>
+                <label class="small fw-bold">Titre Section</label>
+                <input type="text" id="input_form_certifiant_titre" class="form-control mb-2">
+                <label class="small fw-bold">Sous-titre / Description</label>
+                <textarea id="input_form_certifiant_desc" class="form-control mb-2" rows="3"></textarea>
+                <button class="btn btn-sm btn-danger w-100" onclick="sauvegarderTexte('form_certifiant_desc', 'input_form_certifiant_desc', this)">Sauvegarder Section Entreprise</button>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
 
