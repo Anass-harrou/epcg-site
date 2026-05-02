@@ -45,7 +45,6 @@
         .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s;}
         .btn-epcg:hover { background-color: #7a151a; color: white; }
 
-        /* RESPONSIVE (Tablettes & Mobiles) */
         @media (max-width: 991px) {
             .mobile-header { display: flex; }
             .sidebar { transform: translateX(-100%); width: 280px; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
@@ -86,7 +85,6 @@
             </button>
         </div>
 
-        <!-- OVERLAY MOBILE -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
         <!-- SIDEBAR -->
@@ -105,7 +103,6 @@
                 <li class="nav-item mt-2">
                     <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Multimédia</a>
                 </li>
-                <!-- ONGLET : TEXTES DU SITE -->
                 <li class="nav-item mt-2">
                     <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Textes & Images</a>
                 </li>
@@ -161,9 +158,7 @@
 
                 <div class="table-container p-3 p-md-4">
                     <h5>Fichiers en ligne</h5>
-                    <div id="media-gallery" class="row g-3 mt-2">
-                        <!-- Les miniatures s'afficheront ici -->
-                    </div>
+                    <div id="media-gallery" class="row g-3 mt-2"></div>
                 </div>
             </div>
 
@@ -172,12 +167,11 @@
                 <h2 class="fw-bold mb-4">Modifier le contenu du site</h2>
 
                 <div class="row g-4">
-                    <!-- BLOC : PAGE ACCUEIL -->
+                    <!-- BLOC 1 : PAGE ACCUEIL (TEXTES) -->
                     <div class="col-12 col-xl-6">
                         <div class="table-container p-4 h-100">
-                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-house me-2"></i>Page Accueil</h5>
+                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-fonts me-2"></i>Textes Page Accueil</h5>
                             
-                            <!-- Titre -->
                             <div class="mb-4">
                                 <label class="form-label small text-muted fw-bold">Titre de la section "À propos"</label>
                                 <div class="input-group">
@@ -186,28 +180,15 @@
                                 </div>
                             </div>
 
-                            <!-- Texte -->
                             <div class="mb-3">
                                 <label class="form-label small text-muted fw-bold">Premier paragraphe "À propos"</label>
                                 <textarea id="input_accueil_about_texte1" class="form-control mb-2" rows="4"></textarea>
                                 <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderTexte('accueil_about_texte1', 'input_accueil_about_texte1', this)">Enregistrer le paragraphe</button>
                             </div>
-
-                            <hr class="my-4">
-                            
-                            <!-- Image -->
-                            <div class="mb-3">
-                                <label class="form-label small text-muted fw-bold">Image de la section "À propos"</label>
-                                <input type="file" id="input_accueil_about_image" class="form-control mb-2" accept="image/*">
-                                <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">
-                                    <i class="bi bi-image"></i> Remplacer l'image
-                                </button>
-                                <small class="text-muted" style="font-size: 11px;">Cette image remplacera l'image par défaut sur la page d'accueil.</small>
-                            </div>
                         </div>
                     </div>
 
-                    <!-- BLOC : PIED DE PAGE (FOOTER) -->
+                    <!-- BLOC 2 : PIED DE PAGE (CONTACT) -->
                     <div class="col-12 col-xl-6">
                         <div class="table-container p-4 h-100">
                             <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-layout-text-window-reverse me-2"></i>Pied de page (Contact)</h5>
@@ -235,6 +216,65 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- BLOC 3 : LOGOS (IDENTITE VISUELLE) -->
+                    <div class="col-12 col-xl-6">
+                        <div class="table-container p-4 h-100">
+                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-stars me-2"></i>Logos de l'école</h5>
+                            
+                            <div class="mb-4">
+                                <label class="form-label small text-muted fw-bold">Logo principal (Barre de navigation)</label>
+                                <input type="file" id="input_logo_navbar" class="form-control mb-2" accept="image/*">
+                                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderImagePosition('logo_navbar', 'input_logo_navbar', this)">
+                                    <i class="bi bi-image"></i> Remplacer le Logo Haut
+                                </button>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small text-muted fw-bold">Logo Pied de page (Footer)</label>
+                                <input type="file" id="input_logo_footer" class="form-control mb-2" accept="image/*">
+                                <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderImagePosition('logo_footer', 'input_logo_footer', this)">
+                                    <i class="bi bi-image"></i> Remplacer le Logo Bas
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLOC 4 : IMAGES DU SITE (SLIDER, ABOUT, CAMPUS) -->
+                    <div class="col-12 col-xl-6">
+                        <div class="table-container p-4 h-100">
+                            <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-images me-2"></i>Images des sections</h5>
+                            
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="form-label small text-muted fw-bold">Image "Slider Accueil"</label>
+                                    <input type="file" id="input_hero_image_2" class="form-control form-control-sm mb-1" accept="image/*">
+                                    <button class="btn btn-sm btn-outline-danger w-100 py-1" onclick="sauvegarderImagePosition('hero_image_2', 'input_hero_image_2', this)">Remplacer</button>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small text-muted fw-bold">Image "À propos"</label>
+                                    <input type="file" id="input_accueil_about_image" class="form-control form-control-sm mb-1" accept="image/*">
+                                    <button class="btn btn-sm btn-outline-danger w-100 py-1" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">Remplacer</button>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label small text-muted fw-bold">Image Tanger</label>
+                                    <input type="file" id="input_site_1_image" class="form-control form-control-sm mb-1" accept="image/*">
+                                    <button class="btn btn-sm btn-outline-danger w-100 py-1" onclick="sauvegarderImagePosition('site_1_image', 'input_site_1_image', this)">Changer</button>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label small text-muted fw-bold">Image Plaza</label>
+                                    <input type="file" id="input_site_2_image" class="form-control form-control-sm mb-1" accept="image/*">
+                                    <button class="btn btn-sm btn-outline-danger w-100 py-1" onclick="sauvegarderImagePosition('site_2_image', 'input_site_2_image', this)">Changer</button>
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label small text-muted fw-bold">Image Mesnana</label>
+                                    <input type="file" id="input_site_3_image" class="form-control form-control-sm mb-1" accept="image/*">
+                                    <button class="btn btn-sm btn-outline-danger w-100 py-1" onclick="sauvegarderImagePosition('site_3_image', 'input_site_3_image', this)">Changer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -428,7 +468,7 @@
 
             if (!file) return alert("Veuillez d'abord sélectionner une image sur votre appareil.");
 
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Téléchargement...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Upload...';
             btn.disabled = true;
 
             const fileName = `contenu_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
@@ -451,7 +491,7 @@
                 alert("Erreur de sauvegarde : " + upsertError.message);
                 btn.innerHTML = texteInitial;
             } else {
-                btn.innerHTML = '<i class="bi bi-check-lg"></i> Image modifiée !';
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Modifié !';
                 btn.classList.replace('btn-outline-danger', 'btn-success');
                 setTimeout(() => {
                     btn.innerHTML = texteInitial;
