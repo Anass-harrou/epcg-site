@@ -105,9 +105,9 @@
                 <li class="nav-item mt-2">
                     <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Multimédia</a>
                 </li>
-                <!-- NOUVEL ONGLET : TEXTES DU SITE -->
+                <!-- ONGLET : TEXTES DU SITE -->
                 <li class="nav-item mt-2">
-                    <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Textes du site</a>
+                    <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Textes & Images</a>
                 </li>
                 
                 <li class="nav-item mt-5">
@@ -169,7 +169,7 @@
 
             <!-- TAB 3: CONTENU DU SITE -->
             <div id="tab-contenu" style="display: none;">
-                <h2 class="fw-bold mb-4">Modifier les textes du site</h2>
+                <h2 class="fw-bold mb-4">Modifier le contenu du site</h2>
 
                 <div class="row g-4">
                     <!-- BLOC : PAGE ACCUEIL -->
@@ -177,6 +177,7 @@
                         <div class="table-container p-4 h-100">
                             <h5 class="mb-4 text-primary fw-bold"><i class="bi bi-house me-2"></i>Page Accueil</h5>
                             
+                            <!-- Titre -->
                             <div class="mb-4">
                                 <label class="form-label small text-muted fw-bold">Titre de la section "À propos"</label>
                                 <div class="input-group">
@@ -185,10 +186,23 @@
                                 </div>
                             </div>
 
+                            <!-- Texte -->
                             <div class="mb-3">
                                 <label class="form-label small text-muted fw-bold">Premier paragraphe "À propos"</label>
-                                <textarea id="input_accueil_about_texte1" class="form-control mb-2" rows="5"></textarea>
+                                <textarea id="input_accueil_about_texte1" class="form-control mb-2" rows="4"></textarea>
                                 <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderTexte('accueil_about_texte1', 'input_accueil_about_texte1', this)">Enregistrer le paragraphe</button>
+                            </div>
+
+                            <hr class="my-4">
+                            
+                            <!-- Image -->
+                            <div class="mb-3">
+                                <label class="form-label small text-muted fw-bold">Image de la section "À propos"</label>
+                                <input type="file" id="input_accueil_about_image" class="form-control mb-2" accept="image/*">
+                                <button class="btn btn-sm btn-outline-danger w-100 py-2" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">
+                                    <i class="bi bi-image"></i> Remplacer l'image
+                                </button>
+                                <small class="text-muted" style="font-size: 11px;">Cette image remplacera l'image par défaut sur la page d'accueil.</small>
                             </div>
                         </div>
                     </div>
@@ -303,7 +317,7 @@
             }
         }
 
-        // --- GESTION DU STORAGE (UPLOAD) ---
+        // --- GESTION DU STORAGE (UPLOAD GALERIE) ---
         async function uploadMedia() {
             const fileInput = document.getElementById('media-file');
             const file = fileInput.files[0];
@@ -356,7 +370,6 @@
             }
         }
 
-        // --- SUPPRIMER UN MEDIA ---
         async function deleteMedia(id, url) {
             if(confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
                 try {
@@ -375,7 +388,7 @@
             if (data) {
                 data.forEach(item => {
                     const inputElement = document.getElementById('input_' + item.cle_position);
-                    if (inputElement) {
+                    if (inputElement && item.type === 'texte') {
                         inputElement.value = item.valeur;
                     }
                 });
@@ -403,6 +416,48 @@
                     btn.innerHTML = texteInitial;
                     btn.classList.replace('btn-success', 'btn-outline-danger');
                 }, 2000);
+            }
+            btn.disabled = false;
+        }
+
+        // --- GESTION DES IMAGES SPECIFIQUES DU SITE ---
+        async function sauvegarderImagePosition(cle, inputId, btn) {
+            const fileInput = document.getElementById(inputId);
+            const file = fileInput.files[0];
+            const texteInitial = btn.innerHTML;
+
+            if (!file) return alert("Veuillez d'abord sélectionner une image sur votre appareil.");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Téléchargement...';
+            btn.disabled = true;
+
+            const fileName = `contenu_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
+
+            if (uploadError) {
+                alert("Erreur lors de l'envoi de l'image : " + uploadError.message);
+                btn.innerHTML = texteInitial;
+                btn.disabled = false;
+                return;
+            }
+
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+
+            const { error: upsertError } = await _supabase.from('contenu_site').upsert(
+                { cle_position: cle, valeur: publicUrl, type: 'image_url' }
+            );
+
+            if (upsertError) {
+                alert("Erreur de sauvegarde : " + upsertError.message);
+                btn.innerHTML = texteInitial;
+            } else {
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Image modifiée !';
+                btn.classList.replace('btn-outline-danger', 'btn-success');
+                setTimeout(() => {
+                    btn.innerHTML = texteInitial;
+                    btn.classList.replace('btn-success', 'btn-outline-danger');
+                    fileInput.value = ""; 
+                }, 2500);
             }
             btn.disabled = false;
         }
