@@ -159,8 +159,8 @@
         /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
             .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
-            .navbar-brand img { max-height: 45px !important; width: auto; max-width: 70vw; }
-            .navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
+            /* Sur mobile, on agrandit aussi la hauteur pour que le texte reste lisible */
+.navbar-brand img { max-height: 60px !important; width: auto; max-width: 75vw !important; object-fit: contain; }.navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
             .navbar-toggler:focus { box-shadow: none !important; outline: none !important; }
             .navbar-collapse { background: rgba(255, 255, 255, 0.98); padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 15px; position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; }
         }
