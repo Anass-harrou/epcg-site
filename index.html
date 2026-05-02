@@ -43,16 +43,11 @@
         .navbar-nav .nav-link.active-link { background-color: var(--primary-color) !important; color: white !important; border-radius: 8px; padding-left: 15px !important; padding-right: 15px !important; }
 
         /* HERO CAROUSEL */
-        .hero-carousel-section { height: 85vh; background-color: #000; position: relative; }
+        
+        .hero-carousel-section { height: 85vh; background-color: #ffffff; position: relative; }
         .carousel-item { height: 85vh; }
-        .carousel-item img, .carousel-item video { height: 100%; width: 100%; object-fit: contain; opacity: 0.65; transition: transform 10s ease; background-color: #000; }
-        .carousel-item.active img { transform: scale(1.05); }
-        .carousel-caption { top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
-        .slider-title { font-family: 'Roboto Slab', serif; font-size: 4rem; font-weight: 700; letter-spacing: 18px; text-transform: uppercase; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); margin-bottom: 15px; margin-right: -18px; }
-        .slider-subtitle { font-size: 1.5rem; font-weight: 400; letter-spacing: 2px; margin-bottom: 40px; text-shadow: 1px 2px 5px rgba(0,0,0,0.5); }
-        .slider-btn { border: 2px solid white; color: white; padding: 14px 40px; font-weight: 600; background: transparent; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 4px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .slider-btn:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-
+        /* Opacité remise à 1, object-fit sur contain, fond blanc, et retrait de l'effet de zoom */
+        .carousel-item img, .carousel-item video { height: 100%; width: 100%; object-fit: contain; opacity: 1; background-color: #ffffff; }
         /* SECTIONS GLOBALES */
         .section-padding { padding: 90px 0; }
         .section-title { color: var(--secondary-color); font-weight: 700; font-size: 36px; margin-bottom: 50px; text-transform: uppercase; position: relative; padding-bottom: 15px; }
