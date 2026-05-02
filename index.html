@@ -42,13 +42,8 @@
         .navbar-brand { width: 55%; margin-right: auto; }
         
         /* L'image s'adapte parfaitement à ce grand espace, collée à gauche */
-        .navbar-brand img { 
-            max-height: 90px; 
-            width: 100%; 
-            object-fit: contain; 
-            object-position: left center; /* Magique : colle l'image à gauche ! */
-            transition: transform 0.3s ease; 
-        }
+        .navbar-brand img { max-height: 75px; width: auto; transition: transform 0.3s ease; }
+#navbar_slogan { line-height: 1.2; color: var(--secondary-color) !important; }
         .navbar-brand:hover img { transform: scale(1.02); }
         
         .navbar-nav .nav-link { 
@@ -224,10 +219,15 @@
 
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
-            <a class="navbar-brand" href="index.html">
-                <!-- ID DYNAMIQUE : LOGO NAVBAR -->
-                <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-            </a>
+            <div class="d-flex align-items-center flex-grow-1">
+    <a class="navbar-brand" href="index.html">
+        <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+    </a>
+    <!-- ESPACE VIDE REMPLI PAR LE TEXTE DYNAMIQUE -->
+    <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+        École Professionnelle de Commerce et de Gestion - Tanger
+    </div>
+</div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
