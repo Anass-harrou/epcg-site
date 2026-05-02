@@ -21,7 +21,7 @@
         }
 
        html {
-            scroll-behavior: smooth; /* C'est cette ligne qui fait la magie du glissement ! */
+            scroll-behavior: smooth; /* Glissement fluide pour la flèche */
        }
        html, body {
             max-width: 100%;
@@ -32,17 +32,53 @@
             font-family: 'Roboto', sans-serif;
             color: var(--text-color);
             background-color: #ffffff;
-            padding-top: 80px;
+            padding-top: 115px; /* Espace de sécurité pour le grand logo */
         }
         
         /* NAVBAR */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
-       /* On augmente la hauteur à 85px et on autorise une grande largeur (jusqu'à 400px) */
-.navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: transform 0.3s ease; }.navbar-brand:hover img { transform: scale(1.02); }
-        .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; }
+        /* On ajoute une transition douce sur le "transform" pour l'effet d'apparition/disparition */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; }
         
+        /* Classe ajoutée par JavaScript pour cacher la barre vers le haut */
+        .navbar-hidden { transform: translateY(-100%); }
+
+        .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: transform 0.3s ease; }
+        .navbar-brand:hover img { transform: scale(1.02); }
+        
+        /* LIENS DE LA NAVBAR & ANIMATION DE SOULIGNEMENT */
+        .navbar-nav .nav-link { 
+            font-weight: 600; 
+            color: var(--secondary-color); 
+            text-transform: uppercase; 
+            font-size: 13px; 
+            letter-spacing: 0.5px; 
+            padding: 10px 15px !important; 
+            transition: color 0.3s ease; 
+            position: relative; /* Indispensable pour positionner le trait */
+        }
+        
+        /* Création du trait invisible au départ */
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 5px;
+            left: 50%;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
         .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
-        .navbar-nav .nav-link.active-link { background-color: var(--primary-color) !important; color: white !important; border-radius: 8px; padding-left: 15px !important; padding-right: 15px !important; }
+        
+        /* Affichage du trait au survol ou si le lien est actif */
+        .navbar-nav .nav-link:hover::after, 
+        .navbar-nav .nav-link.active-link::after {
+            width: 70%; /* Le trait prend 70% de la largeur du texte */
+        }
+        
+        .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; background: transparent !important; }
 
         /* HERO CAROUSEL NOUVEAU DESIGN */
         .hero-carousel-section { height: 85vh; background-color: #ffffff; position: relative; }
@@ -61,17 +97,17 @@
         .slider-btn { border: 2px solid white; color: white; padding: 12px 35px; font-weight: 600; font-size: 1rem; background: transparent; text-decoration: none; text-transform: uppercase; transition: all 0.3s ease; }
         .slider-btn:hover { background: white; color: black; text-decoration: none; }
 
-        /* FLÈCHES DU SLIDER AVEC MINIATURES (Style Groupe Iki) */
+        /* FLÈCHES DU SLIDER AVEC MINIATURES */
         .carousel-control-prev, .carousel-control-next { width: 8%; opacity: 1; z-index: 20;}
         .carousel-control-prev-icon, .carousel-control-next-icon { 
-            background-color: rgba(180, 180, 180, 0.5); /* Cercle gris par défaut */
+            background-color: rgba(180, 180, 180, 0.5);
             border-radius: 50%;
             width: 60px;
             height: 60px;
             background-position: center, center, center;
             background-repeat: no-repeat, no-repeat, no-repeat;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Effet de rebond */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(2px);
         }
         
@@ -80,7 +116,7 @@
         
         .carousel-control-prev:hover .carousel-control-prev-icon, 
         .carousel-control-next:hover .carousel-control-next-icon { 
-            transform: scale(1.15); /* S'agrandit au survol */
+            transform: scale(1.15);
             background-color: rgba(180, 180, 180, 0.9);
         }
 
@@ -149,6 +185,7 @@
 
         /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
+            body { padding-top: 85px; } /* Moins d'espace nécessaire sur mobile */
             .slider-title { font-size: 1.8rem; }
             .slider-subtitle { font-size: 1.1rem; margin-bottom: 25px; }
             .section-padding { padding: 60px 0; }
@@ -158,11 +195,14 @@
         
         /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
+            .navbar-brand img { max-height: 60px !important; width: auto; max-width: 75vw !important; object-fit: contain; }
             .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
-            /* Sur mobile, on agrandit aussi la hauteur pour que le texte reste lisible */
-.navbar-brand img { max-height: 60px !important; width: auto; max-width: 75vw !important; object-fit: contain; }.navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
+            .navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
             .navbar-toggler:focus { box-shadow: none !important; outline: none !important; }
             .navbar-collapse { background: rgba(255, 255, 255, 0.98); padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 15px; position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; }
+            
+            /* Sur mobile, on garde l'animation mais on ajuste le soulignement au centre */
+            .navbar-nav .nav-link::after { bottom: 0; }
         }
     </style>
 </head>
@@ -233,8 +273,7 @@
                 <span class="carousel-control-next-icon"></span>
             </button>
             
-            <!-- Flèche de continuation (scroll) -->
-            <!-- Flèche de continuation (scroll) -->
+            <!-- Flèche de continuation (scroll vers l'ancre #about) -->
             <a href="#about" class="scroll-down-arrow" style="cursor: pointer; text-decoration: none;">
                 <i class="bi bi-chevron-down"></i>
             </a>
@@ -450,6 +489,23 @@
             });
         });
 
+        // --- NAVBAR AUTO-HIDE (SMART STICKY) ---
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar-custom');
+        
+        window.addEventListener('scroll', function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Si on scrolle vers le bas et qu'on a dépassé 100px (pour éviter que ça saute tout en haut)
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                navbar.classList.add('navbar-hidden');
+            } else {
+                // Si on remonte ou qu'on est tout en haut
+                navbar.classList.remove('navbar-hidden');
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        });
+
         // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
@@ -490,7 +546,6 @@
                 if (item.classList.contains('active')) activeIndex = index;
             });
 
-            // Calcule la slide précédente et la slide suivante
             const prevIndex = (activeIndex === 0) ? items.length - 1 : activeIndex - 1;
             const nextIndex = (activeIndex === items.length - 1) ? 0 : activeIndex + 1;
 
@@ -500,11 +555,9 @@
             const prevIcon = document.querySelector('.carousel-control-prev-icon');
             const nextIcon = document.querySelector('.carousel-control-next-icon');
 
-            // Icônes des flèches en SVG blanc
             const svgPrev = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e\")";
             const svgNext = "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e\")";
 
-            // Mise à jour Flèche Gauche
             if (prevImg) {
                 prevIcon.style.backgroundImage = `${svgPrev}, linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${prevImg.src}')`;
                 prevIcon.style.backgroundSize = '40%, cover, cover';
@@ -513,7 +566,6 @@
                 prevIcon.style.backgroundSize = '40%';
             }
 
-            // Mise à jour Flèche Droite
             if (nextImg) {
                 nextIcon.style.backgroundImage = `${svgNext}, linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${nextImg.src}')`;
                 nextIcon.style.backgroundSize = '40%, cover, cover';
@@ -523,7 +575,6 @@
             }
         }
 
-        // Met à jour les miniatures à chaque défilement du slider
         const myCarousel = document.getElementById('mainHeroCarousel');
         myCarousel.addEventListener('slid.bs.carousel', updateSliderThumbnails);
 
@@ -542,8 +593,6 @@
                     }
                 });
             }
-            
-            // Une fois que les images dynamiques sont chargées, on met à jour les boutons du Slider
             updateSliderThumbnails();
         }
 
