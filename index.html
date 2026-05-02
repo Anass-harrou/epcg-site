@@ -20,9 +20,17 @@
             --bg-light: #fcfcfc;
         }
 
-        body { font-family: 'Roboto', sans-serif; color: var(--text-color); background-color: #ffffff; overflow-x: hidden; padding-top: 80px; }
-        h1, h2, h3, h4, .font-slab { font-family: 'Roboto Slab', serif; }
+       html, body {
+            max-width: 100%;
+            overflow-x: hidden; /* Empêche tout élément de déborder sur la droite */
+        }
 
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            background-color: #ffffff;
+            padding-top: 80px;
+        }
         /* NAVBAR */
         .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
         .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease; }
