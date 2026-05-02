@@ -23,7 +23,7 @@
         body { font-family: 'Roboto', sans-serif; color: var(--text-color); padding-top: 115px; background-color: #ffffff; }
         h1, h2, h3, h4 { font-family: 'Roboto Slab', serif; }
 
-        /* NAVBAR UNIFORMISÉE */
+        /* NAVBAR SMART STICKY */
         .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s ease; z-index: 1050; }
         .navbar-hidden { transform: translateY(-100%); }
         .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: 0.3s; }
@@ -50,15 +50,15 @@
         .formation-section { padding: 90px 0; }
         .bg-grey { background-color: #f8f9fa; }
         .cycle-badge { background-color: var(--primary-color); color: white; padding: 8px 20px; border-radius: 30px; font-weight: 600; display: inline-block; margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem;}
-        .cycle-title { color: var(--secondary-color); font-weight: 700; font-size: 2.5rem; margin-bottom: 25px; }
+        .cycle-title { color: var(--secondary-color); font-weight: 700; font-size: 2.2rem; margin-bottom: 25px; }
         
         .feature-list { list-style: none; padding: 0; }
         .feature-list li { margin-bottom: 12px; display: flex; align-items: flex-start; }
         .feature-list i { color: var(--primary-color); margin-right: 15px; margin-top: 4px; }
 
-        .filiere-card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); height: 100%; border-top: 4px solid transparent; transition: 0.3s; }
-        .filiere-card:hover { transform: translateY(-10px); border-color: var(--primary-color); }
-        .filiere-card h4 { color: var(--primary-color); font-weight: 700; font-size: 1.1rem; margin-bottom: 0; }
+        .filiere-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 100%; border-left: 4px solid var(--primary-color); transition: 0.3s; }
+        .filiere-card:hover { transform: translateX(10px); background-color: #fffafa; }
+        .filiere-card h5 { color: var(--secondary-color); font-weight: 700; font-size: 1rem; margin-bottom: 0; text-transform: uppercase; }
 
         /* FOOTER */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
@@ -110,72 +110,102 @@
 
     <header class="page-header">
         <div class="container" data-aos="zoom-in">
-            <h1 class="page-title" id="formations_header_titre">Nos Formations</h1>
-            <p class="lead text-white" id="formations_header_desc">Des programmes d'excellence en adéquation avec les attentes de l'entreprise.</p>
+            <h1 class="page-title">Nos Formations</h1>
+            <p class="lead text-white">Une formation de qualité pour des compétences répondant aux attentes de l'entreprise[cite: 3].</p>
         </div>
     </header>
 
-    <!-- CYCLE INITIAL -->
+    <!-- SECTION 1 : CYCLE INITIAL ACCRÉDITÉ -->
     <section class="formation-section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-5" data-aos="fade-right">
-                    <span class="cycle-badge">Cycle Initial • Bac +2</span>
-                    <h2 class="cycle-title">Technicien Spécialisé</h2>
-                    <p class="mb-4"><strong>Diplôme Accrédité par l'État</strong>. Une formation pratique de 2 ans pour devenir un praticien opérationnel immédiatement.</p>
+                    <span class="cycle-badge">Cycle de Formation Initiale • 2 ans[cite: 3]</span>
+                    <h2 class="cycle-title">Diplôme de Technicien Spécialisé (Bac+2)[cite: 3]</h2>
+                    <p class="mb-4"><strong>Accrédité par l'État Marocain</strong>. Le diplôme est signé et reconnu par l'État marocain[cite: 3].</p>
                     <ul class="feature-list">
-                        <li><i class="bi bi-check-circle-fill"></i> Admission : Baccalauréat (toutes options).</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Diplôme reconnu et signé par l'État marocain.</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Débouchés : Fonction publique, secteur privé et bancaire.</li>
+                        <li><i class="bi bi-person-check-fill"></i> <strong>Conditions d'accès :</strong> Baccalauréat (toutes options) ou diplôme de Technicien accrédité[cite: 3].</li>
+                        <li><i class="bi bi-briefcase-fill"></i> <strong>Débouchés :</strong> Fonction publique, secteur privé ou secteur bancaire[cite: 3].</li>
+                        <li><i class="bi bi-mortarboard-fill"></i> Mission de former des praticiens adaptés aux exigences de la vie professionnelle[cite: 3].</li>
                     </ul>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="row g-3">
-                        <div class="col-md-6"><div class="filiere-card"><h4>Gestion des Entreprises</h4></div></div>
-                        <div class="col-md-6"><div class="filiere-card"><h4>Commerce & Marketing</h4></div></div>
-                        <div class="col-md-6"><div class="filiere-card"><h4>Logistique & Transport</h4></div></div>
-                        <div class="col-md-6"><div class="filiere-card"><h4>Finance & Comptabilité</h4></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h5>Gestion des entreprises[cite: 3]</h5></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h5>Finance & Comptabilité[cite: 3]</h5></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h5>Logistique & Transport[cite: 3]</h5></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h5>Marketing & Action Commerciale[cite: 3]</h5></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BACHELOR & MASTER -->
+    <!-- SECTION 2 : CYCLES SUPÉRIEURS DÉLOCALISÉS -->
     <section class="formation-section bg-grey">
         <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="cycle-badge">Formations Continues & Partenariats[cite: 3]</span>
+                <h2 class="cycle-title">Cycles Supérieurs Délocalisés</h2>
+                <p class="text-muted">Formations dispensées en partenariats universitaires au sein de l'établissement[cite: 3].</p>
+            </div>
             <div class="row g-5">
+                <!-- Bachelor -->
                 <div class="col-lg-6" data-aos="fade-up">
-                    <span class="cycle-badge">Bac +3 • 1 an</span>
-                    <h2 class="cycle-title">Bachelor Professionnel</h2>
-                    <p>Cycle supérieur délocalisé en partenariats universitaires[cite: 3].</p>
-                    <ul class="feature-list mt-3">
-                        <li><i class="bi bi-info-circle-fill"></i> Accès : Bac+2 ou Bac avec expérience via VAE[cite: 3].</li>
-                        <li><i class="bi bi-file-earmark-text-fill"></i> Inscription après avis favorable du dossier VAE[cite: 3].</li>
-                    </ul>
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                        <h3 class="text-primary fw-bold mb-3">Bachelor (Bac +3) • 1 an[cite: 3]</h3>
+                        <p class="small text-muted"><strong>Accès :</strong> Diplôme de Bac+2 ou Baccalauréat avec 2 ans d'expérience au minimum[cite: 3].</p>
+                        <p class="small text-muted"><strong>Procédure :</strong> Dossier de Validation des Acquis de l’Expérience (VAE) obligatoire[cite: 3].</p>
+                        <hr>
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check2-circle"></i> Inscription après avis favorable de la VAE[cite: 3].</li>
+                            <li><i class="bi bi-check2-circle"></i> Débouchés : Secteur privé[cite: 3].</li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- Mastère -->
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                    <span class="cycle-badge">Bac +5 • 2 ans</span>
-                    <h2 class="cycle-title">Mastère Professionnel</h2>
-                    <p>Formation d'experts pour le pilotage de projets et le leadership[cite: 3].</p>
-                    <ul class="feature-list mt-3">
-                        <li><i class="bi bi-info-circle-fill"></i> Accès : Bac+3 ou Bac+2 avec expérience (VAE)[cite: 3].</li>
-                        <li><i class="bi bi-briefcase-fill"></i> Domaines : Audit, RH, QHSE, Supply Chain[cite: 3].</li>
-                    </ul>
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                        <h3 class="text-primary fw-bold mb-3">Mastère Professionnel (Bac +5) • 2 ans[cite: 3]</h3>
+                        <p class="small text-muted"><strong>Accès :</strong> Diplôme de Bac+3 ou Bac+2 avec 2 ans d'expérience au minimum[cite: 3].</p>
+                        <p class="small text-muted"><strong>Procédure :</strong> Inscription soumise à la validation des acquis (VAE)[cite: 3].</p>
+                        <hr>
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check2-circle"></i> Management des RH[cite: 3].</li>
+                            <li><i class="bi bi-check2-circle"></i> Audit & Contrôle de Gestion[cite: 3].</li>
+                            <li><i class="bi bi-check2-circle"></i> Supply-Chain Management[cite: 3].</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FORMATIONS CONTINUES -->
+    <!-- SECTION 3 : DOMAINES D'EXPERTISE -->
     <section class="formation-section">
-        <div class="container text-center">
-            <h2 class="cycle-title" data-aos="fade-up">Cycle Certifiant & Intra-entreprise</h2>
-            <p class="lead mb-5" data-aos="fade-up">Programmes sur-mesure alliant savoir, savoir-faire et savoir-être[cite: 3].</p>
+        <div class="container">
+            <h2 class="cycle-title text-center mb-5" data-aos="fade-up">Domaines d'études couverts[cite: 3]</h2>
             <div class="row g-4 justify-content-center">
-                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Business Plan & Création</h4></div></div>
-                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Coaching & Leadership</h4></div></div>
-                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Gestion de Production</h4></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Gestion de la Qualité & QHSE[cite: 3]</h5></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Génie Industriel[cite: 3]</h5></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Stratégie & Leadership[cite: 3]</h5></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Pilotage de projets[cite: 3]</h5></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Business plan[cite: 3]</h5></div></div>
+                <div class="col-md-4 col-lg-3" data-aos="zoom-in"><div class="filiere-card"><h5>Coaching[cite: 3]</h5></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4 : ENTREPRISE -->
+    <section class="formation-section bg-grey">
+        <div class="container text-center">
+            <h2 class="cycle-title" data-aos="fade-up">Cycle Certifiant & Formations Intra-entreprise[cite: 3]</h2>
+            <p class="lead mb-5" data-aos="fade-up">Un programme au plus près de vos besoins spécifiques en formation[cite: 3].</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <p>De l’analyse de vos besoins à la mise en œuvre de votre projet formation, notre établissement met à votre disposition des méthodes de nature à développer vos ressources humaines[cite: 3].</p>
+                    <a href="contact.html" class="btn btn-danger btn-lg mt-4 px-5 fw-bold">Demander un devis formation</a>
+                </div>
             </div>
         </div>
     </section>
@@ -185,14 +215,14 @@
             <div class="row">
                 <div class="col-lg-5 mb-4">
                     <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 50px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    <p id="footer_description">École Pratique de Management à Tanger[cite: 3].</p>
+                    <p id="footer_description">La première Ecole Pratique de Management à Tanger[cite: 3].</p>
                 </div>
                 <div class="col-lg-7">
-                    <h4>Contact</h4>
+                    <h4>Contact & Localisation</h4>
                     <ul class="list-unstyled footer-info">
-                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">Tanger</span></li>
-                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31...</span></li>
-                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg@...</span></li>
+                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">6 Abou Moussa EL Achaari, Tanger</span></li>
+                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31 10 99 70</span></li>
+                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg.school@gmail.com</span></li>
                     </ul>
                 </div>
             </div>
