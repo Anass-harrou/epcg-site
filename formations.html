@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -18,131 +19,58 @@
             --bg-light: #fcfcfc;
         }
 
-        /* --- CORRECTION RESPONSIVE GLOBALE --- */
-        html, body {
-            max-width: 100%;
-            overflow-x: hidden; /* Empêche l'espace blanc sur le côté */
-        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Roboto', sans-serif; color: var(--text-color); padding-top: 115px; background-color: #ffffff; }
+        h1, h2, h3, h4 { font-family: 'Roboto Slab', serif; }
 
-        body { font-family: 'Roboto', sans-serif; color: var(--text-color); padding-top: 80px; background-color: #ffffff; }
-        h1, h2, h3, h4, .font-slab { font-family: 'Roboto Slab', serif; }
-
-        /* NAVBAR */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
-        .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease;}
-        .navbar-brand:hover img { transform: scale(1.02); }
-        .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s; }
-        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
+        /* NAVBAR UNIFORMISÉE */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s ease; z-index: 1050; }
+        .navbar-hidden { transform: translateY(-100%); }
+        .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: 0.3s; }
         
-        .dropdown-menu { border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 8px; margin-top: 10px; padding: 10px 0; }
-        .dropdown-item { font-size: 14px; font-weight: 500; padding: 10px 25px; color: var(--secondary-color); transition: all 0.2s ease; }
-        .dropdown-item:hover { background-color: rgba(155, 28, 34, 0.05); color: var(--primary-color); padding-left: 30px; }
+        .navbar-nav .nav-link { 
+            font-weight: 600; color: var(--secondary-color); text-transform: uppercase; 
+            font-size: 13px; padding: 10px 15px !important; position: relative; transition: 0.3s;
+        }
+        .navbar-nav .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
+            background-color: var(--primary-color); transition: 0.3s ease; transform: translateX(-50%);
+        }
+        .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
 
         /* HEADER PAGE */
         .page-header {
             background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.85)), url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2000') center/cover;
-            padding: 120px 0 100px 0;
-            text-align: center;
-            color: white;
-            margin-top: -80px;
-            padding-top: 160px;
+            padding: 120px 0 100px 0; text-align: center; color: white; margin-top: -115px; padding-top: 160px;
         }
-        .page-title { font-size: 3.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}
-        .page-subtitle { font-size: 1.2rem; font-weight: 300; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+        .page-title { font-size: 3.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}
 
         /* SECTIONS FORMATIONS */
         .formation-section { padding: 90px 0; }
         .bg-grey { background-color: #f8f9fa; }
-        
-        .cycle-badge { background-color: var(--primary-color); color: white; padding: 8px 20px; border-radius: 30px; font-weight: 600; letter-spacing: 1px; display: inline-block; margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem;}
+        .cycle-badge { background-color: var(--primary-color); color: white; padding: 8px 20px; border-radius: 30px; font-weight: 600; display: inline-block; margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem;}
         .cycle-title { color: var(--secondary-color); font-weight: 700; font-size: 2.5rem; margin-bottom: 25px; }
-        .cycle-desc { font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 30px; }
         
         .feature-list { list-style: none; padding: 0; }
-        .feature-list li { margin-bottom: 15px; display: flex; align-items: flex-start; font-size: 1.05rem;}
-        .feature-list i { color: var(--primary-color); font-size: 1.2rem; margin-right: 15px; margin-top: 2px; }
+        .feature-list li { margin-bottom: 12px; display: flex; align-items: flex-start; }
+        .feature-list i { color: var(--primary-color); margin-right: 15px; margin-top: 4px; }
 
-        /* CARTES DÉBOUCHÉS / FILIÈRES */
-        .filiere-card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); height: 100%; border-top: 4px solid transparent; transition: all 0.3s ease; }
-        .filiere-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .filiere-card h4 { color: var(--primary-color); font-weight: 700; margin-bottom: 15px; font-size: 1.3rem; }
-        .filiere-card p { color: #666; font-size: 0.95rem; margin-bottom: 0; }
-
-        /* CTA SECTION */
-        .cta-section { background-color: var(--secondary-color); padding: 80px 0; color: white; text-align: center; }
-        .btn-epcg-white { background-color: white; color: var(--primary-color); padding: 15px 40px; font-size: 1.1rem; font-weight: 600; border-radius: 6px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; display: inline-block; margin-top: 20px; }
-        .btn-epcg-white:hover { background-color: var(--primary-color); color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .filiere-card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); height: 100%; border-top: 4px solid transparent; transition: 0.3s; }
+        .filiere-card:hover { transform: translateY(-10px); border-color: var(--primary-color); }
+        .filiere-card h4 { color: var(--primary-color); font-weight: 700; font-size: 1.1rem; margin-bottom: 0; }
 
         /* FOOTER */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
-        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
-        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
-        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; margin-top: 2px; }
-        .social-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; color: white; transition: all 0.3s; margin-right: 10px; }
-        .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
-        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
+        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; text-transform: uppercase; }
+        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; }
+        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; }
 
-        /* --- CORRECTIONS MOBILE --- */
-        @media (max-width: 768px) {
-            .page-header { padding: 90px 0 60px 0; }
-            .page-title { font-size: 2.2rem; word-wrap: break-word; padding: 0 15px; }
-            .page-subtitle { font-size: 1rem; padding: 0 15px; }
-            
-            .formation-section { padding: 50px 0; }
-            .cycle-title { font-size: 1.8rem; }
-            .cycle-desc { font-size: 1rem; }
-            
-            /* Ajustement du bouton CTA pour qu'il ne déborde pas */
-            .btn-epcg-white { 
-                padding: 12px 20px; 
-                font-size: 0.95rem; 
-                display: block; 
-                width: 90%; 
-                margin: 20px auto 0; 
-                white-space: normal;
-            }
-        }
-        /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
-            /* 1. Force le logo et le bouton à rester sur la même ligne */
-            .navbar-custom .container-fluid {
-                display: flex !important;
-                flex-wrap: nowrap !important; /* Interdit formellement de passer à la ligne */
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            /* 2. Réduit le logo pour laisser respirer le bouton */
-            .navbar-brand img {
-                max-height: 45px !important; 
-                width: auto;
-                max-width: 70vw; /* Le logo ne peut pas prendre plus de 70% de l'écran */
-            }
-
-            /* 3. Nettoie le bouton du menu */
-            .navbar-toggler {
-                border: none !important;
-                padding: 5px 0 5px 15px !important;
-                margin-left: auto;
-            }
-            .navbar-toggler:focus {
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            /* 4. Rend l'ouverture du menu plus jolie et évite de pousser le site vers le bas */
-            .navbar-collapse {
-                background: rgba(255, 255, 255, 0.98);
-                padding: 15px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                margin-top: 15px;
-                position: absolute;
-                top: 100%;
-                left: 10px;
-                right: 10px;
-                z-index: 1000;
-            }
+            body { padding-top: 85px; }
+            .navbar-brand img { max-height: 60px !important; }
+            .page-header { margin-top: -85px; }
+            .page-title { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -150,18 +78,21 @@
 
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
-            <a class="navbar-brand" href="index.html">
-                <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-            </a>
+            <div class="d-flex align-items-center flex-grow-1">
+                <a class="navbar-brand" href="index.html">
+                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+                </a>
+                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+                    École Professionnelle de Commerce et de Gestion - Tanger
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
-                    
                     <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
@@ -170,183 +101,100 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link active-link" href="formations.html">NOS FORMATIONS</a></li>
-                   
                     <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
-                    <li class="nav-item d-xl-none"><a class="nav-link" href="admin.html">Page Administration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <header class="page-header">
-        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
-            <h1 class="page-title">Nos Formations</h1>
-            <p class="page-subtitle">Des parcours d'excellence adaptés aux exigences du marché du travail marocain et international. Du Bac+2 au Bac+5.</p>
+        <div class="container" data-aos="zoom-in">
+            <h1 class="page-title" id="formations_header_titre">Nos Formations</h1>
+            <p class="lead text-white" id="formations_header_desc">Des programmes d'excellence en adéquation avec les attentes de l'entreprise.</p>
         </div>
     </header>
 
+    <!-- CYCLE INITIAL -->
     <section class="formation-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <span class="cycle-badge">Cycle Normal • Bac +2</span>
+                <div class="col-lg-6 mb-5" data-aos="fade-right">
+                    <span class="cycle-badge">Cycle Initial • Bac +2</span>
                     <h2 class="cycle-title">Technicien Spécialisé</h2>
-                    <p class="cycle-desc">Ce cycle de deux ans est conçu pour vous rendre opérationnel immédiatement. Il combine enseignements théoriques fondamentaux et immersions pratiques en entreprise pour former les techniciens de demain.</p>
+                    <p class="mb-4"><strong>Diplôme Accrédité par l'État</strong>. Une formation pratique de 2 ans pour devenir un praticien opérationnel immédiatement.</p>
                     <ul class="feature-list">
-                        <li><i class="bi bi-check-circle-fill"></i> Admission : Ouvert aux bacheliers (toutes séries).</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Durée : 2 ans (4 semestres).</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Stage obligatoire en 2ème année.</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Admission : Baccalauréat (toutes options).</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Diplôme reconnu et signé par l'État marocain.</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Débouchés : Fonction publique, secteur privé et bancaire.</li>
                     </ul>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Gestion des Entreprises</h4>
-                                <p>Maîtrisez la comptabilité, la fiscalité et la gestion administrative pour accompagner le développement des PME.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Commerce & Marketing</h4>
-                                <p>Développez des compétences en techniques de vente, négociation et marketing digital.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Logistique</h4>
-                                <p>Gérez les flux de marchandises, les stocks et optimisez la chaîne d'approvisionnement.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Informatique de Gestion</h4>
-                                <p>Alliez compétences en développement informatique et compréhension des besoins métiers.</p>
-                            </div>
-                        </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="row g-3">
+                        <div class="col-md-6"><div class="filiere-card"><h4>Gestion des Entreprises</h4></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h4>Commerce & Marketing</h4></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h4>Logistique & Transport</h4></div></div>
+                        <div class="col-md-6"><div class="filiere-card"><h4>Finance & Comptabilité</h4></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- BACHELOR & MASTER -->
     <section class="formation-section bg-grey">
         <div class="container">
-            <div class="row align-items-center flex-lg-row-reverse">
-                <div class="col-lg-6 mb-5 mb-lg-0 ps-lg-5" data-aos="fade-left">
-                    <span class="cycle-badge">Cycle Supérieur • Bac +3</span>
-                    <h2 class="cycle-title">Bachelor / Licence Professionnelle</h2>
-                    <p class="cycle-desc">Une année de spécialisation pour approfondir vos connaissances et accéder à des postes de "middle-management". Diplôme délivré en partenariat avec des institutions reconnues.</p>
-                    <ul class="feature-list">
-                        <li><i class="bi bi-check-circle-fill"></i> Admission : Ouvert aux titulaires d'un Bac+2 (TS, BTS, DUT, DEUG).</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Double diplomation possible selon les filières.</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Projet de Fin d'Études (PFE) encadré par des professionnels.</li>
+            <div class="row g-5">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <span class="cycle-badge">Bac +3 • 1 an</span>
+                    <h2 class="cycle-title">Bachelor Professionnel</h2>
+                    <p>Cycle supérieur délocalisé en partenariats universitaires[cite: 3].</p>
+                    <ul class="feature-list mt-3">
+                        <li><i class="bi bi-info-circle-fill"></i> Accès : Bac+2 ou Bac avec expérience via VAE[cite: 3].</li>
+                        <li><i class="bi bi-file-earmark-text-fill"></i> Inscription après avis favorable du dossier VAE[cite: 3].</li>
                     </ul>
                 </div>
-                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000" alt="Étudiants Bachelor" class="img-fluid rounded-4 shadow-lg">
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <span class="cycle-badge">Bac +5 • 2 ans</span>
+                    <h2 class="cycle-title">Mastère Professionnel</h2>
+                    <p>Formation d'experts pour le pilotage de projets et le leadership[cite: 3].</p>
+                    <ul class="feature-list mt-3">
+                        <li><i class="bi bi-info-circle-fill"></i> Accès : Bac+3 ou Bac+2 avec expérience (VAE)[cite: 3].</li>
+                        <li><i class="bi bi-briefcase-fill"></i> Domaines : Audit, RH, QHSE, Supply Chain[cite: 3].</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- FORMATIONS CONTINUES -->
     <section class="formation-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <span class="cycle-badge">Cycle Expert • Bac +5</span>
-                    <h2 class="cycle-title">Master Professionnel</h2>
-                    <p class="cycle-desc">L'ultime étape pour devenir un cadre dirigeant. Le cycle Master de l'EPCG forme des experts capables d'élaborer des stratégies complexes et de manager des équipes pluridisciplinaires.</p>
-                    <ul class="feature-list">
-                        <li><i class="bi bi-check-circle-fill"></i> Admission : Sur dossier et entretien pour les titulaires d'un Bac+3.</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Séminaires animés par des directeurs d'entreprises multinationales.</li>
-                        <li><i class="bi bi-check-circle-fill"></i> Préparation à l'entrepreneuriat et au leadership.</li>
-                    </ul>
-                </div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Audit & Contrôle de Gestion</h4>
-                                <p>Devenez auditeur ou directeur financier avec une expertise en analyse des risques.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Marketing Stratégique</h4>
-                                <p>Élaborez des stratégies de marque globales et maîtrisez l'écosystème digital.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Management des RH</h4>
-                                <p>Pilotez le capital humain, le recrutement et le droit social de l'entreprise.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="filiere-card">
-                                <h4>Supply Chain Management</h4>
-                                <p>Une expertise très prisée dans la région Tanger-Med pour l'optimisation des flux internationaux.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="container text-center">
+            <h2 class="cycle-title" data-aos="fade-up">Cycle Certifiant & Intra-entreprise</h2>
+            <p class="lead mb-5" data-aos="fade-up">Programmes sur-mesure alliant savoir, savoir-faire et savoir-être[cite: 3].</p>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Business Plan & Création</h4></div></div>
+                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Coaching & Leadership</h4></div></div>
+                <div class="col-md-4" data-aos="zoom-in"><div class="filiere-card"><h4>Gestion de Production</h4></div></div>
             </div>
         </div>
     </section>
 
-    <section class="cta-section" data-aos="zoom-in">
-        <div class="container">
-            <h2 class="font-slab mb-4">Prêt à construire votre avenir avec l'EPCG ?</h2>
-            <p class="fs-5 mb-0">Les inscriptions pour la saison 2026-2027 sont ouvertes.</p>
-            <a href="inscription.html" class="btn-epcg-white">Déposer mon dossier de candidature</a>
-        </div>
-    </section>
-
-    <footer id="footer" class="footer">
+    <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    <p class="mb-4 pe-lg-5">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-linkedin"></i></a>
-                    </div>
+                <div class="col-lg-5 mb-4">
+                    <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 50px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+                    <p id="footer_description">École Pratique de Management à Tanger[cite: 3].</p>
                 </div>
-
                 <div class="col-lg-7">
-                    <h4>Contact & Localisation</h4>
-                    <ul class="list-unstyled footer-info mt-4">
-                        <li>
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
-                        </li>
-                        <li>
-                            <i class="bi bi-telephone-fill"></i>
-                            <span>
-                                <strong>Admissions :</strong> <br>
-                                Fixe : 05 31 10 99 70 <br>
-                                Mobile : 06 06 43 04 91 / 07 13 68 60 16
-                            </span>
-                        </li>
-                        <li>
-                            <i class="bi bi-envelope-fill"></i>
-                            <span>epcg.school@gmail.com</span>
-                        </li>
+                    <h4>Contact</h4>
+                    <ul class="list-unstyled footer-info">
+                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">Tanger</span></li>
+                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31...</span></li>
+                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg@...</span></li>
                     </ul>
                 </div>
-            </div>
-
-            <div class="copyright">
-                <p class="mb-0">
-                    &copy; 2026 EPCG Tanger. Tous droits réservés. 
-                    <span class="mx-2">|</span> 
-                    <a href="#" class="text-muted text-decoration-none hover-primary">Mentions Légales</a>
-                    <span class="mx-2">|</span> 
-                    <a href="admin.html" class="text-muted text-decoration-none hover-primary"><i class="bi bi-lock-fill"></i> Espace Direction</a>
-                </p>
             </div>
         </div>
     </footer>
@@ -354,7 +202,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ once: true, duration: 800, offset: 100, easing: 'ease-in-out-cubic' });
+        AOS.init({ once: true });
+        const _supabase = supabase.createClient('https://aytyetcwfzliikljlhhz.supabase.co', 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz');
+
+        // SMART NAVBAR
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar-custom');
+        window.addEventListener('scroll', function() {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop && st > 100) navbar.classList.add('navbar-hidden');
+            else navbar.classList.remove('navbar-hidden');
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+        // CMS CONTENT
+        async function chargerContenuGeneral() {
+            const { data } = await _supabase.from('contenu_site').select('*');
+            if (data) {
+                data.forEach(item => {
+                    const el = document.getElementById(item.cle_position);
+                    if (el) {
+                        if (item.type === 'texte' || item.type === 'html') el.innerHTML = item.valeur;
+                        else if (item.type === 'image_url') el.src = item.valeur;
+                    }
+                });
+            }
+        }
+        chargerContenuGeneral();
     </script>
 </body>
 </html>
