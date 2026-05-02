@@ -8,89 +8,85 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        :root { --primary-color: #9B1C22; --secondary-color: #2b2b2b; }
-        body { font-family: 'Roboto', sans-serif; padding-top: 80px; background-color: #fcfcfc;}
-        h1, h2, h3 { font-family: 'Roboto Slab', serif; }
+        :root {
+            --primary-color: #9B1C22; 
+            --secondary-color: #2b2b2b; 
+            --text-color: #4a4a4a; 
+            --bg-light: #fcfcfc;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Roboto', sans-serif; color: var(--text-color); background-color: #fff; padding-top: 115px; }
+
+        /* NAVBAR UNIFORMISÉE */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s ease; z-index: 1050; }
+        .navbar-hidden { transform: translateY(-100%); }
+        .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: 0.3s; }
         
-        /* Navbar */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; }
-        .navbar-brand img { max-height: 65px; width: auto; }
-        .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; }
+        .navbar-nav .nav-link { 
+            font-weight: 600; color: var(--secondary-color); text-transform: uppercase; 
+            font-size: 13px; padding: 10px 15px !important; position: relative; transition: 0.3s;
+        }
+        .navbar-nav .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
+            background-color: var(--primary-color); transition: 0.3s ease; transform: translateX(-50%);
+        }
+        .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
         .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
 
-        /* Header */
-        .page-header { background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000') center/cover; padding: 100px 0; text-align: center; color: white; margin-top: -80px; padding-top: 140px;}
-        
-        /* Galerie */
-        .media-card { border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: transform 0.3s; background: white; height: 100%;}
-        .media-card:hover { transform: translateY(-5px); }
-        .media-card img, .media-card video { width: 100%; height: 250px; object-fit: cover; }
-        
-        /* Footer */
-        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; margin-top: 80px;}
-        /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
+        /* HEADER PAGE */
+        .page-header { background: linear-gradient(rgba(155, 28, 34, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000'); background-size: cover; background-position: center; color: white; padding: 100px 0; text-align: center; margin-bottom: 50px; }
+        .page-header h1 { font-family: 'Roboto Slab', serif; font-size: 3.5rem; font-weight: 700; text-transform: uppercase; }
+
+        /* FILTRES */
+        .filter-btn { border: 1px solid #ddd; background: white; color: var(--secondary-color); padding: 8px 25px; border-radius: 5px; margin: 5px; transition: 0.3s; font-weight: 500; }
+        .filter-btn.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        /* GALERIE */
+        .media-card { border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: 0.4s; background: white; height: 100%; }
+        .media-card:hover { transform: translateY(-10px); }
+        .media-container { position: relative; height: 250px; cursor: pointer; }
+        .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
+        .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3rem; opacity: 0.8; }
+
+        /* FOOTER UNIFORMISÉ */
+        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; margin-top: 80px; }
+        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; text-transform: uppercase; }
+        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; }
+        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; }
+
         @media (max-width: 991px) {
-            /* 1. Force le logo et le bouton à rester sur la même ligne */
-            .navbar-custom .container-fluid {
-                display: flex !important;
-                flex-wrap: nowrap !important; /* Interdit formellement de passer à la ligne */
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            /* 2. Réduit le logo pour laisser respirer le bouton */
-            .navbar-brand img {
-                max-height: 45px !important; 
-                width: auto;
-                max-width: 70vw; /* Le logo ne peut pas prendre plus de 70% de l'écran */
-            }
-
-            /* 3. Nettoie le bouton du menu */
-            .navbar-toggler {
-                border: none !important;
-                padding: 5px 0 5px 15px !important;
-                margin-left: auto;
-            }
-            .navbar-toggler:focus {
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            /* 4. Rend l'ouverture du menu plus jolie et évite de pousser le site vers le bas */
-            .navbar-collapse {
-                background: rgba(255, 255, 255, 0.98);
-                padding: 15px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                margin-top: 15px;
-                position: absolute;
-                top: 100%;
-                left: 10px;
-                right: 10px;
-                z-index: 1000;
-            }
+            body { padding-top: 85px; }
+            .navbar-brand img { max-height: 60px !important; }
+            .page-header h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR SMART STICKY -->
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
-            <a class="navbar-brand" href="index.html">
-                <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-            </a>
+            <div class="d-flex align-items-center flex-grow-1">
+                <a class="navbar-brand" href="index.html">
+                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+                </a>
+                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+                    École Professionnelle de Commerce et de Gestion - Tanger
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
-                    
-                    <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
+                    <li class="nav-item"><a class="nav-link active-link" href="galerie.html">MÉDIATHÈQUE</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
@@ -99,91 +95,130 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
-                   
                     <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.html">Page Administration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
     <header class="page-header">
         <div class="container">
-            <h1 class="display-4 fw-bold text-uppercase">Notre Médiathèque</h1>
-            <p class="lead">Découvrez la vie étudiante et les événements de l'EPCG Tanger</p>
+            <h1 data-aos="fade-down">Notre Médiathèque</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="200">Immersion au cœur de la vie étudiante de l'EPCG Tanger</p>
         </div>
     </header>
 
-    <section class="container mt-5">
-        <div class="d-flex justify-content-center mb-5">
-            <button class="btn btn-outline-danger mx-2 active" onclick="filterMedia('all')">Tout voir</button>
-            <button class="btn btn-outline-danger mx-2" onclick="filterMedia('image')">Photos</button>
-            <button class="btn btn-outline-danger mx-2" onclick="filterMedia('video')">Vidéos</button>
+    <section class="container">
+        <!-- FILTRES -->
+        <div class="text-center mb-5" data-aos="fade-up">
+            <button class="filter-btn active" onclick="filterMedia('all', this)">Tout voir</button>
+            <button class="filter-btn" onclick="filterMedia('image', this)">Photos</button>
+            <button class="filter-btn" onclick="filterMedia('video', this)">Vidéos</button>
         </div>
 
+        <!-- GRILLE DE MÉDIAS -->
         <div class="row g-4" id="gallery-container">
             <div class="col-12 text-center py-5">
-                <div class="spinner-border text-danger" role="status"></div>
-                <p class="mt-2 text-muted">Chargement de la galerie...</p>
+                <div class="spinner-border text-danger"></div>
             </div>
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="footer">
-        <div class="container text-center">
-            <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 50px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-            <p class="mb-0 text-white-50 small">&copy; 2026 EPCG Tanger. Tous droits réservés.</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 mb-4">
+                    <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+                    <p id="footer_description">Établissement privé accrédité par l'État.</p>
+                </div>
+                <div class="col-lg-7">
+                    <h4>Contact</h4>
+                    <ul class="list-unstyled footer-info">
+                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">6 Abou Moussa EL Achaari, Tanger</span></li>
+                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31 10 99 70</span></li>
+                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg.school@gmail.com</span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script>
-        // CONFIGURATION SUPABASE (Mettez votre clé)
+        AOS.init({ once: true });
+
+        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // <-- REMPLACEZ PAR VOTRE CLÉ SUPABASE
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let allMedia = [];
 
-        async function loadGallery() {
-            const container = document.getElementById('gallery-container');
-            const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
-            
-            if (error) {
-                container.innerHTML = '<p class="text-danger text-center">Erreur de chargement des médias.</p>';
-                return;
-            }
+        // 1. SMART STICKY NAVBAR
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar-custom');
+        window.addEventListener('scroll', function() {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop && st > 100) { navbar.classList.add('navbar-hidden'); } 
+            else { navbar.classList.remove('navbar-hidden'); }
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
 
-            allMedia = data;
-            displayMedia(allMedia);
+        // 2. CHARGEMENT DE LA GALERIE
+        async function loadGallery() {
+            const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
+            if (!error && data) {
+                allMedia = data;
+                renderGallery(allMedia);
+            }
         }
 
-        function displayMedia(items) {
+        function renderGallery(items) {
             const container = document.getElementById('gallery-container');
-            if(items.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center w-100">Aucun média disponible pour le moment.</p>';
+            if (items.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center text-muted">Aucun média disponible.</div>';
                 return;
             }
-
             container.innerHTML = items.map(item => `
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4" data-aos="zoom-in">
                     <div class="media-card">
-                        ${item.type === 'image' 
-                            ? `<img src="${item.url}" alt="Galerie EPCG" loading="lazy">` 
-                            : `<video src="${item.url}" controls></video>`}
+                        <div class="media-container" onclick="window.open('${item.url}', '_blank')">
+                            ${item.type === 'image' 
+                                ? `<img src="${item.url}" alt="Galerie">` 
+                                : `<video src="${item.url}"></video><div class="play-overlay"><i class="bi bi-play-circle-fill"></i></div>`}
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function filterMedia(type) {
-            if(type === 'all') displayMedia(allMedia);
-            else displayMedia(allMedia.filter(item => item.type === type));
+        function filterMedia(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = type === 'all' ? allMedia : allMedia.filter(m => m.type === type);
+            renderGallery(filtered);
         }
 
-        // Charger au démarrage
+        // 3. CHARGEMENT TEXTES CMS (Logo, Slogan, Footer)
+        async function chargerContenuGeneral() {
+            const { data } = await _supabase.from('contenu_site').select('*');
+            if (data) {
+                data.forEach(item => {
+                    const el = document.getElementById(item.cle_position);
+                    if (el) {
+                        if (item.type === 'texte' || item.type === 'html') el.innerHTML = item.valeur;
+                        else if (item.type === 'image_url') el.src = item.valeur;
+                    }
+                });
+            }
+        }
+
         loadGallery();
+        chargerContenuGeneral();
     </script>
 </body>
 </html>
