@@ -31,7 +31,7 @@
         /* HEADER MOBILE */
         .mobile-header { display: none; background-color: var(--secondary-color); color: white; padding: 15px 20px; justify-content: space-between; align-items: center; }
 
-        /* SIDEBAR */
+        /* SIDEBAR (Desktop par défaut) */
         .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: 250px; z-index: 1000; transition: transform 0.3s ease-in-out; }
         
         /* MAIN CONTENT */
@@ -247,12 +247,13 @@
                             
                             <div class="row g-4">
                                 <div class="col-12">
-                                    <label class="form-label small text-muted fw-bold">Vidéo "Slider Accueil" (Slide 1)</label>
+                                    <label class="form-label small text-muted fw-bold">Média "Slider Accueil" (Slide 1)</label>
                                     <div class="input-group">
-                                        <!-- Accepte spécifiquement les vidéos mp4 -->
-                                        <input type="file" id="input_hero_video_1" class="form-control" accept="video/mp4,video/webm,video/*">
-                                        <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('hero_video_1', 'input_hero_video_1', this)">Remplacer Vidéo</button>
+                                        <!-- Accepte désormais les images ET les vidéos -->
+                                        <input type="file" id="input_hero_media_1" class="form-control" accept="image/*,video/*">
+                                        <button class="btn btn-outline-danger" onclick="sauvegarderSliderMedia('hero_media_1', 'input_hero_media_1', this)">Remplacer</button>
                                     </div>
+                                    <small class="text-muted" style="font-size: 11px;">Vous pouvez uploader une image (jpg, png) ou une vidéo (mp4).</small>
                                 </div>
 
                                 <div class="col-12">
@@ -459,13 +460,13 @@
             btn.disabled = false;
         }
 
-        // --- GESTION DES IMAGES SPECIFIQUES DU SITE (INCLUS LES VIDEOS) ---
+        // --- GESTION DES IMAGES SPECIFIQUES DU SITE ---
         async function sauvegarderImagePosition(cle, inputId, btn) {
             const fileInput = document.getElementById(inputId);
             const file = fileInput.files[0];
             const texteInitial = btn.innerHTML;
 
-            if (!file) return alert("Veuillez d'abord sélectionner un fichier sur votre appareil.");
+            if (!file) return alert("Veuillez d'abord sélectionner une image sur votre appareil.");
 
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Upload...';
             btn.disabled = true;
@@ -474,7 +475,7 @@
             const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
 
             if (uploadError) {
-                alert("Erreur lors de l'envoi du fichier : " + uploadError.message);
+                alert("Erreur lors de l'envoi de l'image : " + uploadError.message);
                 btn.innerHTML = texteInitial;
                 btn.disabled = false;
                 return;
@@ -491,6 +492,55 @@
                 btn.innerHTML = texteInitial;
             } else {
                 btn.innerHTML = '<i class="bi bi-check-lg"></i> Modifié !';
+                btn.classList.replace('btn-outline-danger', 'btn-success');
+                setTimeout(() => {
+                    btn.innerHTML = texteInitial;
+                    btn.classList.replace('btn-success', 'btn-outline-danger');
+                    fileInput.value = ""; 
+                }, 2500);
+            }
+            btn.disabled = false;
+        }
+
+        // --- NOUVELLE FONCTION : GESTION MIXTE (IMAGE OU VIDÉO) POUR LE SLIDER ---
+        async function sauvegarderSliderMedia(cle, inputId, btn) {
+            const fileInput = document.getElementById(inputId);
+            const file = fileInput.files[0];
+            const texteInitial = btn.innerHTML;
+
+            if (!file) return alert("Veuillez d'abord sélectionner un fichier (image ou vidéo) sur votre appareil.");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Upload...';
+            btn.disabled = true;
+
+            const fileName = `slider_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
+
+            if (uploadError) {
+                alert("Erreur lors de l'envoi du fichier : " + uploadError.message);
+                btn.innerHTML = texteInitial;
+                btn.disabled = false;
+                return;
+            }
+
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+
+            let htmlContent = "";
+            if (file.type.startsWith('video/')) {
+                htmlContent = `<video class="d-block w-100" autoplay muted loop playsinline><source src="${publicUrl}" type="${file.type}"></video>`;
+            } else {
+                htmlContent = `<img src="${publicUrl}" class="d-block w-100" alt="Slide 1">`;
+            }
+
+            const { error: upsertError } = await _supabase.from('contenu_site').upsert(
+                { cle_position: cle, valeur: htmlContent, type: 'html' }
+            );
+
+            if (upsertError) {
+                alert("Erreur de sauvegarde : " + upsertError.message);
+                btn.innerHTML = texteInitial;
+            } else {
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Média modifié !';
                 btn.classList.replace('btn-outline-danger', 'btn-success');
                 setTimeout(() => {
                     btn.innerHTML = texteInitial;
