@@ -87,10 +87,40 @@
         .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
 
+        /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
-            .slider-title { font-size: 2.2rem; letter-spacing: 10px; margin-right: -10px; }
+            /* 1. Correction du titre pour éviter l'espace blanc sur le côté */
+            .slider-title { 
+                font-size: 1.8rem; 
+                letter-spacing: 4px; 
+                margin-right: -4px; 
+                padding: 0 10px;
+                width: 100%;
+                word-wrap: break-word;
+            }
+            
+            /* 2. Ajustement du sous-titre */
+            .slider-subtitle { 
+                font-size: 1rem; 
+                padding: 0 15px;
+                margin-bottom: 25px;
+                letter-spacing: 1px;
+            }
+            
+            /* 3. Réparation du bouton cassé */
+            .slider-btn { 
+                padding: 12px 20px; /* On réduit fortement les marges latérales */
+                font-size: 0.9rem; /* Texte légèrement plus petit */
+                max-width: 90%; /* Empêche de toucher les bords de l'écran */
+                display: inline-block;
+                line-height: 1.5;
+            }
+
+            /* Autres éléments mobiles */
             .section-padding { padding: 60px 0; }
             .activite-img { margin-bottom: 15px; }
+            .page-title { font-size: 2.2rem; }
+            .cycle-title { font-size: 2rem; }
         }
     </style>
 </head>
