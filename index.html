@@ -38,15 +38,59 @@
         .navbar-brand:hover img { transform: scale(1.02); }
         .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; }
         
-        /* Effet bouton rouge dynamique pour la page active */
         .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
         .navbar-nav .nav-link.active-link { background-color: var(--primary-color) !important; color: white !important; border-radius: 8px; padding-left: 15px !important; padding-right: 15px !important; }
 
         /* HERO CAROUSEL NOUVEAU DESIGN */
         .hero-carousel-section { height: 85vh; background-color: #ffffff; position: relative; }
-        .carousel-item { height: 85vh; }
-        /* L'image/vidéo s'adapte parfaitement au cadre sans être coupée */
-        .carousel-item img, .carousel-item video { height: 100%; width: 100%; object-fit: contain; opacity: 1; background-color: #ffffff; }
+        .carousel-item { height: 85vh; position: relative; }
+        
+        /* Slide 1 : Image/Vidéo publicitaire pure (fond blanc) */
+        .carousel-item.slide-affiche img, .carousel-item.slide-affiche video { height: 100%; width: 100%; object-fit: contain; opacity: 1; background-color: #ffffff; }
+        
+        /* Slide 2 : Image d'ambiance avec filtre sombre (pour le texte) */
+        .carousel-item.slide-ambiance img { height: 100%; width: 100%; object-fit: cover; filter: brightness(0.6); }
+
+        /* Textes & Boutons (Pour Slide 2) */
+        .carousel-caption { top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding-bottom: 0; }
+        .slider-title { font-family: 'Roboto', sans-serif; font-size: 3.5rem; font-weight: 700; text-transform: uppercase; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin-bottom: 20px; text-align: center; color: white;}
+        .slider-subtitle { font-family: 'Roboto', sans-serif; font-size: 1.5rem; font-weight: 500; margin-bottom: 40px; text-shadow: 1px 2px 5px rgba(0,0,0,0.8); color: white;}
+        .slider-btn { border: 2px solid white; color: white; padding: 12px 35px; font-weight: 600; font-size: 1rem; background: transparent; text-decoration: none; text-transform: uppercase; transition: all 0.3s ease; }
+        .slider-btn:hover { background: white; color: black; text-decoration: none; }
+
+        /* FLÈCHES DU SLIDER (Style Groupe Iki) */
+        .carousel-control-prev, .carousel-control-next { width: 5%; opacity: 1; z-index: 20;}
+        .carousel-control-prev-icon, .carousel-control-next-icon { 
+            background-color: rgba(150, 150, 150, 0.3); /* Cercle gris transparent */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background-size: 50%;
+            transition: all 0.3s;
+        }
+        /* On force les flèches en blanc peu importe le fond */
+        .carousel-control-prev-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e") !important; }
+        .carousel-control-next-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important; }
+        
+        .carousel-control-prev:hover .carousel-control-prev-icon, 
+        .carousel-control-next:hover .carousel-control-next-icon { background-color: rgba(150, 150, 150, 0.6); }
+
+        /* FLÈCHE DE CONTINUATION (Bounce en bas) */
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d1d1d1;
+            font-size: 2rem;
+            z-index: 15;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-15px) translateX(-50%); }
+            60% { transform: translateY(-7px) translateX(-50%); }
+        }
 
         /* SECTIONS GLOBALES */
         .section-padding { padding: 90px 0; }
@@ -96,6 +140,8 @@
 
         /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
+            .slider-title { font-size: 1.8rem; }
+            .slider-subtitle { font-size: 1.1rem; margin-bottom: 25px; }
             .section-padding { padding: 60px 0; }
             .activite-img { margin-bottom: 15px; }
         }
@@ -141,23 +187,30 @@
     </nav>
 
     <section class="hero-carousel-section">
-        <!-- Ajout de "carousel-dark" pour flèches foncées adaptées au fond blanc -->
-        <div id="mainHeroCarousel" class="carousel carousel-dark slide carousel-fade h-100" data-bs-ride="carousel">
+        <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
                 
-                <!-- SLIDE 1 (Dynamique: Image ou Vidéo) -->
-                <div class="carousel-item active" data-bs-interval="8000">
+                <!-- SLIDE 1 (Affiche - Pas de texte superposé) -->
+                <div class="carousel-item slide-affiche active" data-bs-interval="8000">
                     <div id="hero_media_1" class="w-100 h-100">
-                        <video class="d-block w-100 h-100" style="object-fit: contain;" autoplay muted loop playsinline>
+                        <video class="d-block w-100 h-100" autoplay muted loop playsinline>
                             <source src="./assets/video-epcg.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
                 
-                <!-- SLIDE 2 (Image) -->
-                <div class="carousel-item" data-bs-interval="5000">
+                <!-- SLIDE 2 (Ambiance - Avec texte superposé) -->
+                <div class="carousel-item slide-ambiance" data-bs-interval="5000">
                     <!-- ID DYNAMIQUE : IMAGE SLIDER 2 -->
-                    <img id="hero_image_2" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100 h-100" style="object-fit: contain;" alt="Campus">
+                    <img id="hero_image_2" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070" class="d-block w-100 h-100" alt="Cérémonie">
+                    
+                    <div class="carousel-caption">
+                        <h1 class="slider-title" data-aos="zoom-in" data-aos-duration="1000">LES INSCRIPTIONS SONT OUVERTES</h1>
+                        <p class="slider-subtitle" data-aos="fade-up" data-aos-delay="300">2026-2027</p>
+                        <div data-aos="fade-up" data-aos-delay="600">
+                            <a href="inscription.html" class="slider-btn">INSCRIVEZ-VOUS</a>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
@@ -168,6 +221,11 @@
             <button class="carousel-control-next" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
             </button>
+            
+            <!-- Flèche de continuation (scroll) -->
+            <div class="scroll-down-arrow">
+                <i class="bi bi-chevron-down"></i>
+            </div>
         </div>
     </section>
 
