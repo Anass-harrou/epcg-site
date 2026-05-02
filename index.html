@@ -42,12 +42,12 @@
         .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
         .navbar-nav .nav-link.active-link { background-color: var(--primary-color) !important; color: white !important; border-radius: 8px; padding-left: 15px !important; padding-right: 15px !important; }
 
-        /* HERO CAROUSEL */
-        
+        /* HERO CAROUSEL NOUVEAU DESIGN */
         .hero-carousel-section { height: 85vh; background-color: #ffffff; position: relative; }
         .carousel-item { height: 85vh; }
-        /* Opacité remise à 1, object-fit sur contain, fond blanc, et retrait de l'effet de zoom */
+        /* L'image/vidéo s'adapte parfaitement au cadre sans être coupée */
         .carousel-item img, .carousel-item video { height: 100%; width: 100%; object-fit: contain; opacity: 1; background-color: #ffffff; }
+
         /* SECTIONS GLOBALES */
         .section-padding { padding: 90px 0; }
         .section-title { color: var(--secondary-color); font-weight: 700; font-size: 36px; margin-bottom: 50px; text-transform: uppercase; position: relative; padding-bottom: 15px; }
@@ -96,13 +96,8 @@
 
         /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
-            .slider-title { font-size: 1.8rem; letter-spacing: 4px; margin-right: -4px; padding: 0 10px; width: 100%; word-wrap: break-word; }
-            .slider-subtitle { font-size: 1rem; padding: 0 15px; margin-bottom: 25px; letter-spacing: 1px; }
-            .slider-btn { padding: 12px 20px; font-size: 0.9rem; max-width: 90%; display: inline-block; line-height: 1.5; }
             .section-padding { padding: 60px 0; }
             .activite-img { margin-bottom: 15px; }
-            .page-title { font-size: 2.2rem; }
-            .cycle-title { font-size: 2rem; }
         }
         
         /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
@@ -146,33 +141,27 @@
     </nav>
 
     <section class="hero-carousel-section">
-        <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
+        <!-- Ajout de "carousel-dark" pour flèches foncées adaptées au fond blanc -->
+        <div id="mainHeroCarousel" class="carousel carousel-dark slide carousel-fade h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
+                
+                <!-- SLIDE 1 (Dynamique: Image ou Vidéo) -->
                 <div class="carousel-item active" data-bs-interval="8000">
-                    <!-- ID DYNAMIQUE : MEDIA SLIDER 1 (Image ou Vidéo) -->
-<div id="hero_media_1" class="w-100 h-100">
-    <video class="d-block w-100" autoplay muted loop playsinline>
-        <source src="./assets/video-epcg.mp4" type="video/mp4">
-    </video>
-</div>
-                    <div class="carousel-caption">
-                        <h1 class="slider-title" data-aos="zoom-out" data-aos-duration="1500">INSCRIPTIONS</h1>
-                        <p class="slider-subtitle" data-aos="fade-up" data-aos-delay="300">Saison Universitaire 2026-2027</p>
-                        <div data-aos="fade-up" data-aos-delay="600">
-                            <a href="formations.html" class="slider-btn">Déposer une candidature</a>
-                        </div>
+                    <div id="hero_media_1" class="w-100 h-100">
+                        <video class="d-block w-100 h-100" style="object-fit: contain;" autoplay muted loop playsinline>
+                            <source src="./assets/video-epcg.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
+                
+                <!-- SLIDE 2 (Image) -->
                 <div class="carousel-item" data-bs-interval="5000">
                     <!-- ID DYNAMIQUE : IMAGE SLIDER 2 -->
-                    <img id="hero_image_2" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100" alt="Campus">
-                    <div class="carousel-caption">
-                        <h1 class="slider-title">L'EXCELLENCE</h1>
-                        <p class="slider-subtitle">Formez-vous aux métiers de demain</p>
-                        <a href="inscription.html" class="slider-btn">Découvrir nos cycles</a>
-                    </div>
+                    <img id="hero_image_2" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100 h-100" style="object-fit: contain;" alt="Campus">
                 </div>
+                
             </div>
+            
             <button class="carousel-control-prev" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
@@ -431,7 +420,6 @@
                     if (item.type === 'texte' || item.type === 'html') {
                         elementHtml.innerHTML = item.valeur;
                     } else if (item.type === 'image_url') {
-                        // Remplace la source de l'image si c'est de type image_url
                         elementHtml.src = item.valeur;
                     }
                 }
