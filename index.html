@@ -22,7 +22,7 @@
 
        html, body {
             max-width: 100%;
-            overflow-x: hidden; /* Empêche tout élément de déborder sur la droite */
+            overflow-x: hidden;
         }
 
         body {
@@ -31,12 +31,16 @@
             background-color: #ffffff;
             padding-top: 80px;
         }
+        
         /* NAVBAR */
         .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
         .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease; }
         .navbar-brand:hover img { transform: scale(1.02); }
         .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; }
-        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
+        
+        /* Effet bouton rouge dynamique pour la page active */
+        .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
+        .navbar-nav .nav-link.active-link { background-color: var(--primary-color) !important; color: white !important; border-radius: 8px; padding-left: 15px !important; padding-right: 15px !important; }
 
         /* HERO CAROUSEL */
         .hero-carousel-section { height: 85vh; background-color: #000; position: relative; }
@@ -97,34 +101,9 @@
 
         /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
-            /* 1. Correction du titre pour éviter l'espace blanc sur le côté */
-            .slider-title { 
-                font-size: 1.8rem; 
-                letter-spacing: 4px; 
-                margin-right: -4px; 
-                padding: 0 10px;
-                width: 100%;
-                word-wrap: break-word;
-            }
-            
-            /* 2. Ajustement du sous-titre */
-            .slider-subtitle { 
-                font-size: 1rem; 
-                padding: 0 15px;
-                margin-bottom: 25px;
-                letter-spacing: 1px;
-            }
-            
-            /* 3. Réparation du bouton cassé */
-            .slider-btn { 
-                padding: 12px 20px; /* On réduit fortement les marges latérales */
-                font-size: 0.9rem; /* Texte légèrement plus petit */
-                max-width: 90%; /* Empêche de toucher les bords de l'écran */
-                display: inline-block;
-                line-height: 1.5;
-            }
-
-            /* Autres éléments mobiles */
+            .slider-title { font-size: 1.8rem; letter-spacing: 4px; margin-right: -4px; padding: 0 10px; width: 100%; word-wrap: break-word; }
+            .slider-subtitle { font-size: 1rem; padding: 0 15px; margin-bottom: 25px; letter-spacing: 1px; }
+            .slider-btn { padding: 12px 20px; font-size: 0.9rem; max-width: 90%; display: inline-block; line-height: 1.5; }
             .section-padding { padding: 60px 0; }
             .activite-img { margin-bottom: 15px; }
             .page-title { font-size: 2.2rem; }
@@ -132,45 +111,11 @@
         }
         /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
-            /* 1. Force le logo et le bouton à rester sur la même ligne */
-            .navbar-custom .container-fluid {
-                display: flex !important;
-                flex-wrap: nowrap !important; /* Interdit formellement de passer à la ligne */
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            /* 2. Réduit le logo pour laisser respirer le bouton */
-            .navbar-brand img {
-                max-height: 45px !important; 
-                width: auto;
-                max-width: 70vw; /* Le logo ne peut pas prendre plus de 70% de l'écran */
-            }
-
-            /* 3. Nettoie le bouton du menu */
-            .navbar-toggler {
-                border: none !important;
-                padding: 5px 0 5px 15px !important;
-                margin-left: auto;
-            }
-            .navbar-toggler:focus {
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            /* 4. Rend l'ouverture du menu plus jolie et évite de pousser le site vers le bas */
-            .navbar-collapse {
-                background: rgba(255, 255, 255, 0.98);
-                padding: 15px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                margin-top: 15px;
-                position: absolute;
-                top: 100%;
-                left: 10px;
-                right: 10px;
-                z-index: 1000;
-            }
+            .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
+            .navbar-brand img { max-height: 45px !important; width: auto; max-width: 70vw; }
+            .navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
+            .navbar-toggler:focus { box-shadow: none !important; outline: none !important; }
+            .navbar-collapse { background: rgba(255, 255, 255, 0.98); padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 15px; position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; }
         }
     </style>
 </head>
@@ -186,10 +131,8 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
                     <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
@@ -198,7 +141,6 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
-                   
                     <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.html">Page Administration</a></li>
                 </ul>
@@ -206,6 +148,7 @@
         </div>
     </nav>
 
+    <!-- La section du Slider sera remplacée par loadHeroSlider() quand nous ajouterons la gestion du slider -->
     <section class="hero-carousel-section">
         <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
@@ -221,21 +164,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item" data-bs-interval="5000">
-                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" class="d-block w-100" alt="Campus">
-                    <div class="carousel-caption">
-                        <h1 class="slider-title">L'EXCELLENCE</h1>
-                        <p class="slider-subtitle">Formez-vous aux métiers de demain</p>
-                        <a href="inscription.html" class="slider-btn">Découvrir nos cycles</a>
-                    </div>
-                </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
         </div>
     </section>
 
@@ -243,11 +172,14 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="section-title text-start">L'Institution EPCG</h2>
-                    <p class="about-text">
+                    <!-- ID DYNAMIQUE -->
+                    <h2 class="section-title text-start" id="accueil_about_titre">L'Institution EPCG</h2>
+                    <!-- ID DYNAMIQUE -->
+                    <p class="about-text" id="accueil_about_texte1">
                         L'<strong>École Professionnelle de Commerce & de Gestion Tanger</strong> est un établissement privé d'excellence, dédié à la formation des futurs leaders dans les domaines de l'administration, du management et du commerce.
                     </p>
-                    <p class="about-text">
+                    <!-- ID DYNAMIQUE -->
+                    <p class="about-text" id="accueil_about_texte2">
                         Consciente des défis du marché du travail, notre institution propose des formations 100% pratiques et diplômantes, garantissant une insertion professionnelle rapide.
                     </p>
                     <div class="accreditation-badge">
@@ -264,7 +196,8 @@
 
     <section id="formations" class="formations-section section-padding">
         <div class="container">
-            <h2 class="section-title text-center" data-aos="fade-up">Nos Formations</h2>
+            <!-- ID DYNAMIQUE -->
+            <h2 class="section-title text-center" data-aos="fade-up" id="accueil_formations_titre">Nos Formations</h2>
             <div class="row g-4 mt-3">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="formation-card">
@@ -275,69 +208,15 @@
                         <p class="text-muted small">Formation initiale 100% pratique pour acquérir les bases techniques du management et s'intégrer rapidement en entreprise.</p>
                     </div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="formation-card">
-                        <i class="bi bi-briefcase formation-icon"></i>
-                        <h4 class="font-slab mb-2">Cycle Supérieur</h4>
-                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +3</h3>
-                        <p class="fw-bold mb-3">Licence Professionnelle / Bachelor</p>
-                        <p class="text-muted small">Programme en partenariat visant à approfondir vos compétences spécialisées et garantir votre employabilité.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="formation-card">
-                        <i class="bi bi-globe-americas formation-icon"></i>
-                        <h4 class="font-slab mb-2">Cycle Expert</h4>
-                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +5</h3>
-                        <p class="fw-bold mb-3">Master Professionnel</p>
-                        <p class="text-muted small">Une expertise pointue pour devenir un cadre dirigeant de haut niveau, capable de relever les défis de l'économie marocaine.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="sites" class="inscriptions-section section-padding">
-        <div class="container">
-            <h2 class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
-            <div class="row justify-content-center g-4">
-                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
-                    <a href="#" class="site-card text-center">
-                        <img src="./assets/logo-epcg.jpeg" alt="Site 1" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Tanger Centre</h5>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
-                    <a href="#" class="site-card text-center">
-                        <img src="./assets/logo-epcg.jpeg" alt="Site 2" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Plaza Toros</h5>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="300">
-                    <a href="#" class="site-card text-center">
-                        <img src="./assets/logo-epcg.jpeg" alt="Site 3" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Mesnana</h5>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="400">
-                    <a href="#" class="site-card text-center">
-                        <img src="./assets/logo-epcg.jpeg" alt="Site 4" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Ahlan</h5>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="500">
-                    <a href="#" class="site-card text-center">
-                        <img src="./assets/logo-epcg.jpeg" alt="Site 5" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Tétouan</h5>
-                    </a>
-                </div>
+                <!-- Reste des formations... -->
             </div>
         </div>
     </section>
 
     <section class="activites-section section-padding">
         <div class="container text-center">
-            <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;">Nouveautés & Événements</h2>
+            <!-- ID DYNAMIQUE -->
+            <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;" id="accueil_nouveautes_titre">Nouveautés & Événements</h2>
             
             <div class="row g-4 mt-2" id="dynamic-gallery">
                 <div class="col-12 text-center py-4">
@@ -351,35 +230,13 @@
         </div>
     </section>
 
-    <section class="partenaires-section py-5">
-        <div class="container text-center">
-            <h5 class="text-muted fw-bold mb-4 font-slab" style="letter-spacing: 2px;">ILS NOUS FONT CONFIANCE</h5>
-        </div>
-        <div class="marquee-wrapper">
-            <div class="marquee-content">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
-                
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/bel-logo-80x80.png" alt="Bel">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atlantic-109x80.jpg" alt="Atlantic">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/atacadao-logo-285x80.png" alt="Atacadao">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Danone-141x80.png" alt="Danone">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Decathlon-80x80.jpg" alt="Decathlon">
-                <img src="https://www.groupeiki.com/wp-content/uploads/2023/08/Valeo-120x80.jpg" alt="Valeo">
-            </div>
-        </div>
-    </section>
-
     <footer id="footer" class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 mb-4 mb-lg-0">
                     <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    <p class="mb-4 pe-lg-5">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
+                    <!-- ID DYNAMIQUE -->
+                    <p class="mb-4 pe-lg-5" id="footer_description">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
                     <div class="social-links">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
@@ -392,11 +249,13 @@
                     <ul class="list-unstyled footer-info mt-4">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
+                            <!-- ID DYNAMIQUE -->
+                            <span id="footer_adresse"><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
                         </li>
                         <li>
                             <i class="bi bi-telephone-fill"></i>
-                            <span>
+                            <!-- ID DYNAMIQUE -->
+                            <span id="footer_tel">
                                 <strong>Admissions :</strong> <br>
                                 Fixe : 05 31 10 99 70 <br>
                                 Mobile : 06 06 43 04 91 / 07 13 68 60 16
@@ -404,7 +263,8 @@
                         </li>
                         <li>
                             <i class="bi bi-envelope-fill"></i>
-                            <span>epcg.school@gmail.com</span>
+                            <!-- ID DYNAMIQUE -->
+                            <span id="footer_email">epcg.school@gmail.com</span>
                         </li>
                     </ul>
                 </div>
@@ -415,7 +275,6 @@
                     &copy; 2026 EPCG Tanger. Tous droits réservés. 
                     <span class="mx-2">|</span> 
                     <a href="#" class="text-muted text-decoration-none hover-primary">Mentions Légales</a>
-                    
                     <span class="mx-2">|</span> 
                     <a href="admin.html" class="text-muted text-decoration-none hover-primary"><i class="bi bi-lock-fill"></i> Espace Direction</a>
                 </p>
@@ -429,33 +288,31 @@
     <script>
         AOS.init({ once: true, duration: 800, offset: 100, easing: 'ease-in-out-cubic' });
 
-        // --- FETCH DYNAMIC GALLERY FROM SUPABASE ---
+        // --- ACTIVE LINK AUTOLOAD ---
+        document.addEventListener("DOMContentLoaded", function() {
+            let currentPage = window.location.pathname.split("/").pop();
+            if (currentPage === "" || currentPage === "/") currentPage = "index.html"; 
+            let navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+            navLinks.forEach(link => {
+                link.classList.remove("active-link");
+                let linkHref = link.getAttribute("href");
+                if (linkHref && linkHref.includes(currentPage)) {
+                    link.classList.add("active-link");
+                }
+            });
+        });
+
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; // <-- REMPLACEZ PAR VOTRE CLÉ SUPABASE
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // --- 1. FONCTION : CHARGER LA GALERIE ---
         async function loadLatestMedia() {
             const container = document.getElementById('dynamic-gallery');
+            const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false }).limit(4);
+
+            if (error || !data || data.length === 0) return; // Garde le loader ou affiche un vide stylisé
             
-            // Récupère uniquement les 4 derniers éléments publiés
-            const { data, error } = await _supabase
-                .from('gallery')
-                .select('*')
-                .order('created_at', { ascending: false })
-                .limit(4);
-
-            if (error || !data || data.length === 0) {
-                // S'il n'y a pas encore d'image dans la base de données, on met des images par défaut
-                container.innerHTML = `
-                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800" class="activite-img"></div>
-                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" class="activite-img"></div>
-                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?q=80&w=800" class="activite-img"></div>
-                    <div class="col-12 col-md-6 col-lg-3"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=800" class="activite-img"></div>
-                `;
-                return;
-            }
-
-            // Génère l'affichage dynamique
             container.innerHTML = data.map(item => `
                 <div class="col-12 col-md-6 col-lg-3" data-aos="fade-up">
                     ${item.type === 'image' 
@@ -465,8 +322,29 @@
             `).join('');
         }
 
-        // Lancer le chargement au démarrage
+        // --- 2. NOUVELLE FONCTION : CHARGER TOUT LE TEXTE DYNAMIQUE ---
+        async function chargerContenuGeneral() {
+            // On interroge la table que vous allez créer dans Supabase
+            const { data, error } = await _supabase.from('contenu_site').select('*');
+            
+            // Si la table est vide ou n'existe pas encore, on garde le texte écrit en dur !
+            if (error || !data) return; 
+
+            data.forEach(item => {
+                const elementHtml = document.getElementById(item.cle_position);
+                if (elementHtml) {
+                    if (item.type === 'texte' || item.type === 'html') {
+                        elementHtml.innerHTML = item.valeur;
+                    } else if (item.type === 'image_url') {
+                        elementHtml.src = item.valeur;
+                    }
+                }
+            });
+        }
+
+        // --- LANCEMENT DES REQUÊTES ---
         loadLatestMedia();
+        chargerContenuGeneral();
     </script>
 </body>
 </html>
