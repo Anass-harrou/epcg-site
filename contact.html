@@ -9,78 +9,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
-            --primary-color: #9B1C22; /* Rouge Bordeaux EPCG */
+            --primary-color: #9B1C22; 
             --secondary-color: #2b2b2b;
             --text-color: #4a4a4a;
+            --bg-light: #f4f6f8;
         }
+
+        html { scroll-behavior: smooth; }
+        html, body { max-width: 100%; overflow-x: hidden; }
 
         body {
             font-family: 'Roboto', sans-serif;
             color: var(--text-color);
-            background-color: #f4f6f8; 
-            padding-top: 80px; 
+            background-color: var(--bg-light); 
+            padding-top: 115px; /* Aligné avec les autres pages */
         }
 
         h1, h2, h3, h4 { font-family: 'Roboto Slab', serif; }
 
-        /* NAVBAR */
-        .navbar-custom {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            padding: 8px 0;
-            transition: all 0.3s ease;
-        }
-        .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease;}
+        /* NAVBAR SMART STICKY */
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; z-index: 1050;}
+        .navbar-hidden { transform: translateY(-100%); }
+        .navbar-brand { width: 55%; margin-right: auto; }
+        .navbar-brand img { max-height: 85px; width: auto; object-fit: contain; transition: transform 0.3s ease; }
         .navbar-brand:hover img { transform: scale(1.02); }
         
         .navbar-nav .nav-link {
             font-weight: 600; color: var(--secondary-color); text-transform: uppercase;
-            font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s;
+            font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s; position: relative;
         }
+        .navbar-nav .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
+            background-color: var(--primary-color); transition: all 0.3s ease; transform: translateX(-50%);
+        }
+        .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
         .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
 
         .dropdown-menu { border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 8px; margin-top: 10px; padding: 10px 0; }
         .dropdown-item { font-size: 14px; font-weight: 500; padding: 10px 25px; color: var(--secondary-color); transition: all 0.2s ease; }
         .dropdown-item:hover { background-color: rgba(155, 28, 34, 0.05); color: var(--primary-color); padding-left: 30px; }
 
-        /* --- HEADER PAGE CONTACT AVEC VIDÉO --- */
+        /* HEADER PAGE CONTACT AVEC VIDÉO */
         .page-header-video {
-            position: relative;
-            height: 45vh; /* Hauteur de l'en-tête */
-            min-height: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-            margin-top: -80px; /* Compense le padding-top du body pour passer sous la navbar */
-            padding-top: 80px; /* Centre le texte en prenant en compte la navbar */
+            position: relative; height: 45vh; min-height: 350px; display: flex; align-items: center;
+            justify-content: center; text-align: center; color: white; overflow: hidden; margin-top: -115px; padding-top: 115px;
         }
-        
-        .page-header-video .background-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translateX(-50%) translateY(-50%);
-            z-index: -2;
-            object-fit: cover;
-        }
-        
-        .page-header-video .video-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.85)); /* Voile bordeaux/noir */
-            z-index: -1;
-        }
+        .page-header-video .background-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); z-index: -2; object-fit: cover; }
+        .page-header-video .video-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(rgba(43, 43, 43, 0.8), rgba(155, 28, 34, 0.85)); z-index: -1; }
 
         .page-title { font-size: 3.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}
         .page-subtitle { font-size: 1.2rem; font-weight: 300; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);}
@@ -88,48 +67,25 @@
         /* SECTION CONTACT & FORMULAIRE */
         .contact-section { margin-top: -50px; margin-bottom: 80px; position: relative; z-index: 10; }
         
-        .contact-info-box {
-            background-color: var(--secondary-color);
-            color: white;
-            border-radius: 16px;
-            padding: 40px;
-            height: 100%;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
+        .contact-info-box { background-color: var(--secondary-color); color: white; border-radius: 16px; padding: 40px; height: 100%; box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
         .contact-info-box h3 { color: white; margin-bottom: 30px; font-weight: 700;}
         .contact-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
         .contact-item i { font-size: 24px; color: var(--primary-color); margin-right: 15px; background: rgba(255,255,255,0.08); padding: 12px; border-radius: 50%; }
         .contact-item h5 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #fff; text-transform: uppercase; letter-spacing: 1px;}
         .contact-item p { color: #ccc; font-size: 15px; margin: 0; line-height: 1.6;}
 
-        .form-container {
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.05);
-            padding: 50px;
-            height: 100%;
-        }
+        .form-container { background-color: #ffffff; border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); padding: 50px; height: 100%; }
         
-        .form-control-custom, .form-select-custom {
-            background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;
-            padding: 15px 20px; font-size: 1rem; color: #111827; transition: all 0.3s ease; margin-bottom: 20px;
-        }
-        .form-control-custom:focus, .form-select-custom:focus {
-            border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(155, 28, 34, 0.1); background-color: #fff; outline: none;
-        }
+        .form-control-custom, .form-select-custom { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px 20px; font-size: 1rem; color: #111827; transition: all 0.3s ease; margin-bottom: 20px; }
+        .form-control-custom:focus, .form-select-custom:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(155, 28, 34, 0.1); background-color: #fff; outline: none; }
         .form-label-custom { font-weight: 600; color: var(--secondary-color); margin-bottom: 8px; display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;}
 
-        .btn-submit {
-            background-color: var(--primary-color); color: white; padding: 16px 40px;
-            font-size: 1.1rem; font-weight: 600; border-radius: 8px; border: none;
-            width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+        .btn-submit { background-color: var(--primary-color); color: white; padding: 16px 40px; font-size: 1.1rem; font-weight: 600; border-radius: 8px; border: none; width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .btn-submit:hover { background-color: #7a151a; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(155, 28, 34, 0.25); }
 
-        /* CARTE MAPS */
         .map-container { border-radius: 12px; overflow: hidden; margin-top: 40px; height: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
 
-        /* FOOTER */
+        /* FOOTER UNIFORMISÉ */
         .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
         .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase; }
         .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; line-height: 1.6; }
@@ -139,51 +95,20 @@
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
 
         @media (max-width: 768px) {
+            body { padding-top: 85px; } 
             .page-title { font-size: 2.5rem; }
             .form-container { padding: 30px; }
             .contact-info-box { padding: 30px; }
+            .page-header-video { margin-top: -85px; padding-top: 85px; }
         }
-        /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
-            /* 1. Force le logo et le bouton à rester sur la même ligne */
-            .navbar-custom .container-fluid {
-                display: flex !important;
-                flex-wrap: nowrap !important; /* Interdit formellement de passer à la ligne */
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            /* 2. Réduit le logo pour laisser respirer le bouton */
-            .navbar-brand img {
-                max-height: 45px !important; 
-                width: auto;
-                max-width: 70vw; /* Le logo ne peut pas prendre plus de 70% de l'écran */
-            }
-
-            /* 3. Nettoie le bouton du menu */
-            .navbar-toggler {
-                border: none !important;
-                padding: 5px 0 5px 15px !important;
-                margin-left: auto;
-            }
-            .navbar-toggler:focus {
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            /* 4. Rend l'ouverture du menu plus jolie et évite de pousser le site vers le bas */
-            .navbar-collapse {
-                background: rgba(255, 255, 255, 0.98);
-                padding: 15px;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                margin-top: 15px;
-                position: absolute;
-                top: 100%;
-                left: 10px;
-                right: 10px;
-                z-index: 1000;
-            }
+            .navbar-brand { width: 75%; }
+            .navbar-brand img { max-height: 60px !important; width: 100%; object-fit: contain; object-position: left center; }
+            .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
+            .navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
+            .navbar-toggler:focus { box-shadow: none !important; outline: none !important; }
+            .navbar-collapse { background: rgba(255, 255, 255, 0.98); padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 15px; position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; }
+            .navbar-nav .nav-link::after { bottom: 0; }
         }
     </style>
 </head>
@@ -191,18 +116,21 @@
 
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
-            <a class="navbar-brand" href="index.html">
-                <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-            </a>
+            <div class="d-flex align-items-center flex-grow-1">
+                <a class="navbar-brand" href="index.html">
+                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+                </a>
+                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+                    École Professionnelle de Commerce et de Gestion - Tanger
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
                     <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
                         <ul class="dropdown-menu">
@@ -211,8 +139,7 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
-                   
-                    <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
+                    <li class="nav-item"><a class="nav-link active-link" href="contact.html">CONTACT</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.html">Page Administration</a></li>
                 </ul>
             </div>
@@ -226,8 +153,8 @@
         </video>
         
         <div class="container position-relative" data-aos="zoom-in" data-aos-duration="1000" style="z-index: 2;">
-            <h1 class="page-title">Contactez-Nous</h1>
-            <p class="page-subtitle">Notre équipe est à votre écoute pour vous accompagner vers la réussite.</p>
+            <h1 class="page-title" id="contact_header_titre">Contactez-Nous</h1>
+            <p class="page-subtitle" id="contact_header_desc">Notre équipe est à votre écoute pour vous accompagner vers la réussite.</p>
         </div>
     </header>
 
@@ -242,7 +169,8 @@
                         <i class="bi bi-geo-alt"></i>
                         <div>
                             <h5>Campus Principal</h5>
-                            <p>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</p>
+                            <!-- ID DYNAMIQUE -->
+                            <p id="contact_adresse">6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</p>
                         </div>
                     </div>
 
@@ -250,7 +178,8 @@
                         <i class="bi bi-telephone"></i>
                         <div>
                             <h5>Téléphone & WhatsApp</h5>
-                            <p>Fixe : 05 31 10 99 70<br>Mobile : 06 06 43 04 91 / 07 13 68 60 16</p>
+                            <!-- ID DYNAMIQUE -->
+                            <p id="contact_tel">Fixe : 05 31 10 99 70<br>Mobile : 06 06 43 04 91 / 07 13 68 60 16</p>
                         </div>
                     </div>
 
@@ -258,10 +187,12 @@
                         <i class="bi bi-envelope"></i>
                         <div>
                             <h5>Email</h5>
-                            <p>epcg.school@gmail.com</p>
+                            <!-- ID DYNAMIQUE -->
+                            <p id="contact_email">epcg.school@gmail.com</p>
                         </div>
                     </div>
 
+                    <!-- Carte Google Maps -->
                     <div class="map-container">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3237.525287019683!2d-5.8037386!3d35.7624634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b80ba1b5c4795%3A0xc346fc6baf4fbd0c!2sPlaza%20Toro%2C%20Tanger!5e0!3m2!1sfr!2sma!4v1700000000000!5m2!1sfr!2sma" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
@@ -323,8 +254,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 mb-4 mb-lg-0">
-                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    <p class="mb-4 pe-lg-5">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
+                    <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
+                    <p class="mb-4 pe-lg-5" id="footer_description">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
                     <div class="social-links">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
@@ -336,11 +267,11 @@
                     <ul class="list-unstyled footer-info mt-4">
                         <li>
                             <i class="bi bi-geo-alt-fill"></i>
-                            <span><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
+                            <span id="footer_adresse"><strong>Campus Principal :</strong> <br>6 Abou Moussa EL Achaari, Route de Tétouan,<br>Rond Point Plaza Toros – Tanger</span>
                         </li>
                         <li>
                             <i class="bi bi-telephone-fill"></i>
-                            <span>
+                            <span id="footer_tel">
                                 <strong>Admissions :</strong> <br>
                                 Fixe : 05 31 10 99 70 <br>
                                 Mobile : 06 06 43 04 91 / 07 13 68 60 16
@@ -348,7 +279,7 @@
                         </li>
                         <li>
                             <i class="bi bi-envelope-fill"></i>
-                            <span>epcg.school@gmail.com</span>
+                            <span id="footer_email">epcg.school@gmail.com</span>
                         </li>
                     </ul>
                 </div>
@@ -363,6 +294,35 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script> 
         AOS.init({ once: true, duration: 800, offset: 50, easing: 'ease-in-out-cubic' }); 
+
+        // SMART NAVBAR
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar-custom');
+        window.addEventListener('scroll', function() {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop && st > 100) navbar.classList.add('navbar-hidden');
+            else navbar.classList.remove('navbar-hidden');
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+        // CHARGEMENT SUPABASE (CMS)
+        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function chargerContenuGeneral() {
+            const { data } = await _supabase.from('contenu_site').select('*');
+            if (data) {
+                data.forEach(item => {
+                    const el = document.getElementById(item.cle_position);
+                    if (el) {
+                        if (item.type === 'texte' || item.type === 'html') el.innerHTML = item.valeur;
+                        else if (item.type === 'image_url') el.src = item.valeur;
+                    }
+                });
+            }
+        }
+        chargerContenuGeneral();
     </script>
 </body>
 </html>
