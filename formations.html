@@ -18,6 +18,12 @@
             --bg-light: #fcfcfc;
         }
 
+        /* --- CORRECTION RESPONSIVE GLOBALE --- */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden; /* Empêche l'espace blanc sur le côté */
+        }
+
         body { font-family: 'Roboto', sans-serif; color: var(--text-color); padding-top: 80px; background-color: #ffffff; }
         h1, h2, h3, h4, .font-slab { font-family: 'Roboto Slab', serif; }
 
@@ -76,9 +82,25 @@
         .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
 
+        /* --- CORRECTIONS MOBILE --- */
         @media (max-width: 768px) {
-            .page-title { font-size: 2.2rem; }
-            .cycle-title { font-size: 2rem; }
+            .page-header { padding: 90px 0 60px 0; }
+            .page-title { font-size: 2.2rem; word-wrap: break-word; padding: 0 15px; }
+            .page-subtitle { font-size: 1rem; padding: 0 15px; }
+            
+            .formation-section { padding: 50px 0; }
+            .cycle-title { font-size: 1.8rem; }
+            .cycle-desc { font-size: 1rem; }
+            
+            /* Ajustement du bouton CTA pour qu'il ne déborde pas */
+            .btn-epcg-white { 
+                padding: 12px 20px; 
+                font-size: 0.95rem; 
+                display: block; 
+                width: 90%; 
+                margin: 20px auto 0; 
+                white-space: normal;
+            }
         }
     </style>
 </head>
@@ -94,7 +116,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
                     
                     <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
                     
@@ -105,10 +127,10 @@
                             <li><a class="dropdown-item" href="elearning.html">Campus e-learning</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
+                    <li class="nav-item"><a class="nav-link active-link" href="formations.html">NOS FORMATIONS</a></li>
                    
                     <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.html">Page Administration</a></li>
+                    <li class="nav-item d-xl-none"><a class="nav-link" href="admin.html">Page Administration</a></li>
                 </ul>
             </div>
         </div>
