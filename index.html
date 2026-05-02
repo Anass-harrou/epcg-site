@@ -37,8 +37,8 @@
         
         /* NAVBAR */
         .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: all 0.3s ease; }
-        .navbar-brand img { max-height: 65px; width: auto; transition: transform 0.3s ease; }
-        .navbar-brand:hover img { transform: scale(1.02); }
+       /* On augmente la hauteur à 85px et on autorise une grande largeur (jusqu'à 400px) */
+.navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: transform 0.3s ease; }.navbar-brand:hover img { transform: scale(1.02); }
         .navbar-nav .nav-link { font-weight: 600; color: var(--secondary-color); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; }
         
         .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
