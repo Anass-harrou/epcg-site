@@ -20,13 +20,8 @@
             --bg-light: #fcfcfc;
         }
 
-       html {
-            scroll-behavior: smooth; 
-       }
-       html, body {
-            max-width: 100%;
-            overflow-x: hidden;
-        }
+       html { scroll-behavior: smooth; }
+       html, body { max-width: 100%; overflow-x: hidden; }
 
         body {
             font-family: 'Roboto', sans-serif;
@@ -36,117 +31,68 @@
         }
         
         /* NAVBAR */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; }
+        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease; z-index: 1050;}
         .navbar-hidden { transform: translateY(-100%); }
-        /* Le conteneur du logo prend 55% de la largeur totale de la barre */
         .navbar-brand { width: 55%; margin-right: auto; }
-        
-        /* L'image s'adapte parfaitement à ce grand espace, collée à gauche */
         .navbar-brand img { max-height: 75px; width: auto; transition: transform 0.3s ease; }
-#navbar_slogan { line-height: 1.2; color: var(--secondary-color) !important; }
+        #navbar_slogan { line-height: 1.2; color: var(--secondary-color) !important; }
         .navbar-brand:hover img { transform: scale(1.02); }
         
         .navbar-nav .nav-link { 
-            font-weight: 600; 
-            color: var(--secondary-color); 
-            text-transform: uppercase; 
-            font-size: 13px; 
-            letter-spacing: 0.5px; 
-            padding: 10px 15px !important; 
-            transition: color 0.3s ease; 
-            position: relative; 
+            font-weight: 600; color: var(--secondary-color); text-transform: uppercase; 
+            font-size: 13px; letter-spacing: 0.5px; padding: 10px 15px !important; transition: color 0.3s ease; position: relative; 
         }
-        
         .navbar-nav .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 5px;
-            left: 50%;
-            background-color: var(--primary-color);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
+            background-color: var(--primary-color); transition: all 0.3s ease; transform: translateX(-50%);
         }
 
         .navbar-nav .nav-link:hover { color: var(--primary-color) !important; }
         .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
         .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; background: transparent !important; }
 
-        /* HERO CAROUSEL NOUVEAU DESIGN */
+        /* HERO CAROUSEL */
         .hero-carousel-section { height: 85vh; background-color: #ffffff; position: relative; }
         .carousel-item { height: 85vh; position: relative; }
-        
         .carousel-item.slide-affiche img, .carousel-item.slide-affiche video { height: 100%; width: 100%; object-fit: contain; opacity: 1; background-color: #ffffff; }
         .carousel-item.slide-ambiance img { height: 100%; width: 100%; object-fit: cover; filter: brightness(0.6); }
 
-        /* Textes & Boutons (Pour Slide 2) */
         .carousel-caption { top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding-bottom: 0; }
         .slider-title { font-family: 'Roboto', sans-serif; font-size: 3.5rem; font-weight: 700; text-transform: uppercase; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin-bottom: 20px; text-align: center; color: white;}
         .slider-subtitle { font-family: 'Roboto', sans-serif; font-size: 1.5rem; font-weight: 500; margin-bottom: 40px; text-shadow: 1px 2px 5px rgba(0,0,0,0.8); color: white;}
         .slider-btn { border: 2px solid white; color: white; padding: 12px 35px; font-weight: 600; font-size: 1rem; background: transparent; text-decoration: none; text-transform: uppercase; transition: all 0.3s ease; }
         .slider-btn:hover { background: white; color: black; text-decoration: none; }
 
-        /* ANIMATION TEXTE: Espacement des lettres */
         @keyframes letter-spacing-anim {
             0% { letter-spacing: 1em; opacity: 0; filter: blur(8px); }
             40% { opacity: 0.8; }
             100% { letter-spacing: 0.05em; opacity: 1; filter: blur(0); }
         }
-        /* L'animation se déclenche uniquement quand le slide est actif */
-        .carousel-item.active .slider-title {
-            animation: letter-spacing-anim 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-        }
+        .carousel-item.active .slider-title { animation: letter-spacing-anim 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both; }
 
-        /* FLÈCHES DU SLIDER (Miniatures au HOVER) */
+        /* FLÈCHES DU SLIDER */
         .carousel-control-prev, .carousel-control-next { width: 8%; opacity: 1; z-index: 20;}
         .carousel-control-prev-icon, .carousel-control-next-icon { 
-            background-color: rgba(180, 180, 180, 0.4);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            background-size: 40%; /* Par défaut, seule la flèche SVG s'affiche */
-            background-position: center;
-            background-repeat: no-repeat;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(2px);
+            background-color: rgba(180, 180, 180, 0.4); border-radius: 50%; width: 60px; height: 60px;
+            background-size: 40%; background-position: center; background-repeat: no-repeat;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(2px);
         }
-        
         .carousel-control-prev-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e"); }
         .carousel-control-next-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
         
-        /* HOVER: Apparition de l'image préparée dans la variable CSS (--thumb-bg) */
         .carousel-control-prev:hover .carousel-control-prev-icon { 
-            transform: scale(1.15);
-            background-color: rgba(180, 180, 180, 0.9);
+            transform: scale(1.15); background-color: rgba(180, 180, 180, 0.9);
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e"), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--thumb-bg, none);
             background-size: 40%, cover, cover;
         }
-
         .carousel-control-next:hover .carousel-control-next-icon { 
-            transform: scale(1.15);
-            background-color: rgba(180, 180, 180, 0.9);
+            transform: scale(1.15); background-color: rgba(180, 180, 180, 0.9);
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), var(--thumb-bg, none);
             background-size: 40%, cover, cover;
         }
 
-        /* FLÈCHE DE CONTINUATION (Bounce en bas) */
-        .scroll-down-arrow {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #d1d1d1;
-            font-size: 2rem;
-            z-index: 15;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-15px) translateX(-50%); }
-            60% { transform: translateY(-7px) translateX(-50%); }
-        }
+        .scroll-down-arrow { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #d1d1d1; font-size: 2rem; z-index: 15; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); } 40% { transform: translateY(-15px) translateX(-50%); } 60% { transform: translateY(-7px) translateX(-50%); } }
 
         /* SECTIONS GLOBALES */
         .section-padding { padding: 90px 0; }
@@ -160,7 +106,7 @@
         .accreditation-badge { background-color: #ffffff; color: var(--secondary-color); padding: 20px 25px; border-radius: 8px; display: inline-block; margin-top: 20px; border-left: 5px solid var(--primary-color); box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
 
         /* FORMATIONS */
-        .formation-card { background: white; padding: 45px 30px; border-radius: 12px; border: 1px solid #f0f0f0; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); height: 100%; position: relative; overflow: hidden; }
+        .formation-card { background: white; padding: 45px 30px; border-radius: 12px; border: 1px solid #f0f0f0; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); height: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: start;}
         .formation-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background-color: var(--primary-color); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
         .formation-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
         .formation-card:hover::before { transform: scaleX(1); }
@@ -194,7 +140,6 @@
         .social-links a:hover { background: var(--primary-color); transform: translateY(-3px); }
         .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 50px; text-align: center; font-size: 13px; }
 
-        /* --- CORRECTIONS MOBILE (RESPONSIVE) --- */
         @media (max-width: 768px) {
             body { padding-top: 85px; } 
             .slider-title { font-size: 1.8rem; }
@@ -204,10 +149,10 @@
             .carousel-control-prev-icon, .carousel-control-next-icon { width: 45px; height: 45px; }
         }
         
-        /* --- FIX UNIVERSEL BARRE DE NAVIGATION (MOBILE) --- */
         @media (max-width: 991px) {
             .navbar-brand { width: 75%; }
-            .navbar-brand img { max-height: 60px !important; width: 100%; object-fit: contain; object-position: left center; }.navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
+            .navbar-brand img { max-height: 60px !important; width: 100%; object-fit: contain; object-position: left center; }
+            .navbar-custom .container-fluid { display: flex !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; }
             .navbar-toggler { border: none !important; padding: 5px 0 5px 15px !important; margin-left: auto; }
             .navbar-toggler:focus { box-shadow: none !important; outline: none !important; }
             .navbar-collapse { background: rgba(255, 255, 255, 0.98); padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 15px; position: absolute; top: 100%; left: 10px; right: 10px; z-index: 1000; }
@@ -220,20 +165,19 @@
     <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
         <div class="container-fluid px-lg-5"> 
             <div class="d-flex align-items-center flex-grow-1">
-    <a class="navbar-brand" href="index.html">
-        <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-    </a>
-    <!-- ESPACE VIDE REMPLI PAR LE TEXTE DYNAMIQUE -->
-    <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
-        École Professionnelle de Commerce et de Gestion - Tanger
-    </div>
-</div>
+                <a class="navbar-brand" href="index.html">
+                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+                </a>
+                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+                    École Professionnelle de Commerce et de Gestion - Tanger
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
+                    <li class="nav-item"><a class="nav-link active-link" href="index.html">ACCUEIL</a></li>
                     <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
@@ -253,8 +197,6 @@
     <section class="hero-carousel-section">
         <div id="mainHeroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
-                
-                <!-- SLIDE 1 (Affiche - Pas de texte superposé) -->
                 <div class="carousel-item slide-affiche active" data-bs-interval="8000">
                     <div id="hero_media_1" class="w-100 h-100">
                         <video class="d-block w-100 h-100" autoplay muted loop playsinline>
@@ -262,14 +204,9 @@
                         </video>
                     </div>
                 </div>
-                
-                <!-- SLIDE 2 (Ambiance - Avec texte superposé) -->
                 <div class="carousel-item slide-ambiance" data-bs-interval="5000">
-                    <!-- ID DYNAMIQUE : IMAGE SLIDER 2 -->
                     <img id="hero_image_2" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070" class="d-block w-100 h-100" alt="Cérémonie">
-                    
                     <div class="carousel-caption">
-                        <!-- L'animation CSS 'letter-spacing-anim' remplace le 'data-aos' pour ce titre -->
                         <h1 class="slider-title">LES INSCRIPTIONS SONT OUVERTES</h1>
                         <p class="slider-subtitle" data-aos="fade-up" data-aos-delay="300">2026-2027</p>
                         <div data-aos="fade-up" data-aos-delay="600">
@@ -277,10 +214,8 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
             
-            <!-- Flèches de navigation (Miniatures gérées via CSS Variables) -->
             <button class="carousel-control-prev" type="button" data-bs-target="#mainHeroCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
@@ -288,7 +223,6 @@
                 <span class="carousel-control-next-icon"></span>
             </button>
             
-            <!-- Flèche de continuation (scroll vers l'ancre #about) -->
             <a href="#about" class="scroll-down-arrow" style="cursor: pointer; text-decoration: none;">
                 <i class="bi bi-chevron-down"></i>
             </a>
@@ -299,7 +233,6 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <!-- ID DYNAMIQUE : TITRE ET TEXTE ABOUT -->
                     <h2 class="section-title text-start" id="accueil_about_titre">L'Institution EPCG</h2>
                     <p class="about-text" id="accueil_about_texte1">
                         L'<strong>École Professionnelle de Commerce & de Gestion Tanger</strong> est un établissement privé d'excellence, dédié à la formation des futurs leaders dans les domaines de l'administration, du management et du commerce.
@@ -313,13 +246,13 @@
                     </div>
                 </div>
                 <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
-                    <!-- ID DYNAMIQUE : IMAGE ABOUT -->
                     <img id="accueil_about_image" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000" alt="Campus EPCG" class="img-fluid rounded-4 shadow-lg">
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- SECTION FORMATIONS MISE À JOUR (Synchro avec L.docx) -->
     <section id="formations" class="formations-section section-padding">
         <div class="container">
             <h2 class="section-title text-center" data-aos="fade-up" id="accueil_formations_titre">Nos Formations</h2>
@@ -327,30 +260,39 @@
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="formation-card">
                         <i class="bi bi-person-workspace formation-icon"></i>
-                        <h4 class="font-slab mb-2">Cycle Normal</h4>
-                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +2</h3>
-                        <p class="fw-bold mb-3">Technicien Spécialisé</p>
-                        <p class="text-muted small">Formation initiale 100% pratique pour acquérir les bases techniques du management et s'intégrer rapidement en entreprise.</p>
+                        <h4 class="font-slab mb-2" id="accueil_form_1_badge" style="font-size: 1.1rem; color: #666;">Cycle Initial (2 ans)[cite: 4]</h4>
+                        <h3 class="text-primary mb-3" id="accueil_form_1_titre" style="font-weight: 700; font-size: 1.5rem;">Technicien Spécialisé (Bac+2)[cite: 4]</h3>
+                        <div id="accueil_form_1_desc" class="text-muted small">
+                            <p><strong>Diplôme Accrédité par l'État.</strong> Formation de qualité pour des compétences répondant aux attentes de l'entreprise[cite: 4].</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="formation-card">
                         <i class="bi bi-briefcase formation-icon"></i>
-                        <h4 class="font-slab mb-2">Cycle Supérieur</h4>
-                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +3</h3>
-                        <p class="fw-bold mb-3">Licence Professionnelle / Bachelor</p>
-                        <p class="text-muted small">Programme en partenariat visant à approfondir vos compétences spécialisées et garantir votre employabilité.</p>
+                        <h4 class="font-slab mb-2" id="accueil_form_2_badge" style="font-size: 1.1rem; color: #666;">Cycle Supérieur (1 an)[cite: 4]</h4>
+                        <h3 class="text-primary mb-3" id="accueil_form_2_titre" style="font-weight: 700; font-size: 1.5rem;">Bachelor (Bac+3)[cite: 4]</h3>
+                        <div id="accueil_form_2_desc" class="text-muted small">
+                            <p>Cycle de formation délocalisé en partenariats universitaires[cite: 4]. Accessible avec un diplôme Bac+2 ou VAE[cite: 4].</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="formation-card">
                         <i class="bi bi-globe-americas formation-icon"></i>
-                        <h4 class="font-slab mb-2">Cycle Expert</h4>
-                        <h3 class="text-primary mb-3" style="color: var(--primary-color)!important; font-weight: 700;">Bac +5</h3>
-                        <p class="fw-bold mb-3">Master Professionnel</p>
-                        <p class="text-muted small">Une expertise pointue pour devenir un cadre dirigeant de haut niveau, capable de relever les défis de l'économie marocaine.</p>
+                        <h4 class="font-slab mb-2" id="accueil_form_3_badge" style="font-size: 1.1rem; color: #666;">Cycle Supérieur (2 ans)[cite: 4]</h4>
+                        <h3 class="text-primary mb-3" id="accueil_form_3_titre" style="font-weight: 700; font-size: 1.5rem;">Mastère Professionnel (Bac+5)[cite: 4]</h3>
+                        <div id="accueil_form_3_desc" class="text-muted small">
+                            <p>Mastère délocalisé en partenariats universitaires pour former de futurs praticiens qualifiés[cite: 4]. Accessible avec Bac+3 ou VAE[cite: 4].</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+                <a href="formations.html" class="btn btn-outline-danger fw-bold px-4 py-2 text-uppercase" style="border-width: 2px;">
+                    Découvrir tous les détails & filières <i class="bi bi-arrow-right ms-2"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -359,7 +301,6 @@
         <div class="container">
             <h2 class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
             <div class="row justify-content-center g-4">
-                <!-- IDS DYNAMIQUES : IMAGES DES CAMPUS -->
                 <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
                     <a href="#" class="site-card text-center">
                         <img id="site_1_image" src="./assets/logo-epcg.jpeg" alt="Site 1" class="site-icon">
@@ -397,13 +338,11 @@
     <section class="activites-section section-padding">
         <div class="container text-center">
             <h2 class="section-title text-center" data-aos="fade-up" style="text-transform: none;" id="accueil_nouveautes_titre">Nouveautés & Événements</h2>
-            
             <div class="row g-4 mt-2" id="dynamic-gallery">
                 <div class="col-12 text-center py-4">
                     <div class="spinner-border text-danger" role="status"></div>
                 </div>
             </div>
-
             <a href="galerie.html" class="btn-voir-plus" data-aos="zoom-in" data-aos-delay="200">
                 <i class="bi bi-camera-fill me-2"></i> Voir toute la médiathèque
             </a>
@@ -437,10 +376,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 mb-4 mb-lg-0">
-                    <!-- ID DYNAMIQUE : LOGO FOOTER -->
                     <img id="logo_footer" src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 60px; filter: brightness(0) invert(1); opacity: 0.8;" class="mb-4">
-                    
-                    <!-- IDS DYNAMIQUES : TEXTES FOOTER -->
                     <p class="mb-4 pe-lg-5" id="footer_description">Madrassa Mihaniya Liltijara wa Tassyir - Tanger.<br>Établissement Privé Accrédité et Autorisé par l'État pour la formation des cadres de demain.</p>
                     <div class="social-links">
                         <a href="#"><i class="bi bi-facebook"></i></a>
@@ -490,7 +426,6 @@
     <script>
         AOS.init({ once: true, duration: 800, offset: 100, easing: 'ease-in-out-cubic' });
 
-        // --- ACTIVE LINK AUTOLOAD ---
         document.addEventListener("DOMContentLoaded", function() {
             let currentPage = window.location.pathname.split("/").pop();
             if (currentPage === "" || currentPage === "/") currentPage = "index.html"; 
@@ -504,7 +439,6 @@
             });
         });
 
-        // --- NAVBAR AUTO-HIDE (SMART STICKY) ---
         let lastScrollTop = 0;
         const navbar = document.querySelector('.navbar-custom');
         
@@ -518,12 +452,10 @@
             lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
         });
 
-        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- CHARGEMENT GALERIE DYNAMIQUE ---
         async function loadLatestMedia() {
             const container = document.getElementById('dynamic-gallery');
             const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false }).limit(4);
@@ -547,7 +479,6 @@
             `).join('');
         }
 
-        // --- FONCTION INTELLIGENTE : MINIATURES AU HOVER ---
         function updateSliderThumbnails() {
             const carouselInner = document.querySelector('.carousel-inner');
             const items = carouselInner.querySelectorAll('.carousel-item');
@@ -567,7 +498,6 @@
             const prevBtn = document.querySelector('.carousel-control-prev');
             const nextBtn = document.querySelector('.carousel-control-next');
 
-            // On stocke l'URL de l'image dans une variable CSS (--thumb-bg) sur le bouton
             if (prevImg) {
                 prevBtn.style.setProperty('--thumb-bg', `url('${prevImg.src}')`);
             } else {
@@ -584,7 +514,6 @@
         const myCarousel = document.getElementById('mainHeroCarousel');
         myCarousel.addEventListener('slid.bs.carousel', updateSliderThumbnails);
 
-        // --- CHARGEMENT TEXTES ET IMAGES CMS ---
         async function chargerContenuGeneral() {
             const { data, error } = await _supabase.from('contenu_site').select('*');
             if (!error && data) {
@@ -602,7 +531,6 @@
             updateSliderThumbnails();
         }
 
-        // --- LANCEMENT DES REQUÊTES ---
         loadLatestMedia();
         chargerContenuGeneral();
     </script>
