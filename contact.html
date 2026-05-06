@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- VOTRE CSS GLOBAL -->
@@ -121,42 +122,46 @@
                     <h3 class="mb-2" style="color: var(--secondary-color); font-family: 'Roboto Slab', serif; font-weight: 700;">Envoyez-nous un message</h3>
                     <p class="text-muted mb-4">Besoin d'informations sur nos formations ou les modalités d'inscription ? Remplissez ce formulaire.</p>
                     
-                    <form action="#" method="POST">
+                    <!-- FORMULAIRE CORRIGÉ AVEC LES BONS IDs -->
+                    <form id="contact-form">
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label-custom">Prénom <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control-custom w-100" placeholder="Votre prénom" required>
+                                <input type="text" id="contact-prenom" class="form-control-custom w-100" placeholder="Votre prénom" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label-custom">Nom <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control-custom w-100" placeholder="Votre nom" required>
+                                <input type="text" id="contact-nom" class="form-control-custom w-100" placeholder="Votre nom" required>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label-custom">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control-custom w-100" placeholder="adresse@email.com" required>
+                                <input type="email" id="contact-email" class="form-control-custom w-100" placeholder="adresse@email.com" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label-custom">Téléphone</label>
-                                <input type="tel" class="form-control-custom w-100" placeholder="06 00 00 00 00">
+                                <input type="tel" id="contact-tel" class="form-control-custom w-100" placeholder="06 00 00 00 00">
                             </div>
                         </div>
 
                         <label class="form-label-custom">Sujet de votre demande <span class="text-danger">*</span></label>
-                        <select class="form-select-custom w-100 mb-4" required>
+                        <select id="contact-sujet" class="form-select-custom w-100 mb-4" required>
                             <option selected disabled value="">Choisissez un sujet...</option>
-                            <option value="1">Information sur les inscriptions</option>
-                            <option value="2">Renseignement sur une formation (Bac+2, Bac+3, Bac+5)</option>
-                            <option value="3">Demande de partenariat</option>
-                            <option value="4">Autre question</option>
+                            <option value="Information sur les inscriptions">Information sur les inscriptions</option>
+                            <option value="Renseignement sur une formation (Bac+2, Bac+3, Bac+5)">Renseignement sur une formation (Bac+2, Bac+3, Bac+5)</option>
+                            <option value="Demande de partenariat">Demande de partenariat</option>
+                            <option value="Autre question">Autre question</option>
                         </select>
 
                         <label class="form-label-custom">Votre message <span class="text-danger">*</span></label>
-                        <textarea class="form-control-custom w-100" rows="4" placeholder="Écrivez votre message ici..." required></textarea>
+                        <textarea id="contact-message" class="form-control-custom w-100" rows="4" placeholder="Écrivez votre message ici..." required></textarea>
 
-                        <button type="submit" class="btn-submit mt-2">
+                        <!-- ZONE D'ALERTE AJOUTÉE -->
+                        <div id="contact-alert" class="alert d-none mt-2"></div>
+
+                        <button type="submit" id="btn-contact-submit" class="btn-submit mt-2">
                             Envoyer le message <i class="bi bi-send ms-2"></i>
                         </button>
                     </form>
@@ -179,10 +184,13 @@
     <!-- SCRIPT SPÉCIFIQUE À LA PAGE -->
     <script> 
         AOS.init({ once: true, duration: 800, offset: 50, easing: 'ease-in-out-cubic' }); 
-        // Le texte CMS (contact_header_titre, contact_adresse, etc.) est géré automatiquement par chargerContenuGeneral() dans main.js !
     </script>
-    <!-- SCRIPT D'ENVOI DU FORMULAIRE DE CONTACT VERS LA TABLE INSCRIPTIONS -->
+    
+    <!-- SCRIPT D'ENVOI DU FORMULAIRE DE CONTACT VERS LA TABLE INSCRIPTIONS (AUTONOME) -->
     <script>
+        // Initialisation propre pour la page contact
+        const contactSupabase = supabase.createClient('https://aytyetcwfzliikljlhhz.supabase.co', 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz');
+
         document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -194,13 +202,12 @@
             const nomComplet = document.getElementById('contact-prenom').value + ' ' + document.getElementById('contact-nom').value;
             const sujetChoisi = document.getElementById('contact-sujet').value;
 
-            // _supabase est déjà initialisé dans main.js
-            const { error } = await _supabase.from('inscriptions').insert([{
+            const { error } = await contactSupabase.from('inscriptions').insert([{
                 nom_prenom: nomComplet,
                 email: document.getElementById('contact-email').value,
                 telephone_1: document.getElementById('contact-tel').value,
-                formation: sujetChoisi, // Astuce : on utilise la colonne 'formation' pour stocker le sujet !
-                type_demande: 'Contact', // On précise que c'est un contact
+                formation: sujetChoisi, 
+                type_demande: 'Contact',
                 message: document.getElementById('contact-message').value
             }]);
 
