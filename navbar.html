@@ -1,1 +1,31 @@
-navbar.html
+<nav class="navbar navbar-expand-xl navbar-custom fixed-top">
+    <div class="container-fluid px-lg-5"> 
+        <div class="d-flex align-items-center flex-grow-1">
+            <a class="navbar-brand" href="index.html">
+                <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
+            </a>
+            <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
+                École Professionnelle de Commerce et de Gestion - Tanger
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
+                <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
+                        <li><a class="dropdown-item" href="etudiant.html">Espace etudiant</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin.html">Page Administration</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
