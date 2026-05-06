@@ -339,6 +339,57 @@
                                     </div>
                                 </div>
 
+                                <!-- SECTION : LES 3 CARTES DE FORMATIONS DE L'ACCUEIL -->
+                                <div class="col-12 mt-5 pt-4 border-top">
+                                    <h6 class="form-section-title">Aperçu des Formations (Les 3 Cartes)</h6>
+                                    
+                                    <div class="mb-4" style="max-width: 500px;">
+                                        <label class="form-label small fw-bold">Titre de la section</label>
+                                        <div class="input-group">
+                                            <input type="text" id="input_accueil_formations_titre" class="form-control" placeholder="Ex: Nos Formations">
+                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('accueil_formations_titre', 'input_accueil_formations_titre', this)">Enregistrer le Titre</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-3">
+                                        <!-- CARTE 1 -->
+                                        <div class="col-md-4">
+                                            <div class="bg-light p-3 rounded h-100 border-top border-4 border-danger shadow-sm">
+                                                <label class="small fw-bold text-primary">1. Carte Bac+2</label>
+                                                <input type="text" id="input_accueil_form_1_badge" class="form-control form-control-sm mb-2" placeholder="Badge (ex: Cycle Initial)">
+                                                <input type="text" id="input_accueil_form_1_titre" class="form-control form-control-sm mb-2" placeholder="Titre principal">
+                                                <label class="small text-muted mb-1">Description :</label>
+                                                <div class="quill-editor bg-white" id="quill_accueil_form_1_desc" style="height: 100px;"></div>
+                                                <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('accueil_form_1_badge', 'input_accueil_form_1_badge', this); setTimeout(() => sauvegarderTexte('accueil_form_1_titre', 'input_accueil_form_1_titre', this), 500); setTimeout(() => sauvegarderQuill('accueil_form_1_desc', this), 1000);">Tout Enregistrer (Carte 1)</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- CARTE 2 -->
+                                        <div class="col-md-4">
+                                            <div class="bg-light p-3 rounded h-100 border-top border-4 border-danger shadow-sm">
+                                                <label class="small fw-bold text-primary">2. Carte Bac+3</label>
+                                                <input type="text" id="input_accueil_form_2_badge" class="form-control form-control-sm mb-2" placeholder="Badge (ex: Cycle Supérieur)">
+                                                <input type="text" id="input_accueil_form_2_titre" class="form-control form-control-sm mb-2" placeholder="Titre principal">
+                                                <label class="small text-muted mb-1">Description :</label>
+                                                <div class="quill-editor bg-white" id="quill_accueil_form_2_desc" style="height: 100px;"></div>
+                                                <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('accueil_form_2_badge', 'input_accueil_form_2_badge', this); setTimeout(() => sauvegarderTexte('accueil_form_2_titre', 'input_accueil_form_2_titre', this), 500); setTimeout(() => sauvegarderQuill('accueil_form_2_desc', this), 1000);">Tout Enregistrer (Carte 2)</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- CARTE 3 -->
+                                        <div class="col-md-4">
+                                            <div class="bg-light p-3 rounded h-100 border-top border-4 border-danger shadow-sm">
+                                                <label class="small fw-bold text-primary">3. Carte Bac+5</label>
+                                                <input type="text" id="input_accueil_form_3_badge" class="form-control form-control-sm mb-2" placeholder="Badge (ex: Cycle Supérieur)">
+                                                <input type="text" id="input_accueil_form_3_titre" class="form-control form-control-sm mb-2" placeholder="Titre principal">
+                                                <label class="small text-muted mb-1">Description :</label>
+                                                <div class="quill-editor bg-white" id="quill_accueil_form_3_desc" style="height: 100px;"></div>
+                                                <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('accueil_form_3_badge', 'input_accueil_form_3_badge', this); setTimeout(() => sauvegarderTexte('accueil_form_3_titre', 'input_accueil_form_3_titre', this), 500); setTimeout(() => sauvegarderQuill('accueil_form_3_desc', this), 1000);">Tout Enregistrer (Carte 3)</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -480,7 +531,7 @@
             }
         });
 
-        // --- PARTENAIRES ---
+        // --- GESTION DES PARTENAIRES ---
         async function uploadPartenaire() {
             const fileInput = document.getElementById('partenaire-logo');
             const nom = document.getElementById('partenaire-nom').value;
@@ -590,8 +641,7 @@
             execSave(cle, quillEditors[cle].root.innerHTML, btn);
         }
 
-        // --- GESTION DES INSCRIPTIONS ET AUTRES SCRIPTS INCHANGÉS (Media, Images, Logout) ---
-        // (J'ai conservé la logique de vos fonctions fetchInscriptions, uploadMedia, sauvegarderImagePosition, etc...)
+        // --- GESTION DES INSCRIPTIONS ---
         async function fetchInscriptions() {
             const list = document.getElementById('inscriptions-list');
             list.innerHTML = '<tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm"></div> Chargement...</td></tr>';
@@ -606,31 +656,165 @@
             }
         }
 
-        async function uploadMedia() { /* Voir code existant ou plus haut (fonctionne parfaitement) */ }
-        async function fetchGallery() { /* Voir code existant ou plus haut */ }
-        async function deleteMedia(id, url) { /* Voir code existant ou plus haut */ }
-        
+        // --- GESTION MÉDIATHÈQUE ---
+        async function uploadMedia() {
+            const fileInput = document.getElementById('media-file');
+            const file = fileInput.files[0];
+            const type = document.getElementById('media-type').value;
+            const btn = document.getElementById('upload-btn');
+
+            if (!file) return alert("Veuillez sélectionner un fichier.");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...';
+            btn.disabled = true;
+
+            const fileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`; 
+            
+            const { data, error } = await _supabase.storage.from('media').upload(fileName, file);
+
+            if (error) {
+                alert("Erreur: " + error.message);
+            } else {
+                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+                await _supabase.from('gallery').insert([{ url: publicUrl, type: type }]);
+                fileInput.value = "";
+                fetchGallery();
+            }
+            btn.innerHTML = 'Publier sur le site';
+            btn.disabled = false;
+        }
+
+        async function fetchGallery() {
+            const gallery = document.getElementById('media-gallery');
+            gallery.innerHTML = '<div class="col-12 text-center py-4"><div class="spinner-border text-danger spinner-border-sm"></div></div>';
+            
+            const { data } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
+            
+            if(data && data.length > 0) {
+                gallery.innerHTML = data.map(item => `
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            ${item.type === 'image' 
+                                ? `<img src="${item.url}" class="card-img-top" style="height:160px; object-fit:cover;" alt="Média">` 
+                                : `<video src="${item.url}" class="card-img-top" style="height:160px; object-fit:cover;" controls></video>`}
+                            <div class="card-body p-2 text-center bg-light">
+                                <button onclick="deleteMedia(${item.id}, '${item.url}')" class="btn btn-sm btn-outline-danger w-100"><i class="bi bi-trash"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                gallery.innerHTML = '<div class="col-12 text-muted py-3 text-center">Aucun fichier dans la médiathèque.</div>';
+            }
+        }
+
+        async function deleteMedia(id, url) {
+            if(confirm('Êtes-vous sûr de vouloir supprimer ce fichier du site ?')) {
+                try {
+                    await _supabase.from('gallery').delete().eq('id', id);
+                    const fileName = url.split('/').pop();
+                    await _supabase.storage.from('media').remove([fileName]);
+                    fetchGallery();
+                } catch (err) { alert('Erreur lors de la suppression.'); }
+            }
+        }
+
+        // --- GESTION DES IMAGES SPECIFIQUES DU SITE ---
         async function sauvegarderImagePosition(cle, inputId, btn) {
             const fileInput = document.getElementById(inputId);
             const file = fileInput.files[0];
             const texteInitial = btn.innerHTML;
-            if (!file) return alert("Sélectionnez une image.");
+
+            if (!file) return alert("Veuillez d'abord sélectionner une image sur votre ordinateur.");
+
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
             btn.disabled = true;
+
             const fileName = `contenu_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
             const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
-            if (!uploadError) {
-                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
-                await _supabase.from('contenu_site').upsert({ cle_position: cle, valeur: publicUrl, type: 'image_url' });
-                btn.innerHTML = '<i class="bi bi-check-lg"></i> Modifié';
+
+            if (uploadError) {
+                alert("Erreur lors de l'envoi de l'image : " + uploadError.message);
+                btn.innerHTML = texteInitial;
+                btn.disabled = false;
+                return;
+            }
+
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+
+            const { error: upsertError } = await _supabase.from('contenu_site').upsert(
+                { cle_position: cle, valeur: publicUrl, type: 'image_url' }
+            );
+
+            if (upsertError) {
+                alert("Erreur de mise à jour du site : " + upsertError.message);
+                btn.innerHTML = texteInitial;
+            } else {
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
                 btn.classList.add('btn-success');
-                setTimeout(() => { btn.innerHTML = texteInitial; btn.classList.remove('btn-success'); fileInput.value = ""; }, 2000);
+                setTimeout(() => {
+                    btn.innerHTML = texteInitial;
+                    btn.classList.remove('btn-success');
+                    fileInput.value = ""; 
+                }, 2500);
             }
             btn.disabled = false;
         }
 
-        async function sauvegarderSliderMedia(cle, inputId, btn) { /* Code existant (fonctionne parfaitement) */ }
-        async function handleLogout() { await _supabase.auth.signOut(); window.location.reload(); }
+        // --- GESTION DU SLIDER ACCUEIL ---
+        async function sauvegarderSliderMedia(cle, inputId, btn) {
+            const fileInput = document.getElementById(inputId);
+            const file = fileInput.files[0];
+            const texteInitial = btn.innerHTML;
+
+            if (!file) return alert("Veuillez d'abord sélectionner un fichier (image ou vidéo).");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+            btn.disabled = true;
+
+            const fileName = `slider_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
+
+            if (uploadError) {
+                alert("Erreur : " + uploadError.message);
+                btn.innerHTML = texteInitial;
+                btn.disabled = false;
+                return;
+            }
+
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+
+            let htmlContent = "";
+            if (file.type.startsWith('video/')) {
+                htmlContent = `<video class="d-block w-100 h-100" autoplay muted loop playsinline><source src="${publicUrl}" type="${file.type}"></video>`;
+            } else {
+                htmlContent = `<img src="${publicUrl}" class="d-block w-100 h-100" style="object-fit: contain; background-color: #ffffff;" alt="Slide 1">`;
+            }
+
+            const { error: upsertError } = await _supabase.from('contenu_site').upsert(
+                { cle_position: cle, valeur: htmlContent, type: 'html' }
+            );
+
+            if (upsertError) {
+                alert("Erreur de sauvegarde : " + upsertError.message);
+                btn.innerHTML = texteInitial;
+            } else {
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+                btn.classList.add('btn-success');
+                setTimeout(() => {
+                    btn.innerHTML = texteInitial;
+                    btn.classList.remove('btn-success');
+                    fileInput.value = ""; 
+                }, 2500);
+            }
+            btn.disabled = false;
+        }
+
+        // --- DECONNEXION ---
+        async function handleLogout() {
+            await _supabase.auth.signOut();
+            window.location.reload();
+        }
     </script>
 </body>
 </html>
