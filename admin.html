@@ -3,633 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - EPCG Tanger</title>
+    <title>EPCG ADMIN - Panel de Direction</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
-    <!-- Script Supabase & Quill.js (Éditeur de texte riche) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-color: #9B1C22;
-            --secondary-color: #2b2b2b;
-            --bg-light: #f4f7f6;
-        }
+        :root { --primary-color: #9B1C22; --secondary-color: #2b2b2b; --bg-light: #f4f7f6; }
         body { font-family: 'Roboto', sans-serif; background-color: var(--bg-light); overflow-x: hidden; }
-        
-        /* LOGIN */
         #login-container { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px; }
         .login-card { width: 100%; max-width: 400px; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .btn-retour { color: #6c757d; text-decoration: none; font-size: 0.9rem; display: inline-block; transition: 0.3s; }
-        .btn-retour:hover { color: var(--primary-color); transform: translateX(-3px); }
-        
-        /* DASHBOARD - LAYOUT */
-        #admin-dashboard { display: none; }
-        .mobile-header { display: none; background-color: var(--secondary-color); color: white; padding: 15px 20px; justify-content: space-between; align-items: center; }
-
-        /* SIDEBAR */
-        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: 250px; z-index: 1000; transition: transform 0.3s ease-in-out; }
-        .main-content { padding: 40px; margin-left: 250px; transition: margin-left 0.3s ease; }
-
-        /* ELEMENTS INTERNES */
+        .sidebar { background-color: var(--secondary-color); min-height: 100vh; color: white; padding: 20px; position: fixed; width: 250px; z-index: 1000; }
+        .main-content { padding: 40px; margin-left: 250px; }
         .table-container, .upload-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .nav-link { cursor: pointer; transition: 0.3s; color: rgba(255,255,255,0.6) !important; padding: 12px 15px; margin-bottom: 5px; }
-        .nav-link:hover { color: white !important; background-color: rgba(255,255,255,0.05); border-radius: 8px;}
+        .nav-link { cursor: pointer; color: rgba(255,255,255,0.6) !important; padding: 12px 15px; transition: 0.3s; }
         .nav-link.active { color: white !important; background-color: var(--primary-color) !important; border-radius: 8px; }
-        .btn-epcg { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s;}
-        .btn-epcg:hover { background-color: #7a151a; color: white; }
-
-        /* DESIGN DES ACCORDÉONS */
         .accordion-item { border: none; border-radius: 10px !important; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); overflow: hidden;}
-        .accordion-button { font-weight: 600; color: var(--secondary-color); padding: 20px 25px; background-color: white; border: none; }
-        .accordion-button:not(.collapsed) { color: var(--primary-color); background-color: rgba(155, 28, 34, 0.05); box-shadow: none; border-bottom: 1px solid rgba(155, 28, 34, 0.1);}
-        .accordion-button:focus { box-shadow: none; }
-        .accordion-body { background-color: white; padding: 30px 25px; }
-        .form-section-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #a0a0a0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 20px; margin-top: 30px; }
-        .form-section-title:first-child { margin-top: 0; }
-
-        /* QUILL EDITOR FIXES */
-        .ql-container { font-size: 14px; font-family: 'Roboto', sans-serif; background: #fdfdfd; border-radius: 0 0 5px 5px; }
-        .ql-toolbar { background: #f1f3f5; border-radius: 5px 5px 0 0; }
-
-        @media (max-width: 991px) {
-            .mobile-header { display: flex; }
-            .sidebar { transform: translateX(-100%); width: 280px; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
-            .sidebar.show { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 20px; width: 100%; }
-            .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
-            .sidebar-overlay.show { display: block; }
-        }
+        .accordion-button { font-weight: 600; }
+        .ql-container { background: #fff; height: 150px; font-size: 14px; }
+        @media (max-width: 991px) { .sidebar { display: none; } .main-content { margin-left: 0; } }
     </style>
 </head>
 <body>
 
-    <!-- SECTION LOGIN -->
+    <!-- LOGIN -->
     <div id="login-container">
         <div class="login-card text-center">
-            <img src="./assets/logo-epcg.jpeg" alt="EPCG" class="mb-4" style="max-height: 80px;">
             <h4 class="mb-4 fw-bold">Espace Direction</h4>
             <form id="login-form">
-                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email (ex: direction@epcg.ma)" required>
-                <input type="password" id="admin-password" class="form-control mb-4" placeholder="Votre mot de passe secret" required>
-                <button type="submit" class="btn-epcg w-100 mb-3">Connexion</button>
+                <input type="email" id="admin-email" class="form-control mb-3" placeholder="Email" required>
+                <input type="password" id="admin-password" class="form-control mb-4" placeholder="Mot de passe" required>
+                <button type="submit" class="btn btn-danger w-100 mb-3" style="background-color: var(--primary-color);">Connexion</button>
             </form>
-            <div id="login-error" class="text-danger mb-3 small" style="display: none;">Accès refusé. Vérifiez vos identifiants.</div>
-            <a href="index.html" class="btn-retour mt-2">
-                <i class="bi bi-arrow-left me-1"></i> Retour au site web
-            </a>
+            <div id="login-error" class="text-danger mb-3 small" style="display: none;">Accès refusé.</div>
+            <a href="index.html" class="text-muted small text-decoration-none">Retour au site</a>
         </div>
     </div>
 
-    <!-- SECTION DASHBOARD -->
-    <div id="admin-dashboard">
-        
-        <!-- HEADER MOBILE -->
-        <div class="mobile-header">
-            <h5 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i> EPCG ADMIN</h5>
-            <button class="btn btn-outline-light btn-sm border-0" onclick="toggleSidebar()">
-                <i class="bi bi-list fs-3"></i>
-            </button>
-        </div>
-
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-        <!-- SIDEBAR -->
-        <div class="sidebar" id="sidebarMenu">
-            <div class="d-flex justify-content-between align-items-center mb-5 d-none d-lg-flex">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i> EPCG ADMIN</h5>
-            </div>
-            
+    <!-- DASHBOARD -->
+    <div id="admin-dashboard" style="display: none;">
+        <div class="sidebar">
+            <h5 class="mb-5 fw-bold">EPCG ADMIN</h5>
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a id="nav-inscriptions" onclick="switchTab('inscriptions')" class="nav-link active"><i class="bi bi-people me-2"></i> Candidatures</a>
-                </li>
-                <li class="nav-item mt-2">
-                    <a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Médiathèque</a>
-                </li>
-                <!-- NOUVEL ONGLET PARTENAIRES -->
-                <li class="nav-item mt-2">
-                    <a id="nav-partenaires" onclick="switchTab('partenaires')" class="nav-link"><i class="bi bi-building me-2"></i> Partenaires</a>
-                </li>
-                <li class="nav-item mt-2">
-                    <a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Édition du Site Web</a>
-                </li>
-                
-                <li class="nav-item mt-5">
-                    <button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100"><i class="bi bi-box-arrow-left me-2"></i> Se Déconnecter</button>
-                </li>
+                <li class="nav-item"><a id="nav-inscriptions" onclick="switchTab('inscriptions')" class="nav-link active"><i class="bi bi-people me-2"></i> Candidatures</a></li>
+                <li class="nav-item mt-2"><a id="nav-media" onclick="switchTab('media')" class="nav-link"><i class="bi bi-camera-reels me-2"></i> Médiathèque</a></li>
+                <li class="nav-item mt-2"><a id="nav-partenaires" onclick="switchTab('partenaires')" class="nav-link"><i class="bi bi-building me-2"></i> Partenaires</a></li>
+                <li class="nav-item mt-2"><a id="nav-contenu" onclick="switchTab('contenu')" class="nav-link"><i class="bi bi-pencil-square me-2"></i> Édition Site</a></li>
+                <li class="nav-item mt-5"><button onclick="handleLogout()" class="btn btn-sm btn-outline-light w-100">Déconnexion</button></li>
             </ul>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-content">
-            
-            <!-- TAB 1: INSCRIPTIONS -->
+            <!-- TAB: CANDIDATURES -->
             <div id="tab-inscriptions">
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                    <h2 class="fw-bold mb-2">Candidatures reçues</h2>
-                    <button onclick="fetchInscriptions()" class="btn btn-outline-secondary btn-sm mb-2"><i class="bi bi-arrow-clockwise me-1"></i> Rafraîchir la liste</button>
-                </div>
-                <div class="table-container p-3 p-md-4">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0" style="min-width: 600px;">
-                            <thead class="table-light">
-                                <tr><th>Nom & Prénom</th><th>Email</th><th>Téléphone</th><th>Formation Souhaitée</th><th>Date de dépôt</th></tr>
-                            </thead>
-                            <tbody id="inscriptions-list"></tbody>
-                        </table>
-                    </div>
+                <h2 class="fw-bold mb-4">Candidatures reçues</h2>
+                <div class="table-container table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light"><tr><th>Nom</th><th>Email</th><th>Tél</th><th>Formation</th><th>Date</th></tr></thead>
+                        <tbody id="inscriptions-list"></tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- TAB 2: MULTIMEDIA -->
+            <!-- TAB: MEDIA -->
             <div id="tab-media" style="display: none;">
                 <h2 class="fw-bold mb-4">Gestion de la Médiathèque</h2>
-                <div class="upload-container p-3 p-md-4 mb-4">
-                    <h5 class="mb-3">Ajouter un nouveau fichier</h5>
+                <div class="upload-container mb-4">
                     <div class="row g-2 align-items-end">
-                        <div class="col-12 col-md-6">
-                            <label class="small text-muted mb-1">Choisissez une image (jpg, png) ou une vidéo (mp4)</label>
-                            <input type="file" id="media-file" class="form-control" accept="image/*,video/*">
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <label class="small text-muted mb-1">Type de média</label>
-                            <select id="media-type" class="form-select">
-                                <option value="image">Image</option>
-                                <option value="video">Vidéo</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <button onclick="uploadMedia()" id="upload-btn" class="btn-epcg w-100">Publier sur le site</button>
-                        </div>
+                        <div class="col-md-6"><input type="file" id="media-file" class="form-control"></div>
+                        <div class="col-md-3"><select id="media-type" class="form-select"><option value="image">Image</option><option value="video">Vidéo</option></select></div>
+                        <div class="col-md-3"><button onclick="uploadMedia()" id="upload-btn" class="btn btn-danger w-100" style="background-color: var(--primary-color);">Publier</button></div>
                     </div>
                 </div>
-                <div class="table-container p-3 p-md-4">
-                    <h5 class="mb-3">Fichiers actuellement en ligne</h5>
-                    <div id="media-gallery" class="row g-3"></div>
-                </div>
+                <div id="media-gallery" class="row g-3"></div>
             </div>
 
-            <!-- TAB NOUVEAU: PARTENAIRES -->
+            <!-- TAB: PARTENAIRES -->
             <div id="tab-partenaires" style="display: none;">
                 <h2 class="fw-bold mb-4">Gestion des Partenaires</h2>
-                <div class="upload-container p-3 p-md-4 mb-4">
-                    <h5 class="mb-3">Ajouter un partenaire</h5>
+                <div class="upload-container mb-4">
                     <div class="row g-3 align-items-end">
-                        <div class="col-12 col-md-5">
-                            <label class="small fw-bold text-muted mb-1">Nom de l'entreprise</label>
-                            <input type="text" id="partenaire-nom" class="form-control" placeholder="Ex: D&A Technologies">
-                        </div>
-                        <div class="col-12 col-md-5">
-                            <label class="small fw-bold text-muted mb-1">Logo</label>
-                            <input type="file" id="partenaire-logo" class="form-control" accept="image/*">
-                        </div>
-                        <div class="col-12 col-md-2">
-                            <button onclick="uploadPartenaire()" id="btn-partenaire-add" class="btn-epcg w-100">Ajouter</button>
-                        </div>
+                        <div class="col-md-5"><input type="text" id="partenaire-nom" class="form-control" placeholder="Nom"></div>
+                        <div class="col-md-5"><input type="file" id="partenaire-logo" class="form-control"></div>
+                        <div class="col-md-2"><button onclick="uploadPartenaire()" id="btn-partenaire-add" class="btn btn-danger w-100" style="background-color: var(--primary-color);">Ajouter</button></div>
                     </div>
                 </div>
-                <div class="table-container p-3 p-md-4">
-                    <h5>Partenaires actuels</h5>
-                    <div id="partenaires-list" class="row g-4 mt-2"></div>
-                </div>
+                <div id="partenaires-list" class="row g-3"></div>
             </div>
 
-            <!-- TAB 3: CONTENU DU SITE (CMS AVEC ÉDITEUR WORD) -->
+            <!-- TAB: CMS (CONTENU) -->
             <div id="tab-contenu" style="display: none;">
-                <h2 class="fw-bold mb-4">Édition du contenu du site</h2>
-                <p class="text-muted mb-4">Utilisez l'éditeur pour mettre votre texte en forme (Gras, Listes...). Les changements sont appliqués instantanément.</p>
-
-                <div class="accordion" id="accordionEditeur">
+                <h2 class="fw-bold mb-4">Édition du Site Web</h2>
+                <div class="accordion" id="cmsAccordion">
                     
-                    <!-- IDENTITÉ -->
+                    <!-- SECTION IDENTITÉ -->
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIdentity">
-                                <i class="bi bi-buildings me-3 fs-5"></i> 1. Identité, Logos et Coordonnées
-                            </button>
-                        </h2>
-                        <div id="collapseIdentity" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
+                        <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#colIdentity">1. Logos & Coordonnées</button></h2>
+                        <div id="colIdentity" class="accordion-collapse collapse show" data-bs-parent="#cmsAccordion">
                             <div class="accordion-body row">
-                                <div class="col-md-6">
-                                    <h6 class="form-section-title">Logos de l'école</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Logo (Haut et Bas)</label>
-                                        <div class="input-group">
-                                            <input type="file" id="input_logo_navbar" class="form-control" accept="image/*">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_navbar', 'input_logo_navbar', this)">Remplacer</button>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label small fw-bold">Slogan (À droite du logo)</label>
-                                        <div class="input-group">
-                                            <input type="text" id="input_navbar_slogan" class="form-control" placeholder="Ex: École Professionnelle...">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('navbar_slogan', 'input_navbar_slogan', this)">Enregistrer</button>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="small fw-bold">Slogan Haut</label>
+                                    <div class="input-group"><input type="text" id="input_navbar_slogan" class="form-control"><button class="btn btn-outline-danger" onclick="sauvegarderTexte('navbar_slogan', 'input_navbar_slogan', this)">OK</button></div>
                                 </div>
-                                <div class="col-md-6">
-                                    <h6 class="form-section-title">Coordonnées (Pied de Page)</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Téléphones</label>
-                                        <div class="input-group">
-                                            <input type="text" id="input_footer_tel" class="form-control">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_tel', 'input_footer_tel', this)">Enregistrer</button>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Email</label>
-                                        <div class="input-group">
-                                            <input type="text" id="input_footer_email" class="form-control">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('footer_email', 'input_footer_email', this)">Enregistrer</button>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Adresse</label>
-                                        <textarea id="input_footer_adresse" class="form-control mb-2" rows="2"></textarea>
-                                        <button class="btn btn-sm btn-outline-danger w-100" onclick="sauvegarderTexte('footer_adresse', 'input_footer_adresse', this)">Enregistrer l'adresse</button>
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="small fw-bold">Logo Navigation</label>
+                                    <div class="input-group"><input type="file" id="input_logo_navbar" class="form-control"><button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('logo_navbar', 'input_logo_navbar', this)">OK</button></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- PAGE ACCUEIL -->
+                    <!-- SECTION ACCUEIL -->
                     <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome">
-                                <i class="bi bi-house-door me-3 fs-5"></i> 2. Page "Accueil"
-                            </button>
-                        </h2>
-                        <div id="collapseHome" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
-                            <div class="accordion-body row">
-                                
-                                <div class="col-md-6">
-                                    <h6 class="form-section-title">Slider (Affiche & Ambiance)</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Média Principal (Vidéo/Image)</label>
-                                        <div class="input-group">
-                                            <input type="file" id="input_hero_media_1" class="form-control" accept="image/*,video/*">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderSliderMedia('hero_media_1', 'input_hero_media_1', this)">Remplacer</button>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label small fw-bold">Image d'Ambiance (2ème slide)</label>
-                                        <div class="input-group">
-                                            <input type="file" id="input_hero_image_2" class="form-control" accept="image/*">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('hero_image_2', 'input_hero_image_2', this)">Remplacer</button>
-                                        </div>
-                                    </div>
+                        <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#colHome">2. Page Accueil</button></h2>
+                        <div id="colHome" class="accordion-collapse collapse" data-bs-parent="#cmsAccordion">
+                            <div class="accordion-body">
+                                <label class="small fw-bold">Texte de présentation (Éditeur riche)</label>
+                                <div class="quill-editor" id="quill_accueil_about_texte1"></div>
+                                <button class="btn btn-danger btn-sm mt-2 w-100" onclick="sauvegarderQuill('accueil_about_texte1', this)">Enregistrer Présentation</button>
 
-                                    <h6 class="form-section-title">Section "L'Institution"</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Titre de la section</label>
-                                        <div class="input-group">
-                                            <input type="text" id="input_accueil_about_titre" class="form-control">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('accueil_about_titre', 'input_accueil_about_titre', this)">Enregistrer</button>
+                                <div class="row mt-4">
+                                    <h6 class="fw-bold text-muted border-bottom pb-2">Les 3 Cartes de Formations</h6>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 border rounded">
+                                            <input type="text" id="input_accueil_form_1_titre" class="form-control mb-1" placeholder="Titre 1">
+                                            <div class="quill-editor" id="quill_accueil_form_1_desc" style="height: 80px;"></div>
+                                            <button class="btn btn-sm btn-outline-danger w-100 mt-1" onclick="sauvegarderTexte('accueil_form_1_titre', 'input_accueil_form_1_titre', this); sauvegarderQuill('accueil_form_1_desc', this)">Save 1</button>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Texte de présentation (Éditeur Avancé)</label>
-                                        <!-- ÉDITEUR QUILL -->
-                                        <div class="quill-editor" id="quill_accueil_about_texte1" style="height: 180px;"></div>
-                                        <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderQuill('accueil_about_texte1', this)">Enregistrer le texte</button>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 border rounded">
+                                            <input type="text" id="input_accueil_form_2_titre" class="form-control mb-1" placeholder="Titre 2">
+                                            <div class="quill-editor" id="quill_accueil_form_2_desc" style="height: 80px;"></div>
+                                            <button class="btn btn-sm btn-outline-danger w-100 mt-1" onclick="sauvegarderTexte('accueil_form_2_titre', 'input_accueil_form_2_titre', this); sauvegarderQuill('accueil_form_2_desc', this)">Save 2</button>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Image de présentation</label>
-                                        <div class="input-group">
-                                            <input type="file" id="input_accueil_about_image" class="form-control" accept="image/*">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderImagePosition('accueil_about_image', 'input_accueil_about_image', this)">Remplacer</button>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 border rounded">
+                                            <input type="text" id="input_accueil_form_3_titre" class="form-control mb-1" placeholder="Titre 3">
+                                            <div class="quill-editor" id="quill_accueil_form_3_desc" style="height: 80px;"></div>
+                                            <button class="btn btn-sm btn-outline-danger w-100 mt-1" onclick="sauvegarderTexte('accueil_form_3_titre', 'input_accueil_form_3_titre', this); sauvegarderQuill('accueil_form_3_desc', this)">Save 3</button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6 border-start ps-md-4">
-                                    <h6 class="form-section-title">Section "Nos Sites / Labels"</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label small fw-bold">Titre de la section</label>
-                                        <div class="input-group">
-                                            <input type="text" id="input_accueil_sites_titre" class="form-control" placeholder="Ex: Nos Certifications">
-                                            <button class="btn btn-outline-danger" onclick="sauvegarderTexte('accueil_sites_titre', 'input_accueil_sites_titre', this)">Enregistrer</button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="bg-light p-3 rounded mb-3">
-                                        <label class="small fw-bold text-primary">Bloc / Logo 1</label>
-                                        <input type="text" id="input_site_1_titre" class="form-control form-control-sm mb-2" placeholder="Nom (Ex: Tanger Centre ou ISO 9001)">
-                                        <div class="input-group input-group-sm mb-2">
-                                            <input type="file" id="input_site_1_image" class="form-control" accept="image/*">
-                                            <button class="btn btn-danger" onclick="sauvegarderImagePosition('site_1_image', 'input_site_1_image', this)">Changer Image</button>
-                                        </div>
-                                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="sauvegarderTexte('site_1_titre', 'input_site_1_titre', this)">Enregistrer le Nom 1</button>
-                                    </div>
-
-                                    <div class="bg-light p-3 rounded mb-3">
-                                        <label class="small fw-bold text-primary">Bloc / Logo 2</label>
-                                        <input type="text" id="input_site_2_titre" class="form-control form-control-sm mb-2" placeholder="Nom (Ex: Plaza Toros ou Label Qualité)">
-                                        <div class="input-group input-group-sm mb-2">
-                                            <input type="file" id="input_site_2_image" class="form-control" accept="image/*">
-                                            <button class="btn btn-danger" onclick="sauvegarderImagePosition('site_2_image', 'input_site_2_image', this)">Changer Image</button>
-                                        </div>
-                                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="sauvegarderTexte('site_2_titre', 'input_site_2_titre', this)">Enregistrer le Nom 2</button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
-
-                    <!-- PAGE NOS FORMATIONS -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFormations">
-                                <i class="bi bi-journal-check me-3 fs-5"></i> 3. Page "Nos Formations" (Détail avec Éditeur Word)
-                            </button>
-                        </h2>
-                        <div id="collapseFormations" class="accordion-collapse collapse" data-bs-parent="#accordionEditeur">
-                            <div class="accordion-body row">
-                                
-                                <div class="col-md-6 border-end pe-md-4">
-                                    <h6 class="form-section-title">Section Cycle Initial (Bac+2)</h6>
-                                    <div class="bg-light p-3 rounded mb-4">
-                                        <input type="text" id="input_form_initial_badge" class="form-control mb-2" placeholder="Badge (ex: 2 ans)">
-                                        <input type="text" id="input_form_initial_titre" class="form-control mb-2" placeholder="Titre Principal">
-                                        <label class="small fw-bold mt-2">Détails de la formation (Éditeur Avancé)</label>
-                                        <!-- ÉDITEUR QUILL -->
-                                        <div class="quill-editor" id="quill_form_initial_corps" style="height: 150px; background: white;"></div>
-                                        <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('form_initial_badge', 'input_form_initial_badge', this); sauvegarderTexte('form_initial_titre', 'input_form_initial_titre', this); sauvegarderQuill('form_initial_corps', this)">Tout Enregistrer (Bac+2)</button>
-                                    </div>
-
-                                    <h6 class="form-section-title">Formation Continue & Entreprise</h6>
-                                    <div class="bg-light p-3 rounded mb-4">
-                                        <input type="text" id="input_form_certifiant_titre" class="form-control mb-2" placeholder="Titre de la section">
-                                        <!-- ÉDITEUR QUILL -->
-                                        <div class="quill-editor" id="quill_form_certifiant_desc" style="height: 150px; background: white;"></div>
-                                        <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('form_certifiant_titre', 'input_form_certifiant_titre', this); sauvegarderQuill('form_certifiant_desc', this)">Enregistrer Section Entreprise</button>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 ps-md-4">
-                                    <h6 class="form-section-title">Section Cycles Supérieurs</h6>
-                                    <div class="bg-light p-3 rounded mb-3 border-start border-4 border-danger">
-                                        <label class="small fw-bold">Bloc Bachelor</label>
-                                        <input type="text" id="input_form_bachelor_titre" class="form-control mb-2" placeholder="Titre (ex: Bachelor)">
-                                        <!-- ÉDITEUR QUILL -->
-                                        <div class="quill-editor" id="quill_form_bachelor_corps" style="height: 150px; background: white;"></div>
-                                        <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('form_bachelor_titre', 'input_form_bachelor_titre', this); sauvegarderQuill('form_bachelor_corps', this)">Enregistrer Bachelor</button>
-                                    </div>
-
-                                    <div class="bg-light p-3 rounded mb-4 border-start border-4 border-danger">
-                                        <label class="small fw-bold">Bloc Mastère</label>
-                                        <input type="text" id="input_form_master_titre" class="form-control mb-2" placeholder="Titre (ex: Mastère)">
-                                        <!-- ÉDITEUR QUILL -->
-                                        <div class="quill-editor" id="quill_form_master_corps" style="height: 150px; background: white;"></div>
-                                        <button class="btn btn-sm btn-outline-danger w-100 mt-2" onclick="sauvegarderTexte('form_master_titre', 'input_form_master_titre', this); sauvegarderQuill('form_master_corps', this)">Enregistrer Mastère</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div> <!-- Fin Accordion -->
-            </div> <!-- Fin Tab Contenu -->
-
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- SCRIPTS EXTERNES -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    
     <script>
-        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- GESTION DU MENU MOBILE ---
-        function toggleSidebar() {
-            document.getElementById('sidebarMenu').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-
-        // --- NAVIGATION DES ONGLETS ---
-        function switchTab(tab) {
-            document.getElementById('tab-inscriptions').style.display = tab === 'inscriptions' ? 'block' : 'none';
-            document.getElementById('tab-media').style.display = tab === 'media' ? 'block' : 'none';
-            document.getElementById('tab-partenaires').style.display = tab === 'partenaires' ? 'block' : 'none';
-            document.getElementById('tab-contenu').style.display = tab === 'contenu' ? 'block' : 'none';
-            
-            document.getElementById('nav-inscriptions').classList.toggle('active', tab === 'inscriptions');
-            document.getElementById('nav-media').classList.toggle('active', tab === 'media');
-            document.getElementById('nav-partenaires').classList.toggle('active', tab === 'partenaires');
-            document.getElementById('nav-contenu').classList.toggle('active', tab === 'contenu');
-            
-            if(window.innerWidth < 992) { toggleSidebar(); }
-            
-            if(tab === 'media') fetchGallery();
-            if(tab === 'partenaires') fetchPartenaires();
-            if(tab === 'contenu') fetchContenu();
-        }
-
-        // --- INITIALISATION DES EDITEURS WORD (QUILL) ---
+        // QUILL
         const quillEditors = {};
-        const quillOptions = {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline'], 
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], 
-                    [{ 'align': [] }], 
-                    ['clean']
-                ]
-            }
-        };
-
-        // Création automatique de tous les éditeurs Word
+        const qOptions = { theme: 'snow', modules: { toolbar: [['bold', 'italic'], [{list:'bullet'}], ['clean']] } };
         document.querySelectorAll('.quill-editor').forEach(el => {
-            const clePosition = el.id.replace('quill_', '');
-            quillEditors[clePosition] = new Quill(el, quillOptions);
+            const id = el.id.replace('quill_', '');
+            quillEditors[id] = new Quill(el, qOptions);
         });
 
-        // --- AUTHENTIFICATION ---
+        // TABS
+        function switchTab(tab) {
+            ['inscriptions', 'media', 'partenaires', 'contenu'].forEach(t => document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.id === `nav-${tab}`));
+            if(tab === 'media') fetchGallery(); if(tab === 'partenaires') fetchPartenaires(); if(tab === 'contenu') fetchContenu();
+        }
+
+        // LOGIN
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Connexion...';
-            btn.disabled = true;
-
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: document.getElementById('admin-email').value,
-                password: document.getElementById('admin-password').value
-            });
-            
-            if (error) {
-                document.getElementById('login-error').style.display = 'block';
-                btn.innerHTML = 'Connexion';
-                btn.disabled = false;
-            } else {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('admin-dashboard').style.display = 'block';
-                fetchInscriptions();
-            }
+            const { error } = await _supabase.auth.signInWithPassword({ email: document.getElementById('admin-email').value, password: document.getElementById('admin-password').value });
+            if (error) document.getElementById('login-error').style.display = 'block';
+            else { document.getElementById('login-container').style.display = 'none'; document.getElementById('admin-dashboard').style.display = 'block'; fetchInscriptions(); }
         });
 
-        // --- PARTENAIRES ---
+        // CMS LOGIC
+        async function fetchContenu() {
+            const { data } = await _supabase.from('contenu_site').select('*');
+            data?.forEach(item => {
+                const inp = document.getElementById('input_'+item.cle_position);
+                if(inp) inp.value = item.valeur;
+                if(quillEditors[item.cle_position]) quillEditors[item.cle_position].root.innerHTML = item.valeur;
+            });
+        }
+
+        async function sauvegarderTexte(cle, id, btn) {
+            const val = document.getElementById(id).value;
+            await _supabase.from('contenu_site').upsert({ cle_position: cle, valeur: val, type: 'texte' });
+            btn.innerHTML = "✓"; setTimeout(() => btn.innerHTML = "OK", 2000);
+        }
+
+        async function sauvegarderQuill(cle, btn) {
+            const val = quillEditors[cle].root.innerHTML;
+            await _supabase.from('contenu_site').upsert({ cle_position: cle, valeur: val, type: 'html' });
+            btn.innerHTML = "Enregistré !"; setTimeout(() => btn.innerHTML = "Sauvegarder", 2000);
+        }
+
+        async function sauvegarderImagePosition(cle, id, btn) {
+            const file = document.getElementById(id).files[0];
+            if(!file) return;
+            const name = `img_${Date.now()}_${file.name}`;
+            await _supabase.storage.from('media').upload(name, file);
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(name);
+            await _supabase.from('contenu_site').upsert({ cle_position: cle, valeur: publicUrl, type: 'image_url' });
+            btn.innerHTML = "✓";
+        }
+
+        // INSCRIPTIONS
+        async function fetchInscriptions() {
+            const { data } = await _supabase.from('inscriptions').select('*').order('created_at', {ascending: false});
+            document.getElementById('inscriptions-list').innerHTML = data.map(i => `<tr><td>${i.nom_prenom}</td><td>${i.email}</td><td>${i.telephone_1}</td><td>${i.formation}</td><td>${new Date(i.created_at).toLocaleDateString()}</td></tr>`).join('');
+        }
+
+        // MEDIA
+        async function uploadMedia() {
+            const file = document.getElementById('media-file').files[0];
+            if(!file) return;
+            const name = `med_${Date.now()}_${file.name}`;
+            await _supabase.storage.from('media').upload(name, file);
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(name);
+            await _supabase.from('gallery').insert([{ url: publicUrl, type: document.getElementById('media-type').value }]);
+            fetchGallery();
+        }
+
+        async function fetchGallery() {
+            const { data } = await _supabase.from('gallery').select('*').order('created_at', {ascending: false});
+            document.getElementById('media-gallery').innerHTML = data.map(m => `<div class="col-md-3"><div class="card p-1">${m.type==='image'?`<img src="${m.url}" height="100" style="object-fit:cover;">`:`<video src="${m.url}" height="100"></video>`}<button class="btn btn-sm btn-outline-danger w-100 mt-1" onclick="deleteMedia(${m.id}, '${m.url}')">Suppr.</button></div></div>`).join('');
+        }
+
+        async function deleteMedia(id, url) {
+            await _supabase.from('gallery').delete().eq('id', id);
+            await _supabase.storage.from('media').remove([url.split('/').pop()]);
+            fetchGallery();
+        }
+
+        // PARTENAIRES
         async function uploadPartenaire() {
-            const fileInput = document.getElementById('partenaire-logo');
-            const nom = document.getElementById('partenaire-nom').value;
-            const file = fileInput.files[0];
-            const btn = document.getElementById('btn-partenaire-add');
-
-            if (!file || !nom) return alert("Veuillez saisir un nom et sélectionner un logo.");
-
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...';
-            btn.disabled = true;
-
-            const fileName = `partenaire_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const { error } = await _supabase.storage.from('media').upload(fileName, file);
-
-            if (error) {
-                alert("Erreur lors de l'envoi : " + error.message);
-            } else {
-                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
-                await _supabase.from('partenaires').insert([{ nom: nom, logo_url: publicUrl }]);
-                
-                fileInput.value = "";
-                document.getElementById('partenaire-nom').value = "";
-                fetchPartenaires();
-            }
-            btn.innerHTML = 'Ajouter';
-            btn.disabled = false;
+            const file = document.getElementById('partenaire-logo').files[0];
+            if(!file) return;
+            const name = `part_${Date.now()}_${file.name}`;
+            await _supabase.storage.from('media').upload(name, file);
+            const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(name);
+            await _supabase.from('partenaires').insert([{ nom: document.getElementById('partenaire-nom').value, logo_url: publicUrl }]);
+            fetchPartenaires();
         }
 
         async function fetchPartenaires() {
-            const list = document.getElementById('partenaires-list');
-            list.innerHTML = '<div class="col-12 text-center py-4"><div class="spinner-border text-danger"></div></div>';
-            
-            const { data } = await _supabase.from('partenaires').select('*').order('created_at', { ascending: false });
-            
-            if (data && data.length > 0) {
-                list.innerHTML = data.map(p => `
-                    <div class="col-6 col-md-3 text-center">
-                        <div class="card h-100 border-0 shadow-sm p-3 d-flex flex-column align-items-center justify-content-between">
-                            <img src="${p.logo_url}" alt="${p.nom}" style="max-height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 10px;">
-                            <p class="small fw-bold text-muted mb-2">${p.nom}</p>
-                            <button onclick="deletePartenaire(${p.id}, '${p.logo_url}')" class="btn btn-sm btn-outline-danger w-100 mt-auto"><i class="bi bi-trash"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                list.innerHTML = '<div class="col-12 text-muted text-center py-3">Aucun partenaire enregistré.</div>';
-            }
+            const { data } = await _supabase.from('partenaires').select('*');
+            document.getElementById('partenaires-list').innerHTML = data.map(p => `<div class="col-6 col-md-2 text-center"><div class="card p-2 shadow-sm"><img src="${p.logo_url}" height="40" style="object-fit:contain;"><button class="btn btn-sm text-danger mt-1" onclick="deletePartenaire(${p.id}, '${p.logo_url}')">X</button></div></div>`).join('');
         }
 
         async function deletePartenaire(id, url) {
-            if(confirm('Supprimer ce partenaire ?')) {
-                await _supabase.from('partenaires').delete().eq('id', id);
-                const fileName = url.split('/').pop();
-                await _supabase.storage.from('media').remove([fileName]);
-                fetchPartenaires();
-            }
+            await _supabase.from('partenaires').delete().eq('id', id);
+            await _supabase.storage.from('media').remove([url.split('/').pop()]);
+            fetchPartenaires();
         }
 
-        // --- CMS & EDITEURS ---
-        async function fetchContenu() {
-            const { data, error } = await _supabase.from('contenu_site').select('*');
-            if (data) {
-                data.forEach(item => {
-                    // Charger les champs texte normaux
-                    const inputElement = document.getElementById('input_' + item.cle_position);
-                    if (inputElement && (item.type === 'texte' || item.type === 'html')) {
-                        inputElement.value = item.valeur;
-                    }
-                    // Charger les champs dans les Editeurs Quill
-                    if (quillEditors[item.cle_position]) {
-                        quillEditors[item.cle_position].root.innerHTML = item.valeur;
-                    }
-                });
-            }
-        }
-
-        // Fonction générique pour sauvegarder du texte ou du HTML
-        async function execSave(cle, valeur, btn) {
-            const texteInitial = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-            btn.disabled = true;
-
-            const { error } = await _supabase.from('contenu_site').upsert(
-                { cle_position: cle, valeur: valeur, type: 'html' }
-            );
-
-            if (error) {
-                alert("Erreur de sauvegarde. \n" + error.message);
-                btn.innerHTML = texteInitial;
-            } else {
-                btn.innerHTML = '<i class="bi bi-check-lg"></i> Enregistré';
-                btn.classList.add('btn-success');
-                setTimeout(() => {
-                    btn.innerHTML = texteInitial;
-                    btn.classList.remove('btn-success');
-                }, 2000);
-            }
-            btn.disabled = false;
-        }
-
-        function sauvegarderTexte(cle, inputId, btn) {
-            execSave(cle, document.getElementById(inputId).value, btn);
-        }
-
-        function sauvegarderQuill(cle, btn) {
-            // Récupère le vrai code HTML avec les balises (Gras, listes...)
-            execSave(cle, quillEditors[cle].root.innerHTML, btn);
-        }
-
-        // --- GESTION DES INSCRIPTIONS ET AUTRES SCRIPTS INCHANGÉS (Media, Images, Logout) ---
-        // (J'ai conservé la logique de vos fonctions fetchInscriptions, uploadMedia, sauvegarderImagePosition, etc...)
-        async function fetchInscriptions() {
-            const list = document.getElementById('inscriptions-list');
-            list.innerHTML = '<tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm"></div> Chargement...</td></tr>';
-            const { data, error } = await _supabase.from('inscriptions').select('*').order('created_at', { ascending: false });
-            if(data && data.length > 0) {
-                list.innerHTML = data.map(item => `
-                    <tr><td class="fw-bold">${item.nom_prenom}</td><td>${item.email}</td><td>${item.telephone_1}</td>
-                    <td><span class="badge bg-danger">${item.formation}</span></td><td><small class="text-muted">${new Date(item.created_at).toLocaleDateString()}</small></td></tr>
-                `).join('');
-            } else {
-                list.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Aucune inscription pour le moment.</td></tr>';
-            }
-        }
-
-        async function uploadMedia() { /* Voir code existant ou plus haut (fonctionne parfaitement) */ }
-        async function fetchGallery() { /* Voir code existant ou plus haut */ }
-        async function deleteMedia(id, url) { /* Voir code existant ou plus haut */ }
-        
-        async function sauvegarderImagePosition(cle, inputId, btn) {
-            const fileInput = document.getElementById(inputId);
-            const file = fileInput.files[0];
-            const texteInitial = btn.innerHTML;
-            if (!file) return alert("Sélectionnez une image.");
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-            btn.disabled = true;
-            const fileName = `contenu_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const { data: uploadData, error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
-            if (!uploadError) {
-                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
-                await _supabase.from('contenu_site').upsert({ cle_position: cle, valeur: publicUrl, type: 'image_url' });
-                btn.innerHTML = '<i class="bi bi-check-lg"></i> Modifié';
-                btn.classList.add('btn-success');
-                setTimeout(() => { btn.innerHTML = texteInitial; btn.classList.remove('btn-success'); fileInput.value = ""; }, 2000);
-            }
-            btn.disabled = false;
-        }
-
-        async function sauvegarderSliderMedia(cle, inputId, btn) { /* Code existant (fonctionne parfaitement) */ }
         async function handleLogout() { await _supabase.auth.signOut(); window.location.reload(); }
     </script>
 </body>
