@@ -211,22 +211,27 @@
         </div>
     </section>
 
-    <!-- SECTION SITES -->
+    <!-- SECTION SITES / LABELS (DYNAMIQUE) -->
     <section id="sites" class="inscriptions-section section-padding">
         <div class="container">
-            <h2 class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
+            <!-- ID ajouté pour le titre principal -->
+            <h2 id="accueil_sites_titre" class="section-title text-center mb-5" data-aos="fade-up" style="text-transform: none;">Nos Sites - التسجيلات مفتوحة</h2>
+            
             <div class="row justify-content-center g-4">
                 <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
-                    <a href="inscription.html" class="site-card text-center">
-                        <img id="site_1_image" src="./assets/logo-epcg.jpeg" alt="Site 1" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Tanger Centre</h5>
-                    </a>
+                    <!-- J'ai enlevé le lien <a> car si ce sont des certifications, on ne veut pas que ça clique vers l'inscription -->
+                    <div class="site-card text-center">
+                        <img id="site_1_image" src="./assets/logo-epcg.jpeg" alt="Logo 1" class="site-icon">
+                        <!-- ID ajouté pour le nom du premier bloc -->
+                        <h5 id="site_1_titre" class="fw-bold fs-6 mb-0">Tanger Centre</h5>
+                    </div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
-                    <a href="inscription.html" class="site-card text-center">
-                        <img id="site_2_image" src="./assets/logo-epcg.jpeg" alt="Site 2" class="site-icon">
-                        <h5 class="fw-bold fs-6 mb-0">Plaza Toros</h5>
-                    </a>
+                    <div class="site-card text-center">
+                        <img id="site_2_image" src="./assets/logo-epcg.jpeg" alt="Logo 2" class="site-icon">
+                        <!-- ID ajouté pour le nom du deuxième bloc -->
+                        <h5 id="site_2_titre" class="fw-bold fs-6 mb-0">Plaza Toros</h5>
+                    </div>
                 </div>
             </div>
         </div>
