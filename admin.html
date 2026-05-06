@@ -677,17 +677,42 @@
         }
 
         // --- GESTION DES INSCRIPTIONS ---
+        // --- GESTION DE LA BOÎTE DE RÉCEPTION (INSCRIPTIONS & CONTACTS) ---
         async function fetchInscriptions() {
             const list = document.getElementById('inscriptions-list');
-            list.innerHTML = '<tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm"></div> Chargement...</td></tr>';
+            list.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm"></div> Chargement...</td></tr>';
+            
+            // On récupère absolument tout de la table inscriptions, trié par date
             const { data, error } = await _supabase.from('inscriptions').select('*').order('created_at', { ascending: false });
+            
             if(data && data.length > 0) {
-                list.innerHTML = data.map(item => `
-                    <tr><td class="fw-bold">${item.nom_prenom}</td><td>${item.email}</td><td>${item.telephone_1}</td>
-                    <td><span class="badge bg-danger">${item.formation}</span></td><td><small class="text-muted">${new Date(item.created_at).toLocaleDateString()}</small></td></tr>
-                `).join('');
+                list.innerHTML = data.map(item => {
+                    // On vérifie si c'est un contact
+                    const isContact = item.type_demande === 'Contact';
+                    
+                    // On crée le badge selon le type
+                    const badge = isContact 
+                        ? '<span class="badge bg-primary text-white mt-1">Message Contact</span>' 
+                        : '<span class="badge bg-danger mt-1">Candidature Inscription</span>';
+                    
+                    // On crée le bouton "Lire" si c'est un contact avec un message
+                    let actionBtn = isContact && item.message 
+                        ? `<button class="btn btn-sm btn-outline-secondary" onclick="alert('MESSAGE DE ${item.nom_prenom} :\\n\\n${item.message.replace(/'/g, "\\'")}')"><i class="bi bi-eye"></i> Lire</button>` 
+                        : '-';
+
+                    return `
+                        <tr>
+                            <td><div class="fw-bold">${item.nom_prenom}</div>${badge}</td>
+                            <td><a href="mailto:${item.email}" class="text-decoration-none text-dark">${item.email}</a></td>
+                            <td><a href="tel:${item.telephone_1}" class="text-decoration-none text-dark">${item.telephone_1 || '-'}</a></td>
+                            <td><small class="text-muted fw-bold">${item.formation || '-'}</small></td>
+                            <td><small class="text-muted">${new Date(item.created_at).toLocaleDateString()}</small></td>
+                            <td>${actionBtn}</td>
+                        </tr>
+                    `;
+                }).join('');
             } else {
-                list.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Aucune inscription pour le moment.</td></tr>';
+                list.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">Boîte de réception vide.</td></tr>';
             }
         }
 
