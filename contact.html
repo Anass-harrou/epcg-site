@@ -181,5 +181,49 @@
         AOS.init({ once: true, duration: 800, offset: 50, easing: 'ease-in-out-cubic' }); 
         // Le texte CMS (contact_header_titre, contact_adresse, etc.) est géré automatiquement par chargerContenuGeneral() dans main.js !
     </script>
+    <!-- SCRIPT D'ENVOI DU FORMULAIRE DE CONTACT VERS LA TABLE INSCRIPTIONS -->
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btn-contact-submit');
+            const alertBox = document.getElementById('contact-alert');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Envoi...';
+            btn.disabled = true;
+
+            const nomComplet = document.getElementById('contact-prenom').value + ' ' + document.getElementById('contact-nom').value;
+            const sujetChoisi = document.getElementById('contact-sujet').value;
+
+            // _supabase est déjà initialisé dans main.js
+            const { error } = await _supabase.from('inscriptions').insert([{
+                nom_prenom: nomComplet,
+                email: document.getElementById('contact-email').value,
+                telephone_1: document.getElementById('contact-tel').value,
+                formation: sujetChoisi, // Astuce : on utilise la colonne 'formation' pour stocker le sujet !
+                type_demande: 'Contact', // On précise que c'est un contact
+                message: document.getElementById('contact-message').value
+            }]);
+
+            alertBox.classList.remove('d-none', 'alert-success', 'alert-danger');
+
+            if (error) {
+                alertBox.classList.add('alert-danger');
+                alertBox.innerHTML = "Une erreur est survenue : " + error.message;
+                btn.innerHTML = 'Envoyer le message <i class="bi bi-send ms-2"></i>';
+                btn.disabled = false;
+            } else {
+                alertBox.classList.add('alert-success');
+                alertBox.innerHTML = "Votre message a été envoyé avec succès. Nous vous contacterons bientôt.";
+                document.getElementById('contact-form').reset();
+                btn.innerHTML = 'Message Envoyé <i class="bi bi-check-circle ms-2"></i>';
+                
+                setTimeout(() => {
+                    btn.innerHTML = 'Envoyer le message <i class="bi bi-send ms-2"></i>';
+                    btn.disabled = false;
+                    alertBox.classList.add('d-none');
+                }, 4000);
+            }
+        });
+    </script>
 </body>
 </html>
