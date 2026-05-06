@@ -5,40 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - EPCG Tanger</title>
     
+    <!-- LIBRAIRIES EXTERNES -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- VOTRE CSS GLOBAL -->
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        :root {
-            --primary-color: #9B1C22;
-            --secondary-color: #2b2b2b;
-            --text-color: #4a4a4a;
-            --bg-light: #f4f6f8;
-        }
-
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Roboto', sans-serif; color: var(--text-color); background-color: var(--bg-light); padding-top: 115px; }
-
-        /* NAVBAR UNIFORMISÉE */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s ease; z-index: 1050; }
-        .navbar-hidden { transform: translateY(-100%); }
-        .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: 0.3s; }
+        /* CSS SPÉCIFIQUE À LA PAGE INSCRIPTION UNIQUEMENT */
         
-        .navbar-nav .nav-link { 
-            font-weight: 600; color: var(--secondary-color); text-transform: uppercase; 
-            font-size: 13px; padding: 10px 15px !important; position: relative; transition: 0.3s;
-        }
-        .navbar-nav .nav-link::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
-            background-color: var(--primary-color); transition: 0.3s ease; transform: translateX(-50%);
-        }
-        .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
-        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
-
-        /* HEADER PAGE INSCRIPTION AVEC VIDÉO */
+        /* HEADER PAGE AVEC VIDÉO */
         .page-header {
             position: relative; height: 45vh; min-height: 350px; display: flex; align-items: center;
             justify-content: center; text-align: center; color: white; overflow: hidden; margin-top: -115px;
@@ -78,15 +58,7 @@
         .radio-card:hover { border-color: var(--primary-color); background: #fffcfc; }
         .radio-card input { margin-right: 20px; transform: scale(1.4); accent-color: var(--primary-color); }
 
-        /* FOOTER UNIFORMISÉ */
-        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; }
-        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; text-transform: uppercase; }
-        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; }
-        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; }
-
         @media (max-width: 991px) {
-            body { padding-top: 85px; }
-            .navbar-brand img { max-height: 60px !important; }
             .page-header { margin-top: -85px; }
             .page-title { font-size: 2.2rem; }
             .form-container { padding: 30px; }
@@ -95,37 +67,8 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
-        <div class="container-fluid px-lg-5"> 
-            <div class="d-flex align-items-center flex-grow-1">
-                <a class="navbar-brand" href="index.html">
-                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-                </a>
-                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
-                    École Professionnelle de Commerce et de Gestion - Tanger
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
-                    <li class="nav-item"><a class="nav-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active-link" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
-                            <li><a class="dropdown-item" href="elearning.html">Campus e-learning</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- 1. INJECTION DE LA NAVBAR -->
+    <div id="navbar-placeholder"></div>
 
     <header class="page-header">
         <div class="video-overlay"></div>
@@ -197,84 +140,52 @@
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 mb-4">
-                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 70px; border-radius: 8px;" class="mb-4 bg-white p-2"><p id="footer_description">Établissement professionnel de référence.</p>
-                </div>
-                <div class="col-lg-7">
-                    <h4>Contact</h4>
-                    <ul class="list-unstyled footer-info">
-                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">Tanger</span></li>
-                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31...</span></li>
-                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg@...</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- 2. INJECTION DU FOOTER -->
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- VOTRE SCRIPT GLOBAL (Contient Supabase, Navbar, Footer) -->
+    <script src="main.js"></script>
+    
+    <!-- SCRIPT SPÉCIFIQUE À L'INSCRIPTION -->
     <script> 
         AOS.init({ once: true }); 
 
-        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Envoi du formulaire à Supabase
+        // On utilise un setTimeout pour être certain que la variable globale _supabase (dans main.js) est bien chargée.
+        setTimeout(() => {
+            const form = document.getElementById('epcgForm');
+            if(form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const btn = document.getElementById('submitBtn');
+                    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Transmission...';
+                    btn.disabled = true;
 
-        // SMART NAVBAR
-        let lastScrollTop = 0;
-        const navbar = document.querySelector('.navbar-custom');
-        window.addEventListener('scroll', function() {
-            let st = window.pageYOffset || document.documentElement.scrollTop;
-            if (st > lastScrollTop && st > 100) navbar.classList.add('navbar-hidden');
-            else navbar.classList.remove('navbar-hidden');
-            lastScrollTop = st <= 0 ? 0 : st;
-        });
+                    const formData = new FormData(e.target);
+                    // _supabase provient de main.js
+                    const { error } = await _supabase.from('inscriptions').insert([{
+                        nom_prenom: formData.get('Nom_Prenom'),
+                        email: formData.get('Email'),
+                        telephone_1: formData.get('Telephone_1'),
+                        telephone_2: formData.get('Telephone_2'),
+                        formation: formData.get('Formation')
+                    }]);
 
-        // SUBMISSION
-        document.getElementById('epcgForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Transmission...';
-            btn.disabled = true;
-
-            const formData = new FormData(e.target);
-            const { error } = await _supabase.from('inscriptions').insert([{
-                nom_prenom: formData.get('Nom_Prenom'),
-                email: formData.get('Email'),
-                telephone_1: formData.get('Telephone_1'),
-                telephone_2: formData.get('Telephone_2'),
-                formation: formData.get('Formation')
-            }]);
-
-            if (error) {
-                alert('Erreur : ' + error.message);
-                btn.innerHTML = 'Envoyer ma candidature';
-                btn.disabled = false;
-            } else {
-                document.getElementById('epcgForm').style.display = 'none';
-                document.getElementById('formHeader').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-            }
-        });
-
-        // CMS CONTENT
-        async function chargerContenuGeneral() {
-            const { data } = await _supabase.from('contenu_site').select('*');
-            if (data) {
-                data.forEach(item => {
-                    const el = document.getElementById(item.cle_position);
-                    if (el) {
-                        if (item.type === 'texte' || item.type === 'html') el.innerHTML = item.valeur;
-                        else if (item.type === 'image_url') el.src = item.valeur;
+                    if (error) {
+                        alert('Erreur : ' + error.message);
+                        btn.innerHTML = 'Envoyer ma candidature <i class="bi bi-arrow-right ms-2"></i>';
+                        btn.disabled = false;
+                    } else {
+                        document.getElementById('epcgForm').style.display = 'none';
+                        document.getElementById('formHeader').style.display = 'none';
+                        document.getElementById('successMessage').style.display = 'block';
                     }
                 });
             }
-        }
-        chargerContenuGeneral();
+        }, 500); 
     </script>
 </body>
 </html>
