@@ -559,7 +559,42 @@
             btn.innerHTML = 'Ajouter';
             btn.disabled = false;
         }
+// --- GESTION DES PARTENAIRES ---
+        async function uploadPartenaire() {
+            const fileInput = document.getElementById('partenaire-logo');
+            const nom = document.getElementById('partenaire-nom').value;
+            const file = fileInput.files[0];
+            const btn = document.getElementById('btn-partenaire-add');
 
+            if (!file || !nom) return alert("Veuillez saisir un nom et sélectionner un logo.");
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...';
+            btn.disabled = true;
+
+            const fileName = `partenaire_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            
+            // 1. On envoie l'image dans le Storage
+            const { error: uploadError } = await _supabase.storage.from('media').upload(fileName, file);
+
+            if (uploadError) {
+                alert("Erreur lors de l'envoi de l'image (Storage) : " + uploadError.message);
+            } else {
+                const { data: { publicUrl } } = _supabase.storage.from('media').getPublicUrl(fileName);
+                
+                // 2. On sauvegarde le lien dans la table partenaires
+                const { error: insertError } = await _supabase.from('partenaires').insert([{ nom: nom, logo_url: publicUrl }]);
+                
+                if (insertError) {
+                    alert("Erreur de Base de Données (Table partenaires manquante ?) : " + insertError.message);
+                } else {
+                    fileInput.value = "";
+                    document.getElementById('partenaire-nom').value = "";
+                    fetchPartenaires();
+                }
+            }
+            btn.innerHTML = 'Ajouter';
+            btn.disabled = false;
+        }
         async function fetchPartenaires() {
             const list = document.getElementById('partenaires-list');
             list.innerHTML = '<div class="col-12 text-center py-4"><div class="spinner-border text-danger"></div></div>';
