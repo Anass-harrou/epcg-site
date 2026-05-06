@@ -1,27 +1,26 @@
-// INITIALISATION SUPABASE GLOBALE
+// INITIALISATION GLOBALE DE SUPABASE
 const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener("DOMContentLoaded", function() {
-    
-    // 1. CHARGER LA NAVBAR (Fichier à la racine)
+    // 1. Injection de la Navbar
     fetch('navbar.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
-            highlightCurrentPage(); // Activer le lien rouge
-            initNavbarScroll(); // Activer l'effet de scroll
+            highlightCurrentPage();
+            initNavbarScroll();
         });
 
-    // 2. CHARGER LE FOOTER (Fichier à la racine)
+    // 2. Injection du Footer
     fetch('footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer-placeholder').innerHTML = data;
         });
 
-    // 3. CHARGER LE CONTENU DU CMS (Logo, slogan, textes...)
+    // 3. Charger le contenu dynamique (CMS)
     chargerContenuGeneral();
 });
 
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function() {
 function highlightCurrentPage() {
     let currentPage = window.location.pathname.split("/").pop();
     if (currentPage === "" || currentPage === "/") currentPage = "index.html"; 
-
     let navLinks = document.querySelectorAll(".navbar-nav .nav-link");
     navLinks.forEach(link => {
         link.classList.remove("active-link");
@@ -40,12 +38,11 @@ function highlightCurrentPage() {
     });
 }
 
-// FONCTION : NAVBAR QUI SE CACHE AU SCROLL
+// FONCTION : NAVBAR CACHÉE AU SCROLL
 function initNavbarScroll() {
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar-custom');
-    if (!navbar) return;
-    
+    if(!navbar) return;
     window.addEventListener('scroll', function() {
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScroll > lastScrollTop && currentScroll > 100) {
@@ -57,17 +54,18 @@ function initNavbarScroll() {
     });
 }
 
-// FONCTION : CMS GLOBAL
+// FONCTION : CHARGEMENT CMS (Fixé pour l'éditeur Word)
 async function chargerContenuGeneral() {
     const { data, error } = await _supabase.from('contenu_site').select('*');
     if (!error && data) {
         data.forEach(item => {
-            const elementHtml = document.getElementById(item.cle_position);
-            if (elementHtml) {
+            const el = document.getElementById(item.cle_position);
+            if (el && item.valeur) {
                 if (item.type === 'texte' || item.type === 'html') {
-                    elementHtml.innerHTML = item.valeur;
+                    // On injecte directement le HTML généré par Quill (Gras, sauts de ligne, etc.)
+                    el.innerHTML = item.valeur; 
                 } else if (item.type === 'image_url') {
-                    elementHtml.src = item.valeur;
+                    el.src = item.valeur;
                 }
             }
         });
