@@ -5,40 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Médiathèque - EPCG Tanger</title>
     
+    <!-- LIBRAIRIES EXTERNES -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Supabase SDK -->
+    
+    <!-- SDK SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- VOTRE CSS GLOBAL -->
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        :root {
-            --primary-color: #9B1C22; 
-            --secondary-color: #2b2b2b; 
-            --text-color: #4a4a4a; 
-            --bg-light: #fcfcfc;
-        }
-
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Roboto', sans-serif; color: var(--text-color); background-color: #fff; padding-top: 115px; }
-
-        /* NAVBAR UNIFORMISÉE */
-        .navbar-custom { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 15px rgba(0,0,0,0.05); padding: 8px 0; transition: transform 0.4s ease; z-index: 1050; }
-        .navbar-hidden { transform: translateY(-100%); }
-        .navbar-brand img { max-height: 85px; max-width: 400px; object-fit: contain; width: auto; transition: 0.3s; }
+        /* CSS SPÉCIFIQUE À LA PAGE GALERIE UNIQUEMENT */
         
-        .navbar-nav .nav-link { 
-            font-weight: 600; color: var(--secondary-color); text-transform: uppercase; 
-            font-size: 13px; padding: 10px 15px !important; position: relative; transition: 0.3s;
-        }
-        .navbar-nav .nav-link::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: 5px; left: 50%;
-            background-color: var(--primary-color); transition: 0.3s ease; transform: translateX(-50%);
-        }
-        .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active-link::after { width: 70%; }
-        .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active-link { color: var(--primary-color) !important; }
-
         /* HEADER PAGE */
         .page-header { background: linear-gradient(rgba(155, 28, 34, 0.8), rgba(155, 28, 34, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2000'); background-size: cover; background-position: center; color: white; padding: 100px 0; text-align: center; margin-bottom: 50px; }
         .page-header h1 { font-family: 'Roboto Slab', serif; font-size: 3.5rem; font-weight: 700; text-transform: uppercase; }
@@ -54,53 +35,15 @@
         .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
         .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3rem; opacity: 0.8; }
 
-        /* FOOTER UNIFORMISÉ */
-        .footer { background-color: #1a1a1a; color: #a0a0a0; padding: 70px 0 30px; margin-top: 80px; }
-        .footer h4 { color: white; font-size: 18px; margin-bottom: 25px; text-transform: uppercase; }
-        .footer-info li { margin-bottom: 18px; display: flex; align-items: flex-start; }
-        .footer-info i { color: var(--primary-color); font-size: 20px; margin-right: 15px; }
-
         @media (max-width: 991px) {
-            body { padding-top: 85px; }
-            .navbar-brand img { max-height: 60px !important; }
             .page-header h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR SMART STICKY -->
-    <nav class="navbar navbar-expand-xl navbar-custom fixed-top">
-        <div class="container-fluid px-lg-5"> 
-            <div class="d-flex align-items-center flex-grow-1">
-                <a class="navbar-brand" href="index.html">
-                    <img id="logo_navbar" src="./assets/logo-epcg.jpeg" alt="Logo EPCG Tanger">
-                </a>
-                <div id="navbar_slogan" class="ms-3 d-none d-lg-block fw-bold text-muted" style="font-size: 14px; border-left: 2px solid #ddd; padding-left: 15px; max-width: 300px;">
-                    École Professionnelle de Commerce et de Gestion - Tanger
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="index.html">ACCUEIL</a></li>
-                    <li class="nav-item"><a class="nav-link active-link" href="galerie.html">MÉDIATHÈQUE</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">INSCRIPTION</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="inscription.html">Inscription en ligne</a></li>
-                            <li><a class="dropdown-item" href="elearning.html">Campus e-learning</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="formations.html">NOS FORMATIONS</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- 1. INJECTION DE LA NAVBAR -->
+    <div id="navbar-placeholder"></div>
 
     <header class="page-header">
         <div class="container">
@@ -109,7 +52,7 @@
         </div>
     </header>
 
-    <section class="container">
+    <section class="container mb-5">
         <!-- FILTRES -->
         <div class="text-center mb-5" data-aos="fade-up">
             <button class="filter-btn active" onclick="filterMedia('all', this)">Tout voir</button>
@@ -125,49 +68,23 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 mb-4">
-                    <img src="./assets/logo-epcg.jpeg" alt="Logo EPCG" style="max-height: 70px; border-radius: 8px;" class="mb-4 bg-white p-2"> <p id="footer_description">Établissement privé accrédité par l'État.</p>
-                </div>
-                <div class="col-lg-7">
-                    <h4>Contact</h4>
-                    <ul class="list-unstyled footer-info">
-                        <li><i class="bi bi-geo-alt-fill"></i> <span id="footer_adresse">6 Abou Moussa EL Achaari, Tanger</span></li>
-                        <li><i class="bi bi-telephone-fill"></i> <span id="footer_tel">05 31 10 99 70</span></li>
-                        <li><i class="bi bi-envelope-fill"></i> <span id="footer_email">epcg.school@gmail.com</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- 2. INJECTION DU FOOTER -->
+    <div id="footer-placeholder"></div>
 
+    <!-- SCRIPTS EXTERNES -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
+    <!-- VOTRE SCRIPT GLOBAL (Contient Supabase, Navbar, Footer) -->
+    <script src="main.js"></script>
+
+    <!-- SCRIPT SPÉCIFIQUE À LA GALERIE -->
     <script>
         AOS.init({ once: true });
 
-        // CONFIGURATION SUPABASE
-        const SUPABASE_URL = 'https://aytyetcwfzliikljlhhz.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_KV2wU4WAzWJgRVlgIoioWA_MnLEtnCz'; 
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         let allMedia = [];
 
-        // 1. SMART STICKY NAVBAR
-        let lastScrollTop = 0;
-        const navbar = document.querySelector('.navbar-custom');
-        window.addEventListener('scroll', function() {
-            let st = window.pageYOffset || document.documentElement.scrollTop;
-            if (st > lastScrollTop && st > 100) { navbar.classList.add('navbar-hidden'); } 
-            else { navbar.classList.remove('navbar-hidden'); }
-            lastScrollTop = st <= 0 ? 0 : st;
-        });
-
-        // 2. CHARGEMENT DE LA GALERIE
+        // CHARGEMENT DE LA GALERIE (Utilise la variable _supabase du fichier main.js)
         async function loadGallery() {
             const { data, error } = await _supabase.from('gallery').select('*').order('created_at', { ascending: false });
             if (!error && data) {
@@ -176,6 +93,7 @@
             }
         }
 
+        // AFFICHAGE DES CARTES
         function renderGallery(items) {
             const container = document.getElementById('gallery-container');
             if (items.length === 0) {
@@ -195,6 +113,7 @@
             `).join('');
         }
 
+        // SYSTÈME DE FILTRES
         function filterMedia(type, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -202,22 +121,10 @@
             renderGallery(filtered);
         }
 
-        // 3. CHARGEMENT TEXTES CMS (Logo, Slogan, Footer)
-        async function chargerContenuGeneral() {
-            const { data } = await _supabase.from('contenu_site').select('*');
-            if (data) {
-                data.forEach(item => {
-                    const el = document.getElementById(item.cle_position);
-                    if (el) {
-                        if (item.type === 'texte' || item.type === 'html') el.innerHTML = item.valeur;
-                        else if (item.type === 'image_url') el.src = item.valeur;
-                    }
-                });
-            }
-        }
-
-        loadGallery();
-        chargerContenuGeneral();
+        // On attend un petit instant pour être sûr que main.js a bien chargé Supabase
+        setTimeout(() => {
+            loadGallery();
+        }, 500);
     </script>
 </body>
 </html>
