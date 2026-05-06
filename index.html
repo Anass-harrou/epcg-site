@@ -304,9 +304,28 @@
             `).join('');
         }
 
-        // On attend un petit instant pour être sûr que main.js a bien chargé Supabase
+        // CHARGER LES PARTENAIRES DEPUIS SUPABASE
+        async function loadPartenaires() {
+            const container = document.getElementById('partenaires-marquee');
+            // _supabase est toujours disponible grâce à main.js
+            const { data, error } = await _supabase.from('partenaires').select('*').order('created_at', { ascending: false });
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<span class="text-muted">Devenez notre premier partenaire !</span>';
+                return;
+            }
+            
+            // On génère le HTML pour les images
+            const imagesHtml = data.map(p => `<img src="${p.logo_url}" alt="${p.nom}" title="${p.nom}">`).join('');
+            
+            // Astuce pour le défilement infini (marquee) : on double les images pour qu'il n'y ait pas de "trou" visuel
+            container.innerHTML = imagesHtml + imagesHtml + imagesHtml;
+        }
+
+        // On lance le chargement des partenaires en même temps que la galerie
         setTimeout(() => {
             loadLatestMedia();
+            loadPartenaires(); // NOUVEAU !
         }, 500);
     </script>
 </body>
